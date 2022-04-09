@@ -1,0 +1,122 @@
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-size: 15px;
+    font-family: 'Roboto', sans-serif;
+}
+
+.login__bg {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-image: url('https://demo2wpopal.b-cdn.net/freshio/wp-content/uploads/2020/08/rev-slider_h6-2.jpg');
+    background-repeat: no-repeat;
+    background-size: cover;
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.login__container {
+    width: 30%;
+    height: 300px;
+    background-color: rgba(255, 255, 255, 0.993);
+    box-shadow: 0px 0px 20px #992400;
+    border-radius: 10px;
+}
+
+.login__body {
+    padding: 20px;
+}
+
+.login_title {
+    text-align: center;
+}
+
+.login_title h3 {
+    font-size: 20px;
+    color: #ff6638;
+}
+
+.icon-lock {
+    margin-top: 10px;
+    font-size: 29px;
+}
+
+.login__main {
+    font-size: 1.4rem;
+}
+
+.login__login {
+    padding-top: 5px;
+}
+
+.login__login-link {
+    font-size: 1.2rem;
+    text-decoration: none;
+}
+
+.login__form {
+    padding: 20px 0px;
+}
+
+.input__bag {
+    margin-bottom: 20px;
+}
+
+.login__input {
+    width: 100%;
+    height: 38px;
+    padding-left: 10px;
+    font-size: 0.9rem;
+    outline: none;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+
+
+.login__input:focus {
+    border: 2px solid #ff6638;
+}
+
+.resgister__rules {
+    text-align: center;
+}
+
+.resgister__rules span {
+    font-weight: bold;
+}
+
+.btn_bag {
+    padding-top: 30px;
+    text-align: right;
+}
+
+.btn__login {
+    padding: 7px 20px;
+    background-color: #ff6638;
+    color: #ffff;
+    border: none;
+    cursor: pointer;
+}
+
+.home a {
+    /* text-decoration: none; */
+    color: #ff6638;
+}
+
+.btn__login-link {
+    text-decoration: none;
+    margin-right: 10px;
+    padding: 7px 20px;
+    color: #000;
+}

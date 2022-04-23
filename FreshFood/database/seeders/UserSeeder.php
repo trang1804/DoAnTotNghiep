@@ -6,7 +6,9 @@ use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 use Illuminate\Database\Seeder;
-
+use Faker\Factory as Faker;
+use App\Models\User;
+use  App\Models\GroupUser;
 class UserSeeder extends Seeder
 {
     /**
@@ -16,176 +18,38 @@ class UserSeeder extends Seeder
      */
     public function run()
     {
-        DB::table('users')->insert([
-            [
-                'username' => 'TrangKhuat',
-                'fullname' => 'Khuất Thu Trang',
-                'avatar' => 'image/anhdd.jpg',
-                'address' => 'Thạch Thất, Hà Nội',
-                'phone' => '0866940634',
-                'email' => 'thutrangk2000@gmail.com',
-                'password' => bcrypt('12345678'),
-                'status' => '1',
-                'role' => '1',
-                'email_verified_at' => now(),
-                'remember_token' => Str::random(10)
-            ],
-            [
-                'username' => 'NgocNam',
-                'fullname' => 'Nguyễn Ngọc Nam',
-                'avatar' => 'image/anhav1.jpg',
-                'address' => 'Bắc Từ Liêm, Hà Nội',
-                'phone' => '0869846334',
-                'email' => 'ngocnamkk@gmail.com',
-                'password' => bcrypt('12345678'),
-                'status' => '1',
-                'role' => '1',
-                'email_verified_at' => now(),
-                'remember_token' => Str::random(10)
-            ],
-            [
-                'username' => 'MaiPhuong',
-                'fullname' => 'Trương Mai Phương',
-                'avatar' => 'image/anhav.jpg',
-                'address' => 'Hai Bà Trưng, Hà Nội',
-                'phone' => '0528134984',
-                'email' => 'maiphuong00@gmail.com',
-                'password' => bcrypt('12345678'),
-                'status' => '1',
-                'role' => '1',
-                'email_verified_at' => now(),
-                'remember_token' => Str::random(10)
-            ],
-            [
-                'username' => 'ThuyNgan',
-                'fullname' => 'Nguyễn Thúy Ngân',
-                'avatar' => 'image/anhav.jpg',
-                'address' => 'Hoàn Kiếm, Hà Nội',
-                'phone' => '0528135748',
-                'email' => 'thuyngan@gmail.com',
-                'password' => bcrypt('12345678'),
-                'status' => '1',
-                'role' => '1',
-                'email_verified_at' => now(),
-                'remember_token' => Str::random(10)
-            ],
-            [
-                'username' => 'HoangLong',
-                'fullname' => 'Nguyễn Hoàng Long',
-                'avatar' => 'image/anhav1.jpg',
-                'address' => 'Bắc Từ Liêm, Hà Nội',
-                'phone' => '0368291472',
-                'email' => 'hoanglong@gmail.com',
-                'password' => bcrypt('12345678'),
-                'status' => '1',
-                'role' => '1',
-                'email_verified_at' => now(),
-                'remember_token' => Str::random(10)
-            ],
-            [
-                'username' => 'ThanhVu',
-                'fullname' => 'Vũ Xuân Thành',
-                'avatar' => 'image/anhdd.jpg',
-                'address' => 'Quỳnh Thụ, Thái Bình',
-                'phone' => '0365478953',
-                'email' => 'thanhvu18@gmail.com',
-                'password' => bcrypt('123456789'),
-                'status' => '1',
-                'role' => '1',
-                'email_verified_at' => now(),
-                'remember_token' => Str::random(10)
-            ],
-            [
-                'username' => 'NganNguyen',
-                'fullname' => 'Nguyễn Thị Ngân',
-                'avatar' => 'image/anhdd.jpg',
-                'address' => 'Hải Dương',
-                'phone' => '0528134987',
-                'email' => 'ngannguyen@gmail.com',
-                'password' => bcrypt('123456789'),
-                'status' => '1',
-                'role' => '3',
-                'email_verified_at' => now(),
-                'remember_token' => Str::random(10) 
-            ],
-            [
-                'username' => 'MaiHuong',
-                'fullname' => 'Nguyễn Mai Hương',
-                'avatar' => 'image/anhdd.jpg',
-                'address' => 'Bắc Giang',
-                'phone' => '0363874921',
-                'email' => 'maihuong@gmail.com',
-                'password' => bcrypt('123456789'),
-                'status' => '1',
-                'role' => '3',
-                'email_verified_at' => now(),
-                'remember_token' => Str::random(10) 
-            ],
-            [
-                'username' => 'NgocLan',
-                'fullname' => 'Trần Ngọc Lan',
-                'avatar' => 'image/anhdd.jpg',
-                'address' => 'Nam Định',
-                'phone' => '0368749272',
-                'email' => 'ngoclan289@gmail.com',
-                'password' => bcrypt('123456789'),
-                'status' => '1',
-                'role' => '2',
-                'email_verified_at' => now(),
-                'remember_token' => Str::random(10) 
-            ],
-            [
-                'username' => 'TuongVi',
-                'fullname' => 'Trần Ngọc Tường Vi',
-                'avatar' => 'image/anhdd.jpg',
-                'address' => 'Hải Dương',
-                'phone' => '0368763972',
-                'email' => 'tươngvi0909@gmail.com',
-                'password' => bcrypt('123456789'),
-                'status' => '1',
-                'role' => '3',
-                'email_verified_at' => now(),
-                'remember_token' => Str::random(10) 
-            ],
-            [
-                'username' => 'NgocHuyen',
-                'fullname' => 'Hoàng Thị Ngọc Huyền',
-                'avatar' => 'image/anhdd.jpg',
-                'address' => 'Hồ Chí Minh',
-                'phone' => '0368786392',
-                'email' => 'huyenhoang0309@gmail.com',
-                'password' => bcrypt('123456789'),
-                'status' => '1',
-                'role' => '3',
-                'email_verified_at' => now(),
-                'remember_token' => Str::random(10) 
-            ],
-            [
-                'username' => 'NamLong',
-                'fullname' => 'Hoàng Nam Long',
-                'avatar' => 'image/anhdd.jpg',
-                'address' => 'Hà Nội',
-                'phone' => '0972364892',
-                'email' => 'namlong@gmail.com',
-                'password' => bcrypt('123456789'),
-                'status' => '1',
-                'role' => '3',
-                'email_verified_at' => now(),
-                'remember_token' => Str::random(10) 
-            ],
-            [
-                'username' => 'HoaiNam',
-                'fullname' => 'Trương Hoài Nam',
-                'avatar' => 'image/anhdd.jpg',
-                'address' => 'Hà Nội',
-                'phone' => '0363698473',
-                'email' => 'hoainam@gmail.com',
-                'password' => bcrypt('123456789'),
-                'status' => '1',
-                'role' => '3',
-                'email_verified_at' => now(),
-                'remember_token' => Str::random(10) 
-            ]
-        ]);
+        $faker = Faker::create();
+        // admin 
+        foreach(range(1, 100) as $index){
+            $name = $faker->name();
+            User::create([
+                'username'=>$name,
+                'avatar'=>"https://webmaudep.com/demo/thucpham/tp01/images/product-5.jpg",
+                'fullname'=>$name,
+                'address'=> $faker->address(),
+                'phone' => $faker->phoneNumber(),
+                'email'=>$faker->email(),
+                'password'=>'$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', // password,
+                'status' => rand(0, 1),
+                'is_admin'=> true,
+                'role'=>1
+            ]);
+        }
+        // khách hàng
+        foreach(range(1, 100) as $index){
+            $name = $faker->name();
+            User::create([
+                'username'=>$name,
+                'avatar'=>"https://webmaudep.com/demo/thucpham/tp01/images/product-5.jpg",
+                'fullname'=>$name,
+                'address'=> $faker->address(),
+                'phone' => $faker->phoneNumber(),
+                'email'=>$faker->email(),
+                'password'=>'$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', // password,
+                'status' => rand(0, 1),
+                'is_admin'=> false,
+                'group_user'=>GroupUser::all()->random()->id
+            ]);
+        }
     }
 }

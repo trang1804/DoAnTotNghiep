@@ -2,9 +2,10 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
+use Faker\Factory as Faker;
+use App\Models\User;
 
 class CategorySeeder extends Seeder
 {
@@ -13,24 +14,24 @@ class CategorySeeder extends Seeder
      *
      * @return void
      */
+    public function createSlug($str, $delimiter = '-'){
+
+        $slug = strtolower(trim(preg_replace('/[\s-]+/', $delimiter, preg_replace('/[^A-Za-z0-9-]+/', $delimiter, preg_replace('/[&]/', 'and', preg_replace('/[\']/', '', iconv('UTF-8', 'ASCII//TRANSLIT', $str))))), $delimiter));
+        return $slug;
+    
+    } 
     public function run()
     {
-        DB::table('categories')->insert([
-            [
-                'nameCate' => 'Củ quả các loại'
-            ],
-            [
-                'nameCate' => 'Rau các loại'
-            ],
-            [
-                'nameCate' => 'Thực phẩm'
-            ],
-            [
-                'nameCate' => 'Trái cây'
-            ],
-            [
-                'nameCate' => 'Các loại nấm'
-            ]
-        ]);
+        $faker = Faker::create();
+        foreach(range(1, 10) as $index){
+            $name = $faker->name();
+            $slug =  $this->createSlug($name);
+            DB::table('categories')->insert([
+                'nameCate' => $name,
+                'banner'=>"https://i.ytimg.com/vi/FQmpLVHvrCw/maxresdefault.jpg",
+                'slug' => $slug,
+                'users_id'=>User::all()->random()->id,
+            ]);
+        }
     }
 }

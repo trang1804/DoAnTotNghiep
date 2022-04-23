@@ -54,13 +54,7 @@
                                 <td>{{$value->image}}</td>
                                 <td>{{$value->quantity}}</td>
                                 <td>{{$value->price}}</td>
-                                <td>{{$value->status}}
-                                    @if($value->status==1)
-                                    {{"Còn hàng"}}
-                                    @else
-                                    {{"Hết hàng"}}
-                                    @endif
-                                </td>
+                                <td>{{ $value->status==1 ? "Còn hàng" : "Hết hàng" }}</td>
                                 <td class="center"><i class="fa fa-trash-o  fa-fw"></i><a href="admin/product/delete/{{$value->id}}"> Delete</a></td>
                                 <td class="center"><i class="fa fa-pencil fa-fw"></i> <a href="admin/product/edit/{{$value->id}}">Edit</a></td>
                             </tr>

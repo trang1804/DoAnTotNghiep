@@ -5,14 +5,30 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Middleware\AdminMiddleware;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Auth\LoginRequest;
 use App\Models\User;
+use App\Common\Constants;
 
 
 class UserController extends Controller
 {
+    public function postLoginAdmin(LoginRequest $request)
+    {
+       // dd($request->all(),Auth::check());
+        // if(isset($request->remember)&& (int)$request->remember==1){
+        //     if(Auth::login(['email'=>$request->email,'password'=>$request->password], $request->remember)){
+        //         return redirect()->route('home');
+        //     }
+        // }
+        if(Auth::attempt(['email'=>$request->email,'password'=>$request->password])){
+            return redirect()->route('home');
+        } 
+        return redirect()->back()->with('errorLogin','Đăng nhập không thành công');
+        
+    }
     public function getDanhSach()
     {
-        $user = User::all();
+        $user = User::where("role", Constants::CUSTOMER)->paginate(10);
         return view('admin.layout.user.list',['user'=>$user]);
     }
 
@@ -116,25 +132,9 @@ class UserController extends Controller
     // Login
     public function getLoginAdmin()
     {
-        return view('admin.login');
+        return view('admin.pages.categories.index');
     }
 
-    public function postLoginAdmin(Request $request)
-    {
-        $this->validate($request,[
-            'email' => 'required',
-            'password' => 'required|min:3|max:32'
-        ],[
-            'email.required' => 'Bạn chưa nhập Email',
-            'password.required' => 'Bạn chưa nhập Password',
-            'password.min' => 'Password không được nhỏ hơn 3 kí tự',
-            'password.max' => 'Password không được lớn hơn 32 ký tự'
-        ]);
-        if(Auth::attempt(['email'=>$request->email,'password'=>$request->password])){
-            return redirect('admin/layout/user/list');
-        } else {
-            return redirect('admin/login')->with('thongbao','Đăng nhập không thành công');
-        }
-    }
+
 }
 

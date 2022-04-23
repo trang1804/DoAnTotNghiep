@@ -18,6 +18,7 @@ return new class extends Migration
             $table->string('nameSupplier');
             $table->string('address');
             $table->string('phone');
+            $table->boolean('status')->default(false);
             $table->timestamps();
             $table->softDeletes();
         });

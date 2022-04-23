@@ -1,116 +1,133 @@
 <?php
 
 namespace App\Http\Controllers\Admin;
+
 use App\Http\Controllers\Controller;
 use App\Models\Category;
 use Illuminate\Http\Request;
+use App\Http\Requests\Admin\StoreProductRequest;
+use App\Http\Requests\Admin\UpdateProductRequest;
 use App\Models\Product;
 use App\Models\Supplier;
-
-
+use App\Models\Origin;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
+use Exception;
 use GuzzleHttp\Handler\Proxy;
 
 class ProductController extends Controller
 {
-    public function getDanhSach()
+    public function index(Request $request)
     {
-        $product = Product::paginate();
+
+        $supplier = Supplier::all();
+        $categoryAll = Category::all();
+        $origin = Origin::all();
+        $products = Product::filter(request(['search','category_id','supplier_id','origin_id','status']))->orderBy('id', 'DESC')->Paginate(30);
+        $products->load('category'); // gọi products bên model
+        $products->load('supplier');
+        $products->load('origin');
+        $products->load('User');
+        return view('admin.pages.product.index', compact('products','supplier', 'categoryAll', 'origin'));
+    }
+    public function create()
+    {
         $supplier = Supplier::all();
         $category = Category::all();
-        return view('admin.layout.product.list',['product'=>$product,'supplier'=>$supplier,'category'=>$category]);
+        $origin = Origin::all();
+        return view('admin.pages.product.create', compact('supplier', 'category', 'origin'));
     }
-
-    public function getSua($id)
+    public function store(StoreProductRequest $request)
     {
-        $product = Product::find($id);
+        $pathAvatar = $request->file('image')->store('public/images/products');
+        $pathAvatar = str_replace("public/", "", $pathAvatar);
+        try {
+            DB::beginTransaction();
+            $data = request(['namePro', 'quantity', 'slug', 'price', 'discounts', 'Description', 'status', 'category_id', 'supplier_id', 'origin_id']);
+            $data['users_id'] = auth()->user()->id;
+            $data['image'] = $pathAvatar;
+            Product::create($data);
+            DB::commit();
+            return redirect()->route('cp-admin.products.index')->with('message', 'Thêm sản phẩm thành công !');
+        } catch (Exception $exception) {
+            DB::rollBack();
+            Log::error('message :', $exception->getMessage() . '--line :' . $exception->getLine());
+            if (file_exists('storage/' . $pathAvatar)) {
+                unlink('storage/' . $pathAvatar);
+            }
+            return redirect()->route('cp-admin.products.index')->with('error', 'Thêm sản phẩm thất bại !');
+        }
+    }
+    public function edit($id)
+    {
+        $Product = Product::find($id);
         $supplier = Supplier::all();
-        $category = Category::all();
-        return view('admin/layout/product/edit',['product'=>$product,'supplier'=>$supplier,'category'=>$category]);
+        $categoryAll = Category::all();
+       // dd($supplier);
+        $origin = Origin::all();
+        return view('admin.pages.product.edit', compact('Product', 'supplier', 'categoryAll', 'origin'));
     }
-
-    public function postSua(Request $request,$id)
+    public function update(Request $request, $id)
     {
-        $this->validate($request,[
-            'txtName' => 'required|min:3|max:100',
-            'txtQuantity' => 'required',
-            'txtPrice' => 'required',
+        $Product = Product::find($id);
+        $this->validate(
+            request(),
+            [
+                'namePro' => 'required|min:3|max:100|unique:products,namePro,' . $Product->id,
+                'slug' => 'required|min:3|max:100|unique:products,slug,' . $Product->id,
+                'image' => 'mimes:jpg,bmp,png|max:2048',
+                'quantity' => 'required|numeric|min:1',
+                'price' => 'required|numeric|min:1',
+                'discounts' => 'required|numeric|min:0|max:100',
+                'status' => 'required|numeric|min:0|max:1',
+                'category_id' => 'required|numeric|min:1',
+                'supplier_id' => 'required|numeric|min:1',
+                'origin_id' => 'required|numeric|min:1'
+            ]
+        );
+        if (file_exists('storage/' . $Product->image)) {
+            unlink('storage/' . $Product->image);
+        }
+        $pathAvatar = $request->file('image')->store('public/images/products');
+        $pathAvatar = str_replace("public/", "", $pathAvatar);
+        try {
+            DB::beginTransaction();
+            if ($request->file('image') != null) {
+            } else {
+                $pathAvatar = $Product->image;
+            }
+            $data = request(['namePro', 'quantity', 'slug', 'price', 'discounts', 'Description', 'status', 'category_id', 'supplier_id', 'origin_id']);
+            $data['users_id'] = auth()->user()->id;
+            $data['image'] = $pathAvatar;
 
-        ],
-        [
-            'txtName.required' => 'Bạn chưa nhập tên sản phẩm',
-            'txtName.unique' => 'Tên sản phẩm không được trùng',
-            'txtName.min' => 'Tên sản phẩm phải có độ dài từ 3 đến 100 ký tự',
-            'txtName.max' => 'Tên sản phẩm phải có độ dài từ 3 đến 100 ký tự',
-            'txtQuantity' => 'Số lượng sản phẩm không được trùng',
-            'txtPrice' => 'Gía sản phẩm không được trùng'
+            $Product->update($data);
+            DB::commit();
+            return redirect()->route('cp-admin.products.index')->with('message', 'Cập nhật sản phẩm thành công');
+        } catch (Exception $exception) {
+            DB::rollBack();
+            Log::error('message :', $exception->getMessage() . '--line :' . $exception->getLine());
+            if (file_exists('storage/' . $pathAvatar)) {
+                unlink('storage/' . $pathAvatar);
+            }
+            return redirect()->route('cp-admin.products.index')->with('error', 'Sửa sản phẩm thất bại !');
+        }
+    }
+    public function delete($id)
+    {
+        $Product = Product::find($id);
+        if ($Product) {
+            if (file_exists('storage/' . $Product->image)) {
+                unlink('storage/' . $Product->image);
+            }
+            $Product->delete();
+            return response()->json([
+                'message' => "Xóa sản phẩm thành công",
+                'status' => "200"
+            ]);
+        }
+        return response()->json([
+            'message' => "Không tìm thấy sản phẩm",
+            'status' => "401"
         ]);
-
-        $product = Product::find($id);
-        $product->supplier_id = $request->supplier;
-        $product->category_id = $request->category;
-        $product->namePro = $request->txtName;
-        $product->image = $request->image;
-        $product->quantity = $request->txtQuantity;
-        $product->price = $request->txtPrice;
-        $product->status = $request->status;
-        $product->save();
-        return redirect('admin/product/edit/'.$id)->with('thongbao','Sửa thành công!!!!');
     }
-
-    public function getThem()
-    {
-        $category = Category::all();
-        $supplier = Supplier::all();
-        $product = Product::all();
-        return view('admin/layout/product/add',['product'=>$product,'category'=>$category,'supplier'=>$supplier]);
-    }
-
-    public function postThem(Request $request)
-    {
-        $this->validate($request,[
-            'txtName' => 'required|unique:products,namePro|min:3|max:100',
-            'txtQuantity' => 'required',
-            'txtPrice' => 'required',
-
-        ],
-        [
-            'txtName.required' => 'Bạn chưa nhập tên sản phẩm',
-            'txtName.unique' => 'Tên sản phẩm không được trùng',
-            'txtName.min' => 'Tên sản phẩm phải có độ dài từ 3 đến 100 ký tự',
-            'txtName.max' => 'Tên sản phẩm phải có độ dài từ 3 đến 100 ký tự',
-            'txtQuantity' => 'Số lượng sản phẩm không được trùng',
-            'txtPrice' => 'Gía sản phẩm không được trùng'
-        ]);
-
-        $product = Product::all();
-        $product->supplier_id = $request->supplier;
-        $product->category_id = $request->supplier;
-        $product->namePro = $request->txtName;
-        $product->image = $request->image;
-        $product->quantity = $request->txtQuantity;
-        $product->price = $request->txtPrice;
-        $product->status = $request->status;
-        $product->save();
-
-        return redirect('admin/layout/product/add')->with('thongbao','Thêm thành công!!!');
-    }
-
-    public function getXoa($id)
-    {
-        $product = Product::find($id);
-        $product->delete();
-        
-        return redirect('admin/product/list')->with('thongbao','Xóa thành công!!!');
-    }
-
-    // public function postSearch(Request $request)
-    // {
-    //     $key = $request->key;
-    //     $item = Item::where('item_name', 'LIKE', '%' . $key . '%')
-    //     ->orWhere('price','LIKE','%' . $key . '%')
-    //     ->orWhere('user_id','LIKE','%' . $key . '%')
-    //     ->orWhere('category_id','LIKE','%' . $key . '%')
-    //     ->paginate();        
-    //     return view('admin/item/search',['item'=>$item,'key'=>$key]);
-    // }
 }

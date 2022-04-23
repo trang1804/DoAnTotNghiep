@@ -23,7 +23,11 @@ class CreateUsersTable extends Migration
             $table->string('email')->unique();
             $table->string('password', 100);
             $table->string('status');
-            $table->string('role');
+            $table->boolean('is_admin')->default(false); // có phải admin 
+            $table->unsignedInteger('group_user')->nullable();
+            // nhóm khách hàng
+            $table->foreign('group_user')->references('id')->on('group_users')->onDelete('cascade');
+            $table->string('role')->nullable();
             $table->timestamp('email_verified_at')->nullable();
             $table->rememberToken();
             $table->timestamps();

@@ -21,38 +21,37 @@
                     <thead>
                         <tr align="center">
                             <th>ID</th>
-                            <th>Username</th>
-                            <th>Fullname</th>
-                            <th>Address</th>
-                            <th>Phone</th>
+                            <th>Họ Tên</th>
                             <th>Email</th>
-                            <th>Status</th>
-                            <th>Role</th>
-                            <th>Delete</th>
-                            <th>Edit</th>
+                            <th>Số điện thoại</th>
+                            <th>Tài khoản</th>
+                            <th>Nhóm</th>
+                            <th>Hành động</th>
                         </tr>
                     </thead>
                     <tbody>
                         @foreach($user as $value)
                             <tr class="odd gradeX" align="center">
                                 <td>{{$value->id}}</td>
-                                <td>{{$value->username}}</td>
                                 <td>{{$value->fullname}}</td>
-                                <td>{{$value->address}}</td>
-                                <td>{{$value->phone}}</td>
                                 <td>{{$value->email}}</td>
-                                <td>{{$value->status}}</td>
-                                <td>{{$value->role}}
-                                    @if($value->role==1)
-                                    {{"Admin"}}
-                                    @elseif($value->role==2)
-                                    {{"User"}}
-                                    @else
-                                    {{"Khách hàng"}}
-                                    @endif
+                                <td>{{$value->phone}}</td>
+                                <td><span class="badge badge-md {{$value->status==App\Common\Constants::ENABLED ? 'badge-success' : 'badge-danger' }}">
+                                    {{ App\Common\Constants::STATUS_CUSTOMER[$value->status]}}
+                                </span>
                                 </td>
-                                <td class="center"><i class="fa fa-pencil fa-fw"></i> <a href="admin/user/delete/{{$value->id}}">Delete</a></td>
-                                <td class="center"><i class="fa fa-pencil fa-fw"></i> <a href="admin/user/edit/{{$value->id}}">Edit</a></td>
+                                <td>{{ App\Common\Constants::ROLE[$value->role]}}
+                                   
+                                </td>
+                                <td class="center"> 
+                                <a href="admin/user/edit/{{$value->id}}">
+                                    <i class="fa fa-pencil fa-fw"></i>
+                                </a>
+                                    <a href="admin/user/delete/{{$value->id}}">
+                                        <i class="fa fa-trash fa-fw"></i>
+                                    </a>
+                                   
+                                </td>
                             </tr>
                         @endforeach
                     </tbody>
@@ -62,5 +61,24 @@
         </div>
         <!-- /.container-fluid -->
     </div>
+    
+    <style>
+.badge.badge-success {
+    background-color: #4caf50;
+}
+.badge.badge-danger {
+    background-color: red;
+}
+.badge.badge-md {
+    padding: 3px 10px;
+}
+
+.badge {
+    border-radius: 50px;
+    color: #fff;
+    padding: 8px;
+    white-space: nowrap;
+}
+    </style>
     <!-- /#page-wrapper -->
 @endsection

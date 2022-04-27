@@ -19,14 +19,16 @@ class User extends Authenticatable
      * @var array<int, string>
      */
     protected $fillable = [
-        'username',
         'avatar',
         'fullname',
         'address',
+        'address_detail',
         'phone',
         'email',
         'password',
         'status',
+        'is_admin',
+        'group_user',
         'role'
     ];
 
@@ -57,5 +59,25 @@ class User extends Authenticatable
     public function shipment_detail()
     {
         return $this->hasMany(ShipmentDetail::class);
+    }
+    public function groupUser()
+    {
+        return $this->belongsTo(GroupUser::class, 'group_user');
+    }
+
+    public function scopeFilter($query, array $filters)
+    { 
+        $query->when($filters['group_user'] ?? false, function ($query, $group_user) {
+            $query->where('group_user', $group_user);
+        });
+        $query->when($filters['status'] ?? false, function ($query, $status) {
+            if($status==2|| $status==1 ){
+                $status = $status==2 ? 0 : 1;
+               $query->where('status', $status);  
+            }
+        });
+        $query->when($filters['search'] ?? false, function ($query, $search) {
+           $query->Where('fullname', 'LIKE', '%' . $search . '%');
+        });
     }
 }

@@ -15,15 +15,19 @@ class CreateUsersTable extends Migration
     {
         Schema::create('users', function (Blueprint $table) {
             $table->id();
-            $table->string('username');
             $table->string('avatar', 150);
-            $table->string('fullname');
-            $table->string('address', 150);
-            $table->string('phone');
+            $table->string('fullname')->nullable();
+            $table->string('address', 200)->nullable();
+            $table->string('address_detail', 200)->nullable();
+            $table->string('phone')->nullable();
             $table->string('email')->unique();
             $table->string('password', 100);
             $table->string('status');
-            $table->string('role');
+            $table->boolean('is_admin')->default(false); // có phải admin 
+            $table->unsignedInteger('group_user')->nullable();
+            // nhóm khách hàng
+            $table->foreign('group_user')->references('id')->on('group_users')->onDelete('cascade');
+            $table->string('role')->nullable();
             $table->timestamp('email_verified_at')->nullable();
             $table->rememberToken();
             $table->timestamps();

@@ -19,9 +19,9 @@ class LoginMiddleware
     {
         if(auth()->user()){
             if(auth()->user()->role >= Constants::ADMIN){
-              return $next($request);  
+               return $next($request);  
             }
         }
-        return redirect()->route('cp-admin.login'); 
+         return redirect()->route('cp-admin.login'); 
     }
 }

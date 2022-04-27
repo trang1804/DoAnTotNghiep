@@ -23,7 +23,6 @@ class UserSeeder extends Seeder
         foreach(range(1, 100) as $index){
             $name = $faker->name();
             User::create([
-                'username'=>$name,
                 'avatar'=>"https://webmaudep.com/demo/thucpham/tp01/images/product-5.jpg",
                 'fullname'=>$name,
                 'address'=> $faker->address(),
@@ -31,7 +30,7 @@ class UserSeeder extends Seeder
                 'email'=>$faker->email(),
                 'password'=>'$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', // password,
                 'status' => rand(0, 1),
-                'is_admin'=> true,
+                'is_admin'=> 1,
                 'role'=>1
             ]);
         }
@@ -39,15 +38,15 @@ class UserSeeder extends Seeder
         foreach(range(1, 100) as $index){
             $name = $faker->name();
             User::create([
-                'username'=>$name,
                 'avatar'=>"https://webmaudep.com/demo/thucpham/tp01/images/product-5.jpg",
                 'fullname'=>$name,
                 'address'=> $faker->address(),
+                'address_detail'=> $faker->address(),
                 'phone' => $faker->phoneNumber(),
                 'email'=>$faker->email(),
                 'password'=>'$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', // password,
                 'status' => rand(0, 1),
-                'is_admin'=> false,
+                'is_admin'=> 0,
                 'group_user'=>GroupUser::all()->random()->id
             ]);
         }

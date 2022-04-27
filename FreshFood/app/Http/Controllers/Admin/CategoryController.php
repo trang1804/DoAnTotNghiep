@@ -21,7 +21,6 @@ class CategoryController extends Controller
     }
     public function store(Request $request)
     {
-       // dd($request->all());
         $this->validate(request(),[
             'nameCate'=>'required|min:3|max:100|unique:categories,nameCate',
             'slug'=>'required|min:3|max:100|unique:categories,slug',
@@ -91,7 +90,14 @@ class CategoryController extends Controller
     public function delete($id)
     {
         $category = Category::find($id);
+        $category->load('products');
         if($category){
+            if($category->products->count()>=1){
+                return response()->json([
+                    'message' => "Không thể xóa khi vẫn còn số lượng khách hàng",
+                    'status' => "401"
+                ]); 
+            }
             $category->delete();
             if (file_exists('storage/' . $category->banner)) {
                 unlink('storage/' . $category->banner);

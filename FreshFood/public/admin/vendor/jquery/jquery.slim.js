@@ -5185,7 +5185,7 @@ function on( elem, types, selector, data, fn, one ) {
 
 /*
  * Helper functions for managing events -- not part of the public interface.
- * Props to Dean Edwards' addEvent library for many of the ideas.
+ * Props to Dean Ed'wards'' addEvent library for many of the ideas.
  */
 jQuery.event = {
 
@@ -6594,7 +6594,7 @@ function curCSS( elem, name, computed ) {
 			ret = jQuery.style( elem, name );
 		}
 
-		// A tribute to the "awesome hack by Dean Edwards"
+		// A tribute to the "awesome hack by Dean Ed'wards'"
 		// Android Browser returns percentage for some values,
 		// but width seems to be reliably pixels.
 		// This is against the CSSOM draft spec:

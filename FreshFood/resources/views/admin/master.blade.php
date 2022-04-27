@@ -42,7 +42,7 @@
 
                 <!-- Begin Page Content -->
                 <div class="container-fluid">
-                @yield('content')
+                    @yield('content')
                 </div>
                 <!-- /.container-fluid -->
 
@@ -82,42 +82,6 @@
             </div>
         </div>
     </div>
-    <!-- profile Modal-->
-    <div class="modal fade" id="profileModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Thông tin cá nhân</h5>
-                    <button class="close" type="button" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">×</span>
-                    </button>
-                </div>
-                <div class="modal-body">  
-                    <form class="user" action="{{ route('cp-admin.submitLogin') }}" method="POST">
-                                      
-                                        <div class="form-group">
-                                        <label for="exampleInputEmail1">Họ và tên</label>
-                                        <img src="..." class="rounded mx-auto d-block" alt="...">
-                                        </div>
-                                        <div class="form-group">
-                                        <label for="exampleInputEmail1">Họ và tên</label>
-                                            <input type="text" value="{{auth()->user()->username}}" disabled class="form-control form-control-user" >
-                                        </div>
-                                        <div class="form-group">
-                                        <label for="exampleInputEmail1">Email address</label>
-                                            <input type="text" value="{{auth()->user()->email}}" disabled class="form-control form-control-user" >
-                                        </div>
-                                        <label for="exampleInputEmail1">Email address</label>
-                                            <input type="text" value="{{auth()->user()->phone}}" disabled class="form-control form-control-user" >
-                                        </div>
-                                    </form></div>
-                <div class="modal-footer">
-                    <button class="btn btn-secondary" type="button" data-dismiss="modal">Hủy bỏ</button>
-                    <a class="btn btn-primary" href="{{route('cp-admin.logout')}}">Đăng xuất</a>
-                </div>
-            </div>
-        </div>
-    </div>
     <!-- Bootstrap core JavaScript-->
     <script src="{{asset('admin/vendor/jquery/jquery.min.js')}}"></script>
     <script src="{{asset('admin/vendor/bootstrap/js/bootstrap.bundle.min.js')}}"></script>
@@ -136,6 +100,7 @@
     <script src="{{asset('admin/js/demo/chart-pie-demo.js')}}"></script>
     <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
     @yield('javascript')
+
 </body>
 
 </html>

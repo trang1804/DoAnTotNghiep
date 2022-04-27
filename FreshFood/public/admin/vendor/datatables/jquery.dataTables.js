@@ -889,7 +889,7 @@
 				return;
 			}
 			
-			/* Backwards compatibility for the defaults */
+			/* Back'wards' compatibility for the defaults */
 			_fnCompatOpts( defaults );
 			_fnCompatCols( defaults.column );
 			
@@ -968,7 +968,7 @@
 			// to the settings array, so we can self reference the table instance if more than one
 			oSettings.oInstance = (_that.length===1) ? _that : $this.dataTable();
 			
-			// Backwards compatibility, before we apply all the defaults
+			// Back'wards' compatibility, before we apply all the defaults
 			_fnCompatOpts( oInit );
 			_fnLanguageCompat( oInit.oLanguage );
 			
@@ -1019,7 +1019,7 @@
 				"renderer",
 				"searchDelay",
 				"rowId",
-				[ "iCookieDuration", "iStateDuration" ], // backwards compat
+				[ "iCookieDuration", "iStateDuration" ], // back'wards' compat
 				[ "oSearch", "oPreviousSearch" ],
 				[ "aoSearchCols", "aoPreSearchCols" ],
 				[ "iDisplayLength", "_iDisplayLength" ]
@@ -1759,7 +1759,7 @@
 	
 	/**
 	 * Language compatibility - when certain options are given, and others aren't, we
-	 * need to duplicate the values over, in order to provide backwards compatibility
+	 * need to duplicate the values over, in order to provide back'wards' compatibility
 	 * with older language files.
 	 *  @param {object} oSettings dataTables settings object
 	 *  @memberof DataTable#oApi
@@ -1779,7 +1779,7 @@
 		if ( lang ) {
 			var zeroRecords = lang.sZeroRecords;
 	
-			// Backwards compatibility - if there is no sEmptyTable given, then use the same as
+			// Back'wards' compatibility - if there is no sEmptyTable given, then use the same as
 			// sZeroRecords - assuming that is given.
 			if ( ! lang.sEmptyTable && zeroRecords &&
 				defaults.sEmptyTable === "No data available in table" )
@@ -1821,7 +1821,7 @@
 	
 	
 	/**
-	 * Provide backwards compatibility for the main DT options. Note that the new
+	 * Provide back'wards' compatibility for the main DT options. Note that the new
 	 * options are mapped onto the old parameters, so this is an external interface
 	 * change only.
 	 *  @param {object} init Object to map
@@ -1862,7 +1862,7 @@
 	
 	
 	/**
-	 * Provide backwards compatibility for column options. Note that the new options
+	 * Provide back'wards' compatibility for column options. Note that the new options
 	 * are mapped onto the old parameters, so this is an external interface change
 	 * only.
 	 *  @param {object} init Object to map
@@ -2055,13 +2055,13 @@
 		/* User specified column options */
 		if ( oOptions !== undefined && oOptions !== null )
 		{
-			// Backwards compatibility
+			// Back'wards' compatibility
 			_fnCompatCols( oOptions );
 	
 			// Map camel case parameters to their Hungarian counterparts
 			_fnCamelToHungarian( DataTable.defaults.column, oOptions, true );
 	
-			/* Backwards compatibility for mDataProp */
+			/* Back'wards' compatibility for mDataProp */
 			if ( oOptions.mDataProp !== undefined && !oOptions.mData )
 			{
 				oOptions.mData = oOptions.mDataProp;
@@ -2085,7 +2085,7 @@
 			$.extend( oCol, oOptions );
 			_fnMap( oCol, oOptions, "sWidth", "sWidthOrig" );
 	
-			/* iDataSort to be applied (backwards compatibility), but aDataSort will take
+			/* iDataSort to be applied (back'wards' compatibility), but aDataSort will take
 			 * priority if defined
 			 */
 			if ( oOptions.iDataSort !== undefined )
@@ -3856,7 +3856,7 @@
 	
 	/**
 	 * Create an Ajax call based on the table's settings, taking into account that
-	 * parameters can have multiple forms, and backwards compatibility.
+	 * parameters can have multiple forms, and back'wards' compatibility.
 	 *
 	 * @param {object} oSettings dataTables settings object
 	 * @param {array} data Data to send to the server, required by
@@ -4316,7 +4316,7 @@
 			oPrevSearch.bCaseInsensitive = oFilter.bCaseInsensitive;
 		};
 		var fnRegex = function ( o ) {
-			// Backwards compatibility with the bEscapeRegex option
+			// Back'wards' compatibility with the bEscapeRegex option
 			return o.bEscapeRegex !== undefined ? !o.bEscapeRegex : o.bRegex;
 		};
 	
@@ -6022,7 +6022,7 @@
 			 * positions in the original data array to provide a stable sort.
 			 *
 			 * Note - I know it seems excessive to have two sorting methods, but the first is around
-			 * 15% faster, so the second is only maintained for backwards compatibility with sorting
+			 * 15% faster, so the second is only maintained for back'wards' compatibility with sorting
 			 * methods which do not have a pre-sort formatting function.
 			 */
 			if ( formatters === aSort.length ) {
@@ -6508,7 +6508,7 @@
 		}
 	
 		if ( ! level  ) {
-			// Backwards compatibility pre 1.10
+			// Back'wards' compatibility pre 1.10
 			var ext = DataTable.ext;
 			var type = ext.sErrMode || ext.errMode;
 	
@@ -6661,7 +6661,7 @@
 	
 	/**
 	 * Fire callback functions and trigger events. Note that the loop over the
-	 * callback array store is done backwards! Further note that you do not want to
+	 * callback array store is done back'wards'! Further note that you do not want to
 	 * fire off triggers in time sensitive applications (for example cell creation)
 	 * as its slow.
 	 *  @param {object} settings dataTables settings object
@@ -7806,7 +7806,7 @@
 			opts = {};
 		}
 	
-		// Backwards compatibility for 1.9- which used the terminology filter rather
+		// Back'wards' compatibility for 1.9- which used the terminology filter rather
 		// than search
 		if ( opts.filter && opts.search === undefined ) {
 			opts.search = opts.filter;
@@ -9948,8 +9948,8 @@
 	/*
 	 * Developer note: The properties of the object below are given in Hungarian
 	 * notation, that was used as the interface for DataTables prior to v1.10, however
-	 * from v1.10 onwards the primary interface is camel case. In order to avoid
-	 * breaking backwards compatibility utterly with this change, the Hungarian
+	 * from v1.10 on'wards' the primary interface is camel case. In order to avoid
+	 * breaking back'wards' compatibility utterly with this change, the Hungarian
 	 * version is still, internally the primary interface, but is is not documented
 	 * - hence the @name tags in each doc comment. This allows a Javascript function
 	 * to create a map from Hungarian notation to camel case (going the other direction
@@ -12357,7 +12357,7 @@
 	
 		/**
 		 * This parameter has been replaced by `data` in DataTables to ensure naming
-		 * consistency. `dataProp` can still be used, as there is backwards
+		 * consistency. `dataProp` can still be used, as there is back'wards'
 		 * compatibility in DataTables for this option, but it is strongly
 		 * recommended that you use `data` in preference to `dataProp`.
 		 *  @name DataTable.defaults.column.dataProp
@@ -13017,7 +13017,7 @@
 	 *    table already exists). It would also save passing oSettings around and
 	 *    into every single function. However, this is a very significant
 	 *    architecture change for DataTables and will almost certainly break
-	 *    backwards compatibility with older installations. This is something that
+	 *    back'wards' compatibility with older installations. This is something that
 	 *    will be done in 2.0.
 	 */
 	DataTable.models.oSettings = {
@@ -14169,7 +14169,7 @@
 		 *
 		 * Note that DataTables v1.9- used this object slightly differently whereby
 		 * an object with two functions would be defined for each plug-in. That
-		 * ability is still supported by DataTables 1.10+ to provide backwards
+		 * ability is still supported by DataTables 1.10+ to provide back'wards'
 		 * compatibility, but this option of use is now decremented and no longer
 		 * documented in DataTables 1.10+.
 		 *
@@ -14405,7 +14405,7 @@
 	
 		//
 		// Depreciated
-		// The following properties are retained for backwards compatiblity only.
+		// The following properties are retained for back'wards' compatiblity only.
 		// The should not be used in new projects and will be removed in a future
 		// version
 		//
@@ -14444,7 +14444,7 @@
 	
 	
 	//
-	// Backwards compatibility. Alias to pre 1.10 Hungarian notation counter parts
+	// Back'wards' compatibility. Alias to pre 1.10 Hungarian notation counter parts
 	//
 	$.extend( _ext, {
 		afnFiltering: _ext.search,

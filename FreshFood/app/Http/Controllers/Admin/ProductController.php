@@ -63,7 +63,7 @@ class ProductController extends Controller
         $Product = Product::find($id);
         $supplier = Supplier::all();
         $categoryAll = Category::all();
-       // dd($supplier);
+    //    dd($supplier);
         $origin = Origin::all();
         return view('admin.pages.product.edit', compact('Product', 'supplier', 'categoryAll', 'origin'));
     }
@@ -85,17 +85,20 @@ class ProductController extends Controller
                 'origin_id' => 'required|numeric|min:1'
             ]
         );
+        //dd($request->all());
         if (file_exists('storage/' . $Product->image)) {
             unlink('storage/' . $Product->image);
         }
-        $pathAvatar = $request->file('image')->store('public/images/products');
-        $pathAvatar = str_replace("public/", "", $pathAvatar);
+        if ($request->file('image') != null) {
+            $pathAvatar = $request->file('image')->store('public/images/products');
+            $pathAvatar = str_replace("public/", "", $pathAvatar);
+        } else {
+            $pathAvatar = $Product->image;
+        }
+
         try {
             DB::beginTransaction();
-            if ($request->file('image') != null) {
-            } else {
-                $pathAvatar = $Product->image;
-            }
+
             $data = request(['namePro', 'quantity', 'slug', 'price', 'discounts', 'Description', 'status', 'category_id', 'supplier_id', 'origin_id']);
             $data['users_id'] = auth()->user()->id;
             $data['image'] = $pathAvatar;

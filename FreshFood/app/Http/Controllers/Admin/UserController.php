@@ -8,10 +8,90 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\LoginRequest;
 use App\Models\User;
 use App\Common\Constants;
-
+use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
 {
+    public function proFile()
+    {
+        return view('admin.pages.auth.profile');
+    }
+    public function proFileStore(Request $request)
+    {
+      
+        $this->validate(request(),[
+            'fullname'=>'required|min:3|max:100' ,
+            'avatar' => 'nullable|image|mimes:jpeg,png,jpg,svg|max:2048',
+            'phone' => 'required|numeric|digits_between:10,12|unique:users,phone,'.auth()->user()->id,
+            'address_detail'=>'required|min:3|max:200',
+        ],
+        [
+            'fullname.required'=>'Bạn chưa nhập tên danh mục',
+            'phone.unique' => 'Số điện thoại đã được sử dụng',
+            'fullname.min'=>'Tên danh mục phải có độ dài từ 3 đến 100 ký tự',
+            'fullname.max'=>'Tên danh mục phải có độ dài từ 3 đến 100 ký tự',
+           'avatar.mimes'=>'Hình đại diện phải là tệp thuộc loại: image / jpeg, image / png.',
+           'avatar.image'=>'Hình đại diện phải là tệp thuộc loại: image / jpeg, image / png.',
+            'avatar.max'=>'avatar dụng lượng tối đa 2048mb',
+            'phone.required'=>'Bạn chưa nhập slug',
+            'phone.digits_between'=>'Độ dại số điện thoại không hợp lệ',
+            'phone.numeric'=>'Số điện thoại không hợp lệ',
+            'address_detail.required'=>'Bạn chưa nhập địa chỉ',
+            'address_detail.unique' => 'Địa chỉ không được trùng',
+            'address_detail.min'=>'Địa chỉ phải có độ dài từ 3 đến 200 ký tự',
+            'address_detail.max'=>'Địa chỉ phải có độ dài từ 3 đến 200 ký tự',
+        ]);
+
+
+        if ($request->file('avatar') != null) {
+            if (file_exists('storage/' . auth()->user()->avatar)) {
+                unlink('storage/' . auth()->user()->avatar);
+            }
+            $pathAvatar = $request->file('avatar')->store('public/users/avatar');
+            $pathAvatar = str_replace("public/", "", $pathAvatar);
+        } else {
+            $pathAvatar = auth()->user()->avatar;
+        }
+        $data = request(['fullname', 'phone', 'address_detail']);
+        $data['avatar'] = $pathAvatar;
+        $user = User::find(auth()->user()->id)->update($data);
+        return redirect()->back()->with('message', 'Cập nhật thông tin thành công');
+    }
+    public function changePassword(){
+        $customer = User::find(auth()->user()->id);
+        $rules = [
+            'current_password' => 'required|min:6',
+            'new_password' => 'required|min:6',
+            'confirm_password' => 'required|min:6'
+        ];
+        $messages = [
+            'current_password.required' => 'Mời nhập mật khẩu hiện tại !',
+            'current_password.min' => 'Mật khẩu hiện tại  ít nhất 6 ký tự!',
+            'new_password.required' => 'Mời nhập mật khẩu mới !',
+            'new_password.min' => 'Mật khẩu mới  ít nhất 6 ký tự!',
+            'confirm_password.required' => 'Mời nhập mật khẩu nhập lại !',
+            'confirm_password.min' => 'Mật khẩu nhập lại  ít nhất 6 ký tự!'
+        ];
+        $this->validate(request(),$rules, $messages);
+        $data = request()->all();
+        if(!Hash::check( $data['current_password'], $customer->password)){
+            return redirect()->route('cp-admin.profile')->with('error', 'Mật khẩu hiện tại không chính xác, vui lòng thử lại');
+        } else {
+            $customer->update([
+                'password' => bcrypt($data['confirm_password'])
+            ]);
+            return redirect()->route('cp-admin.logout')->with('message', 'Đổi mật khẩu thành công. Vui lòng đăng nhập lại');
+            // return response()->json([
+            //     'message' => 'Your password update succesfully!',
+            //     'data' => new CustomerResource($this->customerRepository->find($customer->id)),
+            //     'status' => 200
+            // ]);
+        }
+
+    }
+
+
+
     public function postLoginAdmin(LoginRequest $request)
     {
        // dd($request->all(),Auth::check());

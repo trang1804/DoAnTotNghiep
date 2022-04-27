@@ -7,6 +7,8 @@ use App\Http\Controllers\Admin\PostController;
 use App\Http\Controllers\Admin\SupplierController;
 use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\Admin\SaleController;
+use App\Http\Controllers\Admin\GroupUserController;
+use App\Http\Controllers\Admin\CustomerController;
 use App\Http\Controllers\Admin\SessionController as AdminSessionController;
 
 use App\Http\Controllers\Client\HomeController;
@@ -105,6 +107,9 @@ Route::name('cp-admin.')->prefix('cp-admin/')->group(function () {
     Route::get('login', [AdminSessionController::class, 'create'])->name('login');
     Route::post('login', [AdminSessionController::class, 'store'])->name('submitLogin');
     Route::get('logout', [AdminSessionController::class, 'logout'])->name('logout');
+    Route::get('profile', [UserController::class, 'proFile'])->name('profile');
+    Route::post('profile', [UserController::class, 'proFileStore'])->name('proFileStore');
+    Route::post('changePassword', [UserController::class, 'changePassword'])->name('changePassword');
 
     // category    
     Route::name('category.')->middleware('AdminLogin')->prefix('category/')->group(function () {
@@ -115,7 +120,7 @@ Route::name('cp-admin.')->prefix('cp-admin/')->group(function () {
         Route::post('update/{id}', [CategoryController::class, 'update'])->name('update');
         Route::get('delete/{id}', [CategoryController::class, 'delete'])->name('delete');
     });
-
+    // Sản phẩm
     Route::name('products.')->middleware('AdminLogin')->prefix('products/')->group(function () {
         Route::get('/', [ProductController::class, 'index'])->name('index');
         Route::get('create', [ProductController::class, 'create'])->name('create');
@@ -124,7 +129,7 @@ Route::name('cp-admin.')->prefix('cp-admin/')->group(function () {
         Route::post('update/{id}', [ProductController::class, 'update'])->name('update');
         Route::get('delete/{id}', [ProductController::class, 'delete'])->name('delete');
     });
-
+    // Nhà cung câp
     Route::name('supplier.')->middleware('AdminLogin')->prefix('supplier/')->group(function () {
         Route::get('/', [SupplierController::class, 'index'])->name('index');
         Route::get('create', [SupplierController::class, 'create'])->name('create');
@@ -132,6 +137,24 @@ Route::name('cp-admin.')->prefix('cp-admin/')->group(function () {
         Route::get('edit/{id}', [SupplierController::class, 'edit'])->name('edit');
         Route::post('update/{id}', [SupplierController::class, 'update'])->name('update');
         Route::get('delete/{id}', [SupplierController::class, 'delete'])->name('delete');
+    });
+      // nhom khách hàng
+    Route::name('groups.')->middleware('AdminLogin')->prefix('groups/')->group(function () {
+        Route::get('', [GroupUserController::class, 'index'])->name('index');
+        Route::get('create', [GroupUserController::class, 'create'])->name('create');
+        Route::post('store', [GroupUserController::class, 'store'])->name('store');
+        Route::get('edit/{id}', [GroupUserController::class, 'edit'])->name('edit');
+        Route::post('update/{id}', [GroupUserController::class, 'update'])->name('update');
+        Route::get('delete/{id}', [GroupUserController::class, 'delete'])->name('delete'); // todo xóa khi ko có hóa đơn
+    });
+        // khách hàng
+    Route::name('customers.')->middleware('AdminLogin')->prefix('customers/')->group(function () {
+        Route::get('', [CustomerController::class, 'index'])->name('index');
+        Route::get('create', [CustomerController::class, 'create'])->name('create');
+        Route::post('store', [CustomerController::class, 'store'])->name('store');
+        Route::get('edit/{id}', [CustomerController::class, 'edit'])->name('edit');
+        Route::post('update/{id}', [CustomerController::class, 'update'])->name('update');
+        Route::get('delete/{id}', [CustomerController::class, 'delete'])->name('delete'); // todo xóa khi ko có hóa đơn
     });
 });
 

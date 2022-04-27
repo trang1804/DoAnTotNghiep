@@ -8122,7 +8122,7 @@ var core_scaleService = {
 	addScalesToLayout: function(chart) {
 		// Adds each scale to the chart.boxes array to be sized accordingly
 		helpers$1.each(chart.scales, function(scale) {
-			// Set ILayoutItem parameters for backwards compatibility
+			// Set ILayoutItem parameters for back'wards' compatibility
 			scale.fullWidth = scale.options.fullWidth;
 			scale.position = scale.options.position;
 			scale.weight = scale.options.weight;
@@ -9619,7 +9619,7 @@ helpers$1.extend(Chart.prototype, /** @lends Chart */ {
 		var i, ilen;
 
 		if (!config || typeof config !== 'object') {
-			// backwards compatibility
+			// back'wards' compatibility
 			config = {
 				duration: config,
 				lazy: arguments[1]
@@ -9766,7 +9766,7 @@ helpers$1.extend(Chart.prototype, /** @lends Chart */ {
 		var me = this;
 
 		if (!config || typeof config !== 'object') {
-			// backwards compatibility
+			// back'wards' compatibility
 			config = {
 				duration: config,
 				lazy: arguments[1]
@@ -10221,12 +10221,12 @@ helpers$1.extend(Chart.prototype, /** @lends Chart */ {
 		}
 
 		// Invoke onHover hook
-		// Need to call with native event here to not break backwards compatibility
+		// Need to call with native event here to not break back'wards' compatibility
 		helpers$1.callback(options.onHover || options.hover.onHover, [e.native, me.active], me);
 
 		if (e.type === 'mouseup' || e.type === 'click') {
 			if (options.onClick) {
-				// Use e.native here for backwards compatibility
+				// Use e.native here for back'wards' compatibility
 				options.onClick.call(me, e.native, me.active);
 			}
 		}
@@ -13500,7 +13500,7 @@ function fitWithPointLabels(scale) {
 	// Where it does, we store that angle and that index.
 	//
 	// After finding the largest index and angle we calculate how much we need to remove
-	// from the shape radius to move the point inwards by that x.
+	// from the shape radius to move the point in'wards' by that x.
 	//
 	// We average the left and right distances to get the maximum shape radius that can fit in the box
 	// along with labels.
@@ -15693,7 +15693,7 @@ var Legend = core_element.extend({
 
 		if (type === 'click') {
 			if (hoveredItem && opts.onClick) {
-				// use e.native for backwards compatibility
+				// use e.native for back'wards' compatibility
 				opts.onClick.call(me, e.native, hoveredItem);
 			}
 		} else {
@@ -15705,7 +15705,7 @@ var Legend = core_element.extend({
 			}
 
 			if (opts.onHover && hoveredItem) {
-				// use e.native for backwards compatibility
+				// use e.native for back'wards' compatibility
 				opts.onHover.call(me, e.native, hoveredItem);
 			}
 		}

@@ -11,16 +11,16 @@ class Product extends Model
     use HasFactory, SoftDeletes;
     protected $table = 'products';
     protected $fillable = [
-        'namePro', 
-        'image', 
+        'namePro',
+        'image',
         'slug',
-        'quantity', 
+        'quantity',
         'price',
         'discounts',
-        'Description', 
-        'status', 
-        'category_id', 
-        'supplier_id', 
+        'Description',
+        'status',
+        'category_id',
+        'supplier_id',
         'users_id',
         'origin_id'
     ];
@@ -44,14 +44,31 @@ class Product extends Model
     }
     public function User()
     {
-        return $this->belongsTo(User::class,'users_id');
+        return $this->belongsTo(User::class, 'users_id');
     }
     public function scopeFilter($query, array $filters)
-    { 
+    {
+        // lọc cho người dùng  
         $query->when($filters['categories_slug'] ?? false, function ($query, $categories_slug) {
-        //    dd($category_id->id,'id');
             $query->where('category_id', $categories_slug->id);
         });
+        $query->when($filters['min'] ?? false, function ($query, $min) {
+            //    lọc sản phẩm có giá tối thiểu 
+            $query->where('price', '>=', $min);
+        });
+        $query->when($filters['max'] ?? false, function ($query, $max) {
+            //  lọc sản phẩm có giá tối đa
+            $query->where('price', '<=', $max);
+        });
+        $query->when($filters['sort'] ?? false, function ($query, $sort) {
+            //  lọc sản phẩm có giá tối đa
+            if ($sort == 'ASC' || $sort == "DESC") {
+                $query->orderBy('price', $sort);
+            }
+        });
+
+        
+        // lọc cho admin    
         $query->when($filters['category_id'] ?? false, function ($query, $category_id) {
             $query->where('category_id', $category_id);
         });
@@ -62,13 +79,13 @@ class Product extends Model
             $query->where('origin_id', $origin_id);
         });
         $query->when($filters['status'] ?? false, function ($query, $status) {
-            if($status==2|| $status==1 ){
-                $status = $status==2 ? 0 : 1;
-               $query->where('status', $status);  
+            if ($status == 2 || $status == 1) {
+                $status = $status == 2 ? 0 : 1;
+                $query->where('status', $status);
             }
         });
         $query->when($filters['search'] ?? false, function ($query, $search) {
-           $query->Where('namePro', 'LIKE', '%' . $search . '%');
+            $query->Where('namePro', 'LIKE', '%' . $search . '%');
         });
     }
 }

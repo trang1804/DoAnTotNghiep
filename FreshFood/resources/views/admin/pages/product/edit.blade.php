@@ -128,7 +128,7 @@
                     <div class="form-group row ">
                         <div class=" col-sm-12 ">
                             <label for="slugCategories">Mô tả sản phẩm</label>
-                            <textarea class="form-control" name="Description" id="exampleFormControlTextarea1" rows="10">{{ isset($Product->Description) ? $Product->Description : 0 }}</textarea>
+                            <textarea class="form-control" name="Description" id="summernote" rows="10">{{ isset($Product->Description) ? $Product->Description : 0 }}</textarea>
                         </div>
 
                     </div>
@@ -151,5 +151,16 @@
             reader.readAsDataURL(file);
         }
     }
+</script>
+<script>
+        $(function() {
+        // Summernote
+        $('#summernote').summernote()
+        // CodeMirror
+        CodeMirror.fromTextArea(document.getElementById("codeMirrorDemo"), {
+            mode: "htmlmixed",
+            theme: "monokai"
+        });
+    })
 </script>
 @endsection

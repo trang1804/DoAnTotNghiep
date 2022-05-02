@@ -2,12 +2,12 @@
 
 namespace Database\Seeders;
 
+use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 use Faker\Factory as Faker;
-use App\Models\User;
-
-class CategorySeeder extends Seeder
+use  App\Models\User;
+class CateBlogSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -23,15 +23,14 @@ class CategorySeeder extends Seeder
     public function run()
     {
         $faker = Faker::create();
-        foreach(range(1, 10) as $index){
+        foreach(range(1,5) as $index){
             $name = $faker->name();
             $slug =  $this->createSlug($name);
-            DB::table('categories')->insert([
-                'nameCate' => $name,
-                'banner'=>'images/category/cat-'.rand(1,5).'.jpg',
+            DB::table('category_blogs')->insert([
+                'name' => $name,
                 'slug' => $slug,
                 'users_id'=>User::all()->random()->id,
             ]);
-        }
     }
+}
 }

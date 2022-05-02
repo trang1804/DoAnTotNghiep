@@ -6,7 +6,6 @@
         </div>
         <div class="humberger__menu__cart">
             <ul>
-                <li><a href="#"><i class="fa fa-heart"></i> <span>1</span></a></li>
                 <li><a href="#"><i class="fa fa-shopping-bag"></i> <span>3</span></a></li>
             </ul>
         </div>
@@ -19,9 +18,9 @@
         <nav class="humberger__menu__nav mobile-menu">
             <ul>
                 <li class="active"><a href="{{route('home')}}">Trang chủ</a></li>
-                <li><a href="#">Bài viết</a></li>
-                            <li><a href="#">Liên hệ</a></li>
-                            <li><a href="#">Đơn hàng</a></li>
+                <li><a href="{{ route('blogs') }}">Bài viết</a></li>
+                            <li><a href="{{ route('login') }}">Liên hệ</a></li>
+                            <li><a href="{{ route('login') }}">Đơn hàng</a></li>
                 <!-- <li><a href="./shop-grid.html">Shop</a></li>
                 <li><a href="#">Pages</a>
                     <ul class="header__menu__dropdown">
@@ -96,9 +95,9 @@
                     <nav class="header__menu">
                         <ul>
                             <li class="active"><a href="{{route('home')}}">Trang chủ</a></li>
-                            <li><a href="#">Bài viết</a></li>
-                            <li><a href="#">Liên hệ</a></li>
-                            <li><a href="#">Đơn hàng</a></li>
+                            <li><a href="{{ route('blogs') }}">Bài viết</a></li>
+                            <li><a href="{{ route('blogs') }}">Liên hệ</a></li>
+                            <li><a href="{{ route('blogs') }}">Đơn hàng</a></li>
                             <!-- <li><a href="#">Pages</a>
                                 <ul class="header__menu__dropdown">
                                     <li><a href="./shop-details.html">Shop Details</a></li>
@@ -115,7 +114,7 @@
                 <div class="col-lg-3">
                     <div class="header__cart">
                         <ul>
-                            <li><a href="#"><i class="fa fa-heart"></i> <span>1</span></a></li>
+                           
                             <li><a href="#"><i class="fa fa-shopping-bag"></i> <span>3</span></a></li>
                         </ul>
                     </div>
@@ -148,12 +147,8 @@
                 <div class="col-lg-9">
                     <div class="hero__search">
                         <div class="hero__search__form">
-                            <form action="#">
-                                <!-- <div class="hero__search__categories">
-                                    Tất cả
-                                    <span class="arrow_carrot-down"></span>
-                                </div> -->
-                                <input type="text" placeholder="Hãy cho tôi biết bạn cần gì ?">
+                            <form action="{{route('products')}}" method="get">
+                                <input type="text" name="search" value="{{ request('search') }}" placeholder="Hãy cho tôi biết bạn cần gì ?">
                                 <button type="submit" class="site-btn">Tìm kiếm</button>
                             </form>
                         </div>

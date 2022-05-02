@@ -61,6 +61,9 @@ class ProductController extends Controller
     public function edit($id)
     {
         $Product = Product::find($id);
+        if(!$Product){
+            return redirect()->back();
+        }
         $supplier = Supplier::all();
         $categoryAll = Category::all();
     //    dd($supplier);
@@ -70,6 +73,9 @@ class ProductController extends Controller
     public function update(Request $request, $id)
     {
         $Product = Product::find($id);
+        if(!$Product){
+            return redirect()->back();
+        }
         $this->validate(
             request(),
             [
@@ -119,6 +125,7 @@ class ProductController extends Controller
     public function delete($id)
     {
         $Product = Product::find($id);
+        
         if ($Product) {
             if (file_exists('storage/' . $Product->image)) {
                 unlink('storage/' . $Product->image);

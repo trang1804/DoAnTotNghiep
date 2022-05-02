@@ -121,7 +121,7 @@
                 <div class="form-group row ">
                     <div class=" col-sm-12 ">
                     <label for="slugCategories">Mô tả sản phẩm</label>
-                    <textarea class="form-control"name="Description" id="exampleFormControlTextarea1" rows="3">{{ old('Description') }}</textarea>
+                    <textarea class="form-control"name="Description" id="summernote" rows="3">{{ old('Description') }}</textarea>
                     </div>
               
                 </div>
@@ -133,5 +133,15 @@
 @endsection
 @section('javascript')
 <script src="{{asset('admin/js/slug.js')}}"></script>
-
+<script>
+        $(function() {
+        // Summernote
+        $('#summernote').summernote()
+        // CodeMirror
+        CodeMirror.fromTextArea(document.getElementById("codeMirrorDemo"), {
+            mode: "htmlmixed",
+            theme: "monokai"
+        });
+    })
+</script>
 @endsection

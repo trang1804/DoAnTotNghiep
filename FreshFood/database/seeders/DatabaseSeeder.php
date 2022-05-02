@@ -4,7 +4,7 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
-
+use Database\Seeders\BlogSeeder;
 class DatabaseSeeder extends Seeder
 {
     /**
@@ -25,7 +25,8 @@ class DatabaseSeeder extends Seeder
         $this->call(CategorySeeder::class);
         $this->call(SaleSeeder::class);
         $this->call(ProductSeeder::class);
-      //$this->call(OrderSeeder::class);
-        $this->call(PostSeeder::class);
+    //  $this->call(OrderSeeder::class);
+        $this->call(CateBlogSeeder::class);
+        $this->call(BlogSeeder::class);
     }
 }

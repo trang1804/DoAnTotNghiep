@@ -125,5 +125,8 @@ Route::name('cp-admin.')->prefix('cp-admin/')->group(function () {
 
 Route::get('/', [ClientController::class, 'index'])->name('home');
 Route::get('products', [ClientController::class, 'products'])->name('products');
+Route::get('product/{slug}', [ClientController::class, 'productDetail'])->name('product');
+Route::get('blogs', [ClientController::class, 'blogs'])->name('blogs');
+Route::get('blog/{slug}', [ClientController::class, 'blog'])->name('blog');
 Route::get('cp-login', [AdminSessionController::class, 'create'])->name('login');
 Route::post('cp-login', [AdminSessionController::class, 'store'])->name('submitLogin');

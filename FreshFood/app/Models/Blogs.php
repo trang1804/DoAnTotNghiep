@@ -29,6 +29,9 @@ class Blogs extends Model
     }
     public function scopeFilter($query, array $filters)
     { 
+        $query->when($filters['categories_slug'] ?? false, function ($query, $categories_slug) {
+            $query->where('cate_blog_id', $categories_slug->id);
+        });
         $query->when($filters['cate_blog_id'] ?? false, function ($query, $cate_blog_id) {
             $query->where('cate_blog_id', $cate_blog_id);
         });

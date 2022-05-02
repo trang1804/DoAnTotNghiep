@@ -2,12 +2,13 @@
 
 namespace Database\Seeders;
 
+use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 use Faker\Factory as Faker;
-use App\Models\User;
-
-class CategorySeeder extends Seeder
+use  App\Models\User;
+use  App\Models\CategoryBlog;
+class BlogSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -23,15 +24,21 @@ class CategorySeeder extends Seeder
     public function run()
     {
         $faker = Faker::create();
-        foreach(range(1, 10) as $index){
+        foreach(range(1,300) as $index){
             $name = $faker->name();
             $slug =  $this->createSlug($name);
-            DB::table('categories')->insert([
-                'nameCate' => $name,
-                'banner'=>'images/category/cat-'.rand(1,5).'.jpg',
-                'slug' => $slug,
+            DB::table('blogs')->insert([
+                'name_blog' => $name,
+                'slug_blog' => $slug,
+                'image' => 'images/products/product-'.rand(1,12).'.jpg',
+                'short_description' => $faker->text(300),
                 'users_id'=>User::all()->random()->id,
+                'cate_blog_id' => CategoryBlog::all()->random()->id,
+                'status' => 1,
+                'description' => $faker->text(600),
+                'created_at' => date("Y-m-d h:i:s"),
+                'updated_at' => date("Y-m-d h:i:s"),
             ]);
         }
-    }
+}
 }

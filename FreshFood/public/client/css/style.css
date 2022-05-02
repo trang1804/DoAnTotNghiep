@@ -1142,7 +1142,7 @@ ol {
 	font-size: 16px;
 	color: #dd2222;
 	font-weight: 700;
-	max-width: 35%;
+	max-width: 48%;
 	border: none;
 	display: inline-block;
 }
@@ -1710,7 +1710,14 @@ ol {
 	font-weight: 600;
 	margin-bottom: 15px;
 }
-
+.product__details__text .product__details__price span {
+    display: inline-block;
+    font-weight: 400;
+    text-decoration: line-through;
+    margin-left: 10px;
+    font-size: 20px;
+    color: black;
+}
 .product__details__text p {
 	margin-bottom: 45px;
 }

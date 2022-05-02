@@ -16,6 +16,10 @@ class Constants{
         self::DISABLE_ACCOUNT => 'Ngưng hoạt động',
         self::ENABLED_ACCOUNT => 'Đang hoạt động',
     ];
+    const STATUS_BLOGS = [
+        self::DISABLE_ACCOUNT => 'Chưa duyệt bài viết',
+        self::ENABLED_ACCOUNT => 'Đã duyệt bài viết',
+    ];
     const CUSTOMER = 0;
     const ADMIN = 1;
     const ACCOUNTANT = 2;

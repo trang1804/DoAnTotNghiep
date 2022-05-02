@@ -1,46 +1,238 @@
 <?php
 
 namespace App\Http\Controllers\Admin;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
-use App\Http\Middleware\AdminMiddleware;
-use App\Http\Controllers\Controller;
-use App\Http\Requests\Auth\LoginRequest;
-use App\Models\User;
-use App\Common\Constants;
-use Illuminate\Support\Facades\Hash;
 
+use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
+use App\Models\User;
+use App\Models\Roles;
+use App\Common\Constants;
+use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Hash;
+use App\Mail\NotifyMail;
+use Illuminate\Support\Facades\Mail;
 class UserController extends Controller
 {
+    public function index()
+    {
+        $roles = Roles::where('id', '!=', 1)->orderBy('id', 'DESC')->get();
+        $users = User::where('is_admin', true)
+            ->filter(request(['search', 'role_id', 'status']))
+            ->orderBy('id', 'DESC')->Paginate(15);
+        $users->load('roles');
+        return view('admin.pages.users.index', compact('users', 'roles'));
+    }
+    public function create()
+    {
+        $roles = Roles::where('id', '!=', 1)->orderBy('id', 'DESC')->get();
+        return view('admin.pages.users.create', compact('roles'));
+    }
+    public function store(Request $request)
+    {
+
+        $this->validate(
+            request(),
+            [
+                'fullname' => 'required|min:3|max:100',
+                'avatar' => 'required|image|mimes:jpeg,png,jpg,svg|max:2048',
+                'phone' => 'required|numeric|digits_between:10,12|unique:users,phone',
+                'address' => 'required|min:3|max:200',
+                'email' => 'required|email|unique:users,email',
+                'role_id' => 'required|integer|min:2',
+                'status' => 'required|numeric|min:0|max:1',
+            ],
+            [
+                'fullname.required' => 'Bạn chưa nhập họ và tên',
+                'phone.unique' => 'Số điện thoại đã được sử dụng',
+                'fullname.min' => 'Họ và tên phải có độ dài từ 3 đến 100 ký tự',
+                'fullname.max' => 'Họ và tên phải có độ dài từ 3 đến 100 ký tự',
+                'avatar.required' => 'Bạn chưa chọn ảnh',
+                'avatar.mimes' => 'Hình đại diện phải là tệp thuộc loại: image / jpeg, image / png.',
+                'avatar.image' => 'Hình đại diện phải là tệp thuộc loại: image / jpeg, image / png.',
+                'avatar.max' => 'avatar dụng lượng tối đa 2048mb',
+                'phone.required' => 'Bạn chưa nhập số điện thoại',
+                'phone.digits_between' => 'Độ dại số điện thoại không hợp lệ',
+                'phone.numeric' => 'Số điện thoại không hợp lệ',
+                'address.required' => 'Bạn chưa nhập địa chỉ',
+                'address.unique' => 'Địa chỉ không được trùng',
+                'address.min' => 'Địa chỉ phải có độ dài từ 3 đến 200 ký tự',
+                'address.max' => 'Địa chỉ phải có độ dài từ 3 đến 200 ký tự',
+                'email.required' => 'Bạn chưa nhập email',
+                'email.email' => 'Email không đúng định dạng',
+                'phone.unique' => 'Email đã được sử dụng',
+                'role_id.required' => 'Mời chọn chức vụ',
+                'role_id.integer' => 'Chức vụ Không hợp lệ',
+                'role_id.min' => 'Chức vụ Không hợp lệ',
+                'status.required' => 'Trạng thái Không hợp lệ',
+                'status.integer' => 'Trạng thái Không hợp lệ',
+                'status.min' => 'Trạng thái Không hợp lệ',
+                'status.max' => 'Trạng thái Không hợp lệ',
+            ]
+        );
+
+        // lưu ảnh 
+        $pathAvatar = $request->file('avatar')->store('public/users/avatar');
+        $pathAvatar = str_replace("public/", "", $pathAvatar);
+
+        
+
+        $data = request(['fullname', 'phone', 'address', 'email', 'role_id', 'status']);
+        // tạo mật khẩu cho tài khoản
+        $data['passwordNew'] = Str::random(15); // pass chưa mã hóa
+        $data['avatar'] = $pathAvatar;
+        $data['password'] = bcrypt( $data['passwordNew']); // mã hóa mật khẩu
+        $data['is_admin'] = true;
+   
+        User::create($data);
+
+        Mail::to($request->email)->send(new NotifyMail($data));
+        return redirect()->route('cp-admin.user.index')->with('message', 'Thêm nhóm nhân viên thành công . Vui lòng kiểm tra email để lấy thông tin đăng nhập !');
+    }
+    public function edit($id)
+    {
+        $users = User::where('is_admin',true)->where('id',$id)->first();
+
+        if ($users) {
+            $roles = Roles::where('id', '!=', 1)->orderBy('id', 'DESC')->get();
+            return view('admin.pages.users.edit', compact('users', 'roles'));
+        }
+        return redirect()->back();
+    }
+    public function update(Request $request, $id)
+    {
+        $user = User::where('is_admin',true)->where('id',$id)->first();
+        $this->validate(
+            request(),
+            [
+                'fullname' => 'required|min:3|max:100',
+                'avatar' => 'nullable|image|mimes:jpeg,png,jpg,svg|max:2048',
+                'phone' => 'required|numeric|digits_between:10,12|unique:users,phone,'. $user ->id,
+                'address' => 'required|min:3|max:200',
+                'email' => 'required|email|unique:users,email,'. $user ->id,
+                'role_id' => 'required|integer|min:2',
+                'status' => 'required|numeric|min:0|max:1',
+            ],
+            [
+                'fullname.required' => 'Bạn chưa nhập họ và tên',
+                'phone.unique' => 'Số điện thoại đã được sử dụng',
+                'fullname.min' => 'Họ và tên phải có độ dài từ 3 đến 100 ký tự',
+                'fullname.max' => 'Họ và tên phải có độ dài từ 3 đến 100 ký tự',
+
+                'avatar.mimes' => 'Hình đại diện phải là tệp thuộc loại: image / jpeg, image / png.',
+                'avatar.image' => 'Hình đại diện phải là tệp thuộc loại: image / jpeg, image / png.',
+                'avatar.max' => 'avatar dụng lượng tối đa 2048mb',
+                'phone.required' => 'Bạn chưa nhập số điện thoại',
+                'phone.digits_between' => 'Độ dại số điện thoại không hợp lệ',
+                'phone.numeric' => 'Số điện thoại không hợp lệ',
+                'address.required' => 'Bạn chưa nhập địa chỉ',
+                'address.unique' => 'Địa chỉ không được trùng',
+                'address.min' => 'Địa chỉ phải có độ dài từ 3 đến 200 ký tự',
+                'address.max' => 'Địa chỉ phải có độ dài từ 3 đến 200 ký tự',
+                'email.required' => 'Bạn chưa nhập email',
+                'email.email' => 'Email không đúng định dạng',
+                'phone.unique' => 'Email đã được sử dụng',
+                'role_id.required' => 'Mời chọn chức vụ',
+                'role_id.integer' => 'Chức vụ Không hợp lệ',
+                'role_id.min' => 'Chức vụ Không hợp lệ',
+                'status.required' => 'Trạng thái Không hợp lệ',
+                'status.integer' => 'Trạng thái Không hợp lệ',
+                'status.min' => 'Trạng thái Không hợp lệ',
+                'status.max' => 'Trạng thái Không hợp lệ',
+            ]
+        );
+        // tìm user theo id
+        
+        // kiểm tra xem request ảnh lên không
+        $pathAvatar = "";
+        if ($request->file('avatar') != null) { // có giửi ảnh lên
+           
+            if (file_exists('storage/' . $user->avatar)) {  // kiểm tra xem file ảnh cũ có tồn tại trong forder ko
+                unlink('storage/' . $user->avatar); // nếu có thì xóa ảnh cũ trong file store
+            }
+            // lưu ảnh mới
+            $pathAvatar = $request->file('avatar')->store('public/users/avatar');
+            $pathAvatar = str_replace("public/", "", $pathAvatar);
+        } else {
+            $pathAvatar = $user->avatar;
+        }
+        $data = request(['fullname', 'phone', 'address', 'email', 'role_id', 'status']);
+        $data['avatar'] = $pathAvatar;
+        $user->update($data);
+
+        return redirect()->route('cp-admin.user.index')->with('message', 'Cập nhật tài khoản thành công !');;
+    }
+    public function delete($id)
+    {
+        $user = User::where('is_admin',true)->where('id',$id)->first();
+        $user->load('blogs');
+        $user->load('products');
+        // dd($user->blogs->count(),$user->products->count());
+        if($user){
+            if($user->products->count()>=1){
+                return response()->json([
+                    'message' => "Không thể xóa nhân viên khi vẫn còn sản phẩm liên quan",
+                    'status' => "401"
+                ]);
+            }
+            else if($user->blogs->count()>=1){
+                return response()->json([
+                    'message' => "Không thể xóa nhân viên khi vẫn còn bài viết liên quan",
+                    'status' => "401"
+                ]);
+            }
+            
+            $user->delete();
+            $logout=false;
+            if($id==auth()->user()->id){
+                auth()->logout();
+                $logout=true;
+            }
+            return response()->json([
+                'message' => "Xóa nhân viên thành công",
+                'status' => "200",
+                'logout' => $logout
+            ]);
+        }
+        return response()->json([
+            'message' => "Không tìm thấy nhân viên",
+            'status' => "401"
+        ]);
+
+    }
+
+    //#############################################################################
     public function proFile()
     {
         return view('admin.pages.auth.profile');
     }
     public function proFileStore(Request $request)
     {
-      
-        $this->validate(request(),[
-            'fullname'=>'required|min:3|max:100' ,
-            'avatar' => 'nullable|image|mimes:jpeg,png,jpg,svg|max:2048',
-            'phone' => 'required|numeric|digits_between:10,12|unique:users,phone,'.auth()->user()->id,
-            'address_detail'=>'required|min:3|max:200',
-        ],
-        [
-            'fullname.required'=>'Bạn chưa nhập tên danh mục',
-            'phone.unique' => 'Số điện thoại đã được sử dụng',
-            'fullname.min'=>'Tên danh mục phải có độ dài từ 3 đến 100 ký tự',
-            'fullname.max'=>'Tên danh mục phải có độ dài từ 3 đến 100 ký tự',
-           'avatar.mimes'=>'Hình đại diện phải là tệp thuộc loại: image / jpeg, image / png.',
-           'avatar.image'=>'Hình đại diện phải là tệp thuộc loại: image / jpeg, image / png.',
-            'avatar.max'=>'avatar dụng lượng tối đa 2048mb',
-            'phone.required'=>'Bạn chưa nhập slug',
-            'phone.digits_between'=>'Độ dại số điện thoại không hợp lệ',
-            'phone.numeric'=>'Số điện thoại không hợp lệ',
-            'address_detail.required'=>'Bạn chưa nhập địa chỉ',
-            'address_detail.unique' => 'Địa chỉ không được trùng',
-            'address_detail.min'=>'Địa chỉ phải có độ dài từ 3 đến 200 ký tự',
-            'address_detail.max'=>'Địa chỉ phải có độ dài từ 3 đến 200 ký tự',
-        ]);
+
+        $this->validate(
+            request(),
+            [
+                'fullname' => 'required|min:3|max:100',
+                'avatar' => 'nullable|image|mimes:jpeg,png,jpg,svg|max:2048',
+                'phone' => 'required|numeric|digits_between:10,12|unique:users,phone,' . auth()->user()->id,
+                'address_detail' => 'required|min:3|max:200',
+            ],
+            [
+                'fullname.required' => 'Bạn chưa nhập họ và tên',
+                'phone.unique' => 'Số điện thoại đã được sử dụng',
+                'fullname.min' => 'Họ và tên phải có độ dài từ 3 đến 100 ký tự',
+                'fullname.max' => 'Họ và tên phải có độ dài từ 3 đến 100 ký tự',
+                'avatar.mimes' => 'Hình đại diện phải là tệp thuộc loại: image / jpeg, image / png.',
+                'avatar.image' => 'Hình đại diện phải là tệp thuộc loại: image / jpeg, image / png.',
+                'avatar.max' => 'avatar dụng lượng tối đa 2048mb',
+                'phone.required' => 'Bạn chưa nhập số điện thoại',
+                'phone.digits_between' => 'Độ dại số điện thoại không hợp lệ',
+                'phone.numeric' => 'Số điện thoại không hợp lệ',
+                'address_detail.required' => 'Bạn chưa nhập địa chỉ',
+                'address_detail.unique' => 'Địa chỉ không được trùng',
+                'address_detail.min' => 'Địa chỉ phải có độ dài từ 3 đến 200 ký tự',
+                'address_detail.max' => 'Địa chỉ phải có độ dài từ 3 đến 200 ký tự',
+            ]
+        );
 
 
         if ($request->file('avatar') != null) {
@@ -57,7 +249,8 @@ class UserController extends Controller
         $user = User::find(auth()->user()->id)->update($data);
         return redirect()->back()->with('message', 'Cập nhật thông tin thành công');
     }
-    public function changePassword(){
+    public function changePassword()
+    {
         $customer = User::find(auth()->user()->id);
         $rules = [
             'current_password' => 'required|min:6',
@@ -72,9 +265,9 @@ class UserController extends Controller
             'confirm_password.required' => 'Mời nhập mật khẩu nhập lại !',
             'confirm_password.min' => 'Mật khẩu nhập lại  ít nhất 6 ký tự!'
         ];
-        $this->validate(request(),$rules, $messages);
+        $this->validate(request(), $rules, $messages);
         $data = request()->all();
-        if(!Hash::check( $data['current_password'], $customer->password)){
+        if (!Hash::check($data['current_password'], $customer->password)) {
             return redirect()->route('cp-admin.profile')->with('error', 'Mật khẩu hiện tại không chính xác, vui lòng thử lại');
         } else {
             $customer->update([
@@ -87,134 +280,5 @@ class UserController extends Controller
             //     'status' => 200
             // ]);
         }
-
     }
-
-
-
-    public function postLoginAdmin(LoginRequest $request)
-    {
-       // dd($request->all(),Auth::check());
-        // if(isset($request->remember)&& (int)$request->remember==1){
-        //     if(Auth::login(['email'=>$request->email,'password'=>$request->password], $request->remember)){
-        //         return redirect()->route('home');
-        //     }
-        // }
-        if(Auth::attempt(['email'=>$request->email,'password'=>$request->password])){
-            return redirect()->route('home');
-        } 
-        return redirect()->back()->with('errorLogin','Đăng nhập không thành công');
-        
-    }
-    public function getDanhSach()
-    {
-        $user = User::where("role", Constants::CUSTOMER)->paginate(10);
-        return view('admin.layout.user.list',['user'=>$user]);
-    }
-
-    public function getSua($id)
-    {
-        $user = User::find($id);
-        return view('admin.layout.user.edit',['user'=>$user]);
-    }
-
-    public function postSua(Request $request,$id)
-    {
-        $this->validate($request,[
-            'txtUser'=>'required|min:3'
-        ],
-        [
-            'txtUser.required'=>'Bạn chưa nhập tên người dùng',
-            'txtUser.min' => 'Tên người dùng phải có ít nhất 3 kí tự',
-        ]);
-
-        $user = User::find($id);
-        $user->avatar = $request->avatar;
-        $user->username = $request->txtUser;
-        $user->fullname = $request->txtFullname;
-        $user->email = $request->txtEmail;
-        $user->password = bcrypt($request->password);
-        $user->phone = $request->txtPhone;
-        $user->address = $request->txtAddress;
-        $user->role = $request->role;
-        $user->status = $request->status;
-        $user->save();
-        return redirect('admin/user/edit/'.$id)->with('thongbao','Sửa thành công!!!');
-    }
-
-    public function getThem()
-    {
-        return view('admin.layout.user.add');
-    }
-
-    public function postThem(Request $request)
-    {
-        $this->validate($request,[
-            'txtUser'=>'required|min:3',
-            'txtFullname'=>'required',
-            'txtEmail'=>'required|email|unique:users,email',
-            'txtPass'=>'required|min:3|max:10',
-            'txtRePass'=>'required|same:txtPass',
-            'avatar' => 'required',
-            'txtPhone' => 'required|min:10',
-            'txtAddress' => 'required'
-        ],
-        [
-            'txtUser.required'=>'Bạn chưa nhập tên người dùng',
-            'txtFullname.required'=>'Bạn chưa nhập họ tên người dùng',
-            'txtUser.min' => 'Tên người dùng phải có ít nhất 3 kí tự',
-            'txtEmail.required'=>'Bạn chưa nhập email',
-            'txtEmail.email'=>'Bạn chưa nhập đúng định dạng mail!!!',
-            'txtEmail.unique'=>'Email đã tồn tại!!!',
-            'txtPass.required'=>'Bạn chưa nhập mật khẩu!!!',
-            'txtPass.min'=>'Mật khẩu phải có ít nhất 3 kí tự',
-            'txtPass.max'=>'Mật khẩu chỉ được phép tối đa 10 kí tự!!!',
-            'txtRePass.required'=>'Bạn chưa nhập lại mật khẩu!!!',
-            'txtRePass.same'=>'Mật khẩu nhập lại chưa đúng!!!',
-            'avatar' => 'Bạn chưa cập nhật ảnh đại diện!!!',
-            'txtPhone.required' => 'Bạn chưa nhập số điện thoại',
-            'txtPhone.min' => 'Bạn chưa nhập đúng số điện thoại',
-            'txtAddress' => 'Bạn chưa nhập địa chỉ',
-        ]);
-
-        $user = new User;
-        $user->avatar = $request->avatar;
-        $user->username = $request->txtUser;
-        $user->fullname = $request->txtFullname;
-        $user->email = $request->txtEmail;
-        $user->password = bcrypt($request->password);
-        $user->phone = $request->txtPhone;
-        $user->address = $request->txtAddress;
-        $user->role = $request->role;
-        $user->status = $request->status;
-        $user->save();
-        return redirect('admin/user/add')->with('thongbao','Thêm thành công!!!');
-    }
-
-    public function postSearch(Request $request)
-    {
-        $key = $request->key;
-        $user = User::where('username', 'LIKE', '%' . $key . '%')
-        ->orWhere('email','LIKE','%' . $key . '%')
-        ->orWhere('role','LIKE','%' . $key . '%')
-        ->paginate();
-        return view('admin/user/search',['user'=>$user,'key'=>$key]);
-    }
-
-    public function getXoa($id)
-    {
-        $user = User::find($id);
-        $user->delete();
-        
-        return redirect('admin/user/list')->with('thongbao','Xóa thành công!!!');
-    }
-    
-    // Login
-    public function getLoginAdmin()
-    {
-        return view('admin.pages.categories.index');
-    }
-
-
 }
-

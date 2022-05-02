@@ -34,7 +34,6 @@
                     <tr>
                         <th>ID</th>
                         <th>Tên sản phẩm</th>
-                        <th>Người tạo</th>
                         <th>Sô lượng sản phẩm</th>
                         <th>Ngày tạo</th>
                         <th>Hành động</th>
@@ -44,7 +43,6 @@
                     <tr>
                         <th>ID</th>
                         <th>Tên sản phẩm</th>
-                        <th>Người tạo</th>
                         <th>Sô lượng sản phẩm</th>
                         <th>Ngày tạo</th>
                         <th>Hành động</th>
@@ -55,7 +53,6 @@
                     <tr id="cate{{ $category->id }}">
                         <td>{{ $category->id }}</td>
                         <td>{{ $category->nameCate }}</td>
-                        <td>{{ $category->User->fullname }}</td>
                         <td>{{ $category->products->count() }}</td>
                         <td>{{ $category->updated_at }}</td>
                         <td>

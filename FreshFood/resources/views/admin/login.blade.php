@@ -59,6 +59,7 @@
                                 <!-- <p class="mb-4">Lorem ipsum dolor sit amet elit. Sapiente sit aut eos consectetur adipisicing.</p> -->
                             </div>
                             <form action="{{ route('admin.submitLogin') }}" method="post">
+                                
                                 @if (count($errors) >0)
                                     @foreach($errors->all() as $error)
                                     <div class="alert">
@@ -79,7 +80,8 @@
 
                                 <div class="d-flex mb-5 align-items-center">
                                     <label class="control control--checkbox mb-0"><span class="caption">Luôn đăng nhập</span>
-                                        <input type="checkbox" name="remember" checked="checked" value="1" />
+                                    <input type="checkbox" id="remember" name="remember"  />
+                                        <!-- <input type="checkbox" name="remember" checked="checked" value="1" /> -->
                                         <div class="control__indicator"></div>
                                     </label>
                                     <span class="ml-auto"><a href="#" class="forgot-pass">Quên mật khẩu</a></span>

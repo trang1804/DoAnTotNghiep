@@ -48,6 +48,10 @@ class Product extends Model
     }
     public function scopeFilter($query, array $filters)
     { 
+        $query->when($filters['categories_slug'] ?? false, function ($query, $categories_slug) {
+        //    dd($category_id->id,'id');
+            $query->where('category_id', $categories_slug->id);
+        });
         $query->when($filters['category_id'] ?? false, function ($query, $category_id) {
             $query->where('category_id', $category_id);
         });

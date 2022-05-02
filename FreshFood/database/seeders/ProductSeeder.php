@@ -26,12 +26,12 @@ class ProductSeeder extends Seeder
     public function run()
     {
         $faker = Faker::create();
-        foreach(range(1,999) as $index){
+        foreach(range(1,300) as $index){
             $name = $faker->name();
             $slug =  $this->createSlug($name);
             DB::table('products')->insert([
                 'namePro' => $name,
-                'image' => 'https://webmaudep.com/demo/thucpham/tp01/images/product-5.jpg',
+                'image' => 'images/products/product-'.rand(1,12).'.jpg',
                 'quantity' => rand(1, 1000),
                 'price' => rand(3000, 10000000),
                 'discounts'=>rand(0, 100),

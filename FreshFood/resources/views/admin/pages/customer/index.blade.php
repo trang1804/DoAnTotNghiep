@@ -106,7 +106,7 @@
 @endif
 <script>
     function deleteCate(id) {
-        const url = '/cp-admin/products/delete/' + id;
+        const url = '/cp-admin/customers/delete/' + id;
         // console.log(url);
         swal({
                 title: "Bạn có chắc không?",

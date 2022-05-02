@@ -18,7 +18,7 @@
                 @csrf
                 <div class="form-group row">
                     <div class="col-sm-6 mb-3 mb-sm-0">
-                        <label for="nameCategories">Email address <span class="text-danger">(*)</span></label>
+                        <label for="nameCategories">Tên danh mục <span class="text-danger">(*)</span></label>
                         <input type="text" class="form-control form-control-user" id="nameCate" onchange="ChangeToSlug('nameCate','slugs')" value="{{ old('nameCate') }}" name="nameCate" id="nameCategories" placeholder="Tên danh mục ...">
                         @error('nameCate')
                         <span class="text-danger">

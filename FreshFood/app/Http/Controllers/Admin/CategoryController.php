@@ -11,7 +11,6 @@ class CategoryController extends Controller
     {
         $categories = Category::filter(request(['search']))->orderBy('id','DESC')->paginate(15);
         $categories->load('products'); // gọi products bên model
-        $categories->load('User');
         return view('admin.pages.categories.index',compact('categories'));
     }
 

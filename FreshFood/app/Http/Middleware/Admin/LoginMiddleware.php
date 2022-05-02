@@ -5,7 +5,7 @@ namespace App\Http\Middleware\Admin;
 use Closure;
 use Illuminate\Http\Request;
 use App\Common\Constants;
-
+use App\Models\User;
 class LoginMiddleware
 {
     /**
@@ -17,11 +17,12 @@ class LoginMiddleware
      */
     public function handle(Request $request, Closure $next)
     {
+
         if(auth()->user()){
-            if(auth()->user()->role >= Constants::ADMIN){
+            if(User::where('is_admin',true)->where('status',1)->where('id',auth()->user()->id)->first()){
                return $next($request);  
             }
         }
-         return redirect()->route('cp-admin.login'); 
+         return redirect()->route('login'); 
     }
 }

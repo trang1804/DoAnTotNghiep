@@ -14,56 +14,59 @@
     <!-- Custom fonts for this template-->
     <link rel="stylesheet" type="text/css" href="{{asset('admin/vendor/fontawesome-free/css/all.min.css')}}">
     <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
 
     <!-- Custom styles for this template-->
     <link rel="stylesheet" href="{{asset('admin/css/sb-admin-2.min.css')}}">
     <script src="{{asset('client/js/main.js')}}"></script>
+    <!-- summernote -->
+    <link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.css" rel="stylesheet">
 </head>
 @yield('style')
 
 <body id="page-top">
+    <div id="js_app_content">
+        <!-- Page Wrapper -->
+        <div id="wrapper">
 
-    <!-- Page Wrapper -->
-    <div id="wrapper">
+            <!-- Sidebar -->
 
-        <!-- Sidebar -->
+            <!-- End of Sidebar -->
+            @include('admin.components.sidebar')
+            <!-- Content Wrapper -->
+            <div id="content-wrapper" class="d-flex flex-column">
 
-        <!-- End of Sidebar -->
-        @include('admin.components.sidebar')
-        <!-- Content Wrapper -->
-        <div id="content-wrapper" class="d-flex flex-column">
+                <!-- Main Content -->
+                <div id="content">
 
-            <!-- Main Content -->
-            <div id="content">
+                    <!-- Header -->
+                    @include('admin.components.header')
+                    <!-- End of Header -->
 
-                <!-- Header -->
-                @include('admin.components.header')
-                <!-- End of Header -->
+                    <!-- Begin Page Content -->
+                    <div class="container-fluid">
+                        @yield('content')
+                    </div>
+                    <!-- /.container-fluid -->
 
-                <!-- Begin Page Content -->
-                <div class="container-fluid">
-                    @yield('content')
                 </div>
-                <!-- /.container-fluid -->
+                <!-- End of Main Content -->
+
+                <!-- Footer -->
+                @include('admin.components.footer')
+                <!-- End of Footer -->
 
             </div>
-            <!-- End of Main Content -->
-
-            <!-- Footer -->
-            @include('admin.components.footer')
-            <!-- End of Footer -->
+            <!-- End of Content Wrapper -->
 
         </div>
-        <!-- End of Content Wrapper -->
+        <!-- End of Page Wrapper -->
 
+        <!-- Scroll to Top Button-->
+        <a class="scroll-to-top rounded" href="#page-top">
+            <i class="fas fa-angle-up"></i>
+        </a>
     </div>
-    <!-- End of Page Wrapper -->
-
-    <!-- Scroll to Top Button-->
-    <a class="scroll-to-top rounded" href="#page-top">
-        <i class="fas fa-angle-up"></i>
-    </a>
-
     <!-- Logout Modal-->
     <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
@@ -99,6 +102,10 @@
     <script src="{{asset('admin/js/demo/chart-area-demo.js')}}"></script>
     <script src="{{asset('admin/js/demo/chart-pie-demo.js')}}"></script>
     <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+    <!-- Summernote -->
+    <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.js"></script>
+    <script>
+    </script>
     @yield('javascript')
 
 </body>

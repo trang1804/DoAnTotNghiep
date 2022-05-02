@@ -66,7 +66,7 @@
             </div>
         </div>
     </div>
-    <div class="card shadow mb-4 col-5">
+    <div class="card shadow mb-4 col-4" style="    margin-top: -13rem !important;">
         <div class="card-body">
             <div class="table-responsive">
                 <form class="user" action="{{ route('cp-admin.changePassword') }}" method="POST">

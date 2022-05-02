@@ -86,10 +86,11 @@ class ProductController extends Controller
             ]
         );
         //dd($request->all());
-        if (file_exists('storage/' . $Product->image)) {
-            unlink('storage/' . $Product->image);
-        }
+
         if ($request->file('image') != null) {
+            if (file_exists('storage/' . $Product->image)) {
+                unlink('storage/' . $Product->image);
+            }
             $pathAvatar = $request->file('image')->store('public/images/products');
             $pathAvatar = str_replace("public/", "", $pathAvatar);
         } else {

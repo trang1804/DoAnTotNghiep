@@ -2,7 +2,11 @@
 
 namespace App\Providers;
 
+use Illuminate\Support\Facades\Schema;
+use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
+use Illuminate\Pagination\Paginator;
+use App\Models\config;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -23,6 +27,12 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        //
+        if (Schema::hasTable('configs')) { // kiểm tra bảng configs có tồn tại trong db
+            $config= config::first();
+            View::share('config', $config);
+        }
+
+        Schema::defaultStringLength(191);
+        Paginator::useBootstrap();
     }
 }

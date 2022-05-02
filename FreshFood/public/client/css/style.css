@@ -936,6 +936,10 @@ ol {
 
 .featured__item__text h6 a {
 	color: #252525;
+	display: -webkit-box;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
 }
 
 .featured__item__text h5 {
@@ -1138,7 +1142,7 @@ ol {
 	font-size: 16px;
 	color: #dd2222;
 	font-weight: 700;
-	max-width: 20%;
+	max-width: 35%;
 	border: none;
 	display: inline-block;
 }
@@ -1627,13 +1631,13 @@ ol {
 .product__pagination a,
 .blog__pagination a {
 	display: inline-block;
-	width: 30px;
-	height: 30px;
+	width: 40px;
+	height: 100%;
 	border: 1px solid #b2b2b2;
 	font-size: 14px;
 	color: #b2b2b2;
 	font-weight: 700;
-	line-height: 28px;
+	line-height: 100%;
 	text-align: center;
 	margin-right: 16px;
 	-webkit-transition: all, 0.3s;
@@ -2309,10 +2313,18 @@ ol {
 	font-size: 20px;
 	color: #1c1c1c;
 	font-weight: 700;
+	display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
 }
 
 .blog__item__text p {
 	margin-bottom: 25px;
+	display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
 }
 
 .blog__item__text .blog__btn {
@@ -3465,4 +3477,10 @@ ol {
 	.blog__details__hero__text h2 {
 		font-size: 24px;
 	}
+}
+.categories1  .active > a {
+	color: #fff;
+}
+.categories1  .active {
+	background: #7fad39;
 }

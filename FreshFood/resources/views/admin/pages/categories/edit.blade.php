@@ -18,7 +18,7 @@
                 @csrf
                 <div class="form-group row">
                     <div class="col-sm-6 mb-3 mb-sm-0">
-                        <label for="nameCategories">Email address</label>
+                        <label for="nameCategories">Tên danh mục</label>
                         <input type="text" class="form-control form-control-user" id="nameCate" onchange="ChangeToSlug('nameCate','slugs')" value="{{ $category->nameCate }}" name="nameCate" id="nameCategories" placeholder="Tên danh mục ...">
                         @error('nameCate')
                         <span class="text-danger">
@@ -36,7 +36,7 @@
                         @enderror
                     </div>
                     <div class="form-group col-sm-12">
-                        <label for="image">Hình ảnh đại diện sản phẩm</label>
+                        <label for="image">Banner</label>
                         <input onchange="previewFile(this)" id="product_image" type="file" id="image" name="banner" class="form-control" require>
                         <div class="d-flex justify-content-start">
                             <div class="mt-3" style="width: 45%; border: 1px solid gray; background-color: pink !important;text-align: center;">

@@ -24,7 +24,7 @@ class CustomerController extends Controller
     public function edit($id)
     {
         $GroupUsers = GroupUser::all();
-        $users = User::find($id);
+        $users = User::where('is_admin',false)->where('id',$id)->first();
         if($users){
             return view('admin.pages.customer.edit', compact('GroupUsers','users'));
         }
@@ -32,7 +32,7 @@ class CustomerController extends Controller
     }
     public function update(Request $request ,$id)
     {   
-        $customer = User::find($id);
+        $customer = User::where('is_admin',false)->where('id',$id)->first();
         $this->validate(request(),[
             'address'=>'required|min:3|max:200',
             'status' => 'required|integer|min:0|max:1',
@@ -61,7 +61,7 @@ class CustomerController extends Controller
     public function delete($id)
     {
         // $GroupUsers = GroupUser::all();
-        // $users = User::find($id);
+        // $users = User::where('is_admin',false)->where('id',$id)->first();
         // if($users){
         //     return view('admin.pages.customer.edit', compact('GroupUsers','users'));
         // }

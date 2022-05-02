@@ -27,7 +27,7 @@ class CreateUsersTable extends Migration
             $table->unsignedInteger('group_user')->nullable();
             // nhóm khách hàng
             $table->foreign('group_user')->references('id')->on('group_users')->onDelete('cascade');
-            $table->string('role')->nullable();
+            $table->foreignId('role_id')->constrained('roles')->onUpdate('cascade')->onDelete('cascade');
             $table->timestamp('email_verified_at')->nullable();
             $table->rememberToken();
             $table->timestamps();

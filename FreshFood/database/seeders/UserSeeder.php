@@ -31,7 +31,7 @@ class UserSeeder extends Seeder
                 'password'=>'$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', // password,
                 'status' => rand(0, 1),
                 'is_admin'=> 1,
-                'role'=>1
+                'role_id'=>2
             ]);
         }
         // khách hàng
@@ -47,6 +47,7 @@ class UserSeeder extends Seeder
                 'password'=>'$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', // password,
                 'status' => rand(0, 1),
                 'is_admin'=> 0,
+                'role_id'=>1,
                 'group_user'=>GroupUser::all()->random()->id
             ]);
         }

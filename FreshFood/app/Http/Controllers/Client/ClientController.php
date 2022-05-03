@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Models\Category;
 use App\Models\Product;
 use App\Models\Blogs;
+use App\Models\Cart;
 use App\Models\CategoryBlog;
 use Illuminate\Support\Facades\View;
 
@@ -96,5 +97,30 @@ class ClientController extends Controller
         $Blog->load('User');
  //dd($Blog);
         return view('client.pages.blog', compact('Blog','CategoryBlogs','categories_slug','RelatedCategorys'));
+    }
+    public function addCart(Request $request ,$product_id)
+    {
+        $Product = Product::where('id', $product_id)->where('status', 1)->first();
+        if (!$Product) { // kiểm tra xem sản phẩm có tồn tại 
+            return response()->json([
+                'message' => "Không tìm thấy sản phẩm",
+                'status' => "error"
+            ], $status = 401);
+        }
+      //  dd($Product->quantity , request()->quantity);
+        if ($Product->quantity < (int)request()->quantity) { // kiểm tra xem sản phẩm còn đủ số lượng hàng để mua 
+            return response()->json([
+                'message' => "Sản phẩm hiện tại không còn đủ so với số lượng mua yêu cầu",
+                'status' => "error"
+            ], $status = 401);
+        }
+        $data= array_merge(request(['quantity']), ['customer_id' => auth()->user()->id],['product_id' => $product_id]);
+        $cart=Cart::create($data);
+        $Cart = Cart::where('product_id', $product_id)->where('customer_id', auth()->user()->id)->first();
+        return response()->json([
+            'message' => "Mua hàng thành công",
+            'data'=> $data,
+            'status' => "success"
+        ]);
     }
 }

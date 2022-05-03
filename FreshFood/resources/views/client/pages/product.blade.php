@@ -31,38 +31,41 @@
                 </div>
             </div>
             <div class="col-lg-6 col-md-6">
-                <div class="product__details__text">
-                    <h3>{{$Product->namePro}}</h3>
-                    <div class="product__details__rating">
-                        <i class="fa fa-star"></i>
-                        <i class="fa fa-star"></i>
-                        <i class="fa fa-star"></i>
-                        <i class="fa fa-star"></i>
-                        <i class="fa fa-star-half-o"></i>
-                        <span>(18 đánh giá)</span>
-                    </div>
-                    <div class="product__details__price">
-                        {{ number_format(($Product->price-(($Product->price * $Product->discounts )/100)), 0, ',', '.') . " VNĐ"   }}
-                        @if($Product->discounts > 0)
-                        <span>{{ number_format($Product->price, 0, ',', '.') . " VNĐ" }}</span>
-                        @endif
-                    </div>
-                    <div class="product__details__quantity">
-                        <div class="quantity">
-                            <div class="pro-qty">
-                                <input type="text" value="1">
+         
+                    <div class="product__details__text">
+                        <h3>{{$Product->namePro}}</h3>
+                        <div class="product__details__rating">
+                            <i class="fa fa-star"></i>
+                            <i class="fa fa-star"></i>
+                            <i class="fa fa-star"></i>
+                            <i class="fa fa-star"></i>
+                            <i class="fa fa-star-half-o"></i>
+                            <span>(18 đánh giá)</span>
+                        </div>
+                        <div class="product__details__price">
+                            {{ number_format(($Product->price-(($Product->price * $Product->discounts )/100)), 0, ',', '.') . " VNĐ"   }}
+                            @if($Product->discounts > 0)
+                            <span>{{ number_format($Product->price, 0, ',', '.') . " VNĐ" }}</span>
+                            @endif
+                        </div>
+                        <div class="product__details__quantity">
+                        @csrf
+                            <div class="quantity">
+                                <div class="pro-qty">
+                                    <input type="text" id="quantity" value="1">
+                                </div>
                             </div>
                         </div>
+                        <button class="primary-btn" onclick="addToCart({{$Product->id}})" {{$Product->quantity <= 0 ? "disabled" : "" }}>{{$Product->quantity <= 0 ? "Sản phẩm đã hết hàng" : "Thêm vào giỏ hàng" }}</button>
+                        <ul>
+                            <li><b>Số lượng sản phẩm </b> <span>{{$Product->quantity}} SP</span></li>
+                            <li><b>Nhà cung cấp</b> <span>{{$Product->supplier->nameSupplier}}</span></li>
+                            <li><b>Xuất xứ </b> <span>{{$Product->origin->name}}</span></li>
+                            <li><b>Vận chuyển </b> <span><samp>Miễn phí vẫn chuyển</samp></span></li>
+                            <li><b>Hoàn tiền </b> <span><samp>100%</samp> Cho mọi đơn hàng</span></li>
+                        </ul>
                     </div>
-                    <button class="primary-btn" {{$Product->quantity <= 0 ? "disabled" : "" }}  >{{$Product->quantity <= 0 ? "Sản phẩm đã hết hàng" : "Thêm vào giỏ hàng" }}</button>
-                    <ul>
-                        <li><b>Số lượng sản phẩm </b> <span>{{$Product->quantity}} SP</span></li>
-                        <li><b>Nhà cung cấp</b> <span>{{$Product->supplier->nameSupplier}}</span></li>
-                        <li><b>Xuất xứ </b> <span>{{$Product->origin->name}}</span></li>
-                        <li><b>Vận chuyển </b> <span><samp>Miễn phí vẫn chuyển</samp></span></li>
-                        <li><b>Hoàn tiền </b> <span><samp>100%</samp> Cho mọi đơn hàng</span></li>
-                    </ul>
-                </div>
+  
             </div>
             <div class="col-lg-12">
                 <div class="product__details__tab">
@@ -78,9 +81,9 @@
                         <div class="tab-pane active" id="tabs-1" role="tabpanel">
                             <div class="product__details__tab__desc">
                                 <h6>Thông tin sản phẩm</h6>
-                                 <p>
-                                     {!! $Product->Description !!}
-                                 </p>
+                                <p>
+                                    {!! $Product->Description !!}
+                                </p>
                             </div>
                         </div>
 
@@ -131,11 +134,11 @@
                     </div>
                     <div class="product__item__text product__item__price">
                         <h6><a href="{{ route('product',['slug'=>$RelatedProduct->slug])  }}">{{$RelatedProduct->namePro}}</a></h6>
-                     <b>   {{ number_format(($RelatedProduct->price-(($RelatedProduct->price * $RelatedProduct->discounts )/100)), 0, ',', '.') . " VNĐ"   }}</b>
+                        <b> {{ number_format(($RelatedProduct->price-(($RelatedProduct->price * $RelatedProduct->discounts )/100)), 0, ',', '.') . " VNĐ"   }}</b>
                     </div>
                 </div>
             </div>
-@endforeach
+            @endforeach
         </div>
     </div>
 </section>

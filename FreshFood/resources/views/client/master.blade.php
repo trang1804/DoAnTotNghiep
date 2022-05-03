@@ -42,6 +42,8 @@
     <script src="{{asset('client/js/mixitup.min.js')}}"></script>
     <script src="{{asset('client/js/owl.carousel.min.js')}}"></script>
     <script src="{{asset('client/js/main.js')}}"></script>
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+    <script src="{{asset('client/js/function.js')}}"></script>
     @yield('javascript')
 </body>
 

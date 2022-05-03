@@ -130,3 +130,8 @@ Route::get('blogs', [ClientController::class, 'blogs'])->name('blogs');
 Route::get('blog/{slug}', [ClientController::class, 'blog'])->name('blog');
 Route::get('cp-login', [AdminSessionController::class, 'create'])->name('login');
 Route::post('cp-login', [AdminSessionController::class, 'store'])->name('submitLogin');
+
+// nhớ check user quyền đăng nhập người dùng
+Route::name('api.')->prefix('api/')->group(function () {
+    Route::post('add-to-cart/{product_id}', [ClientController::class, 'addCart'])->name('addCart');// id sản phẩm
+});

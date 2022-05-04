@@ -7,9 +7,13 @@ use Illuminate\Http\Request;
 use App\Models\Category;
 use App\Models\Product;
 use App\Models\Blogs;
+use App\Models\Order;
+use App\Models\OrderDetail;
 use App\Models\Cart;
 use App\Models\CategoryBlog;
 use Illuminate\Support\Facades\View;
+use App\Http\Requests\checkoutRequest;
+use App\Common\Constants;
 
 class ClientController extends Controller
 {
@@ -22,7 +26,7 @@ class ClientController extends Controller
     }
     public function index()
     {
-        // 
+
         $blogs = Blogs::where('status', 1)->orderBy('id', 'DESC')->get();
         // dd($this->currency_format(15656262));
         $category = $this->categories;
@@ -68,16 +72,16 @@ class ClientController extends Controller
             $categories_slug = CategoryBlog::where('slug', request('Category_Blog'))->first();
             $categories_slug = $categories_slug ? $categories_slug : "";
         }
-         // dd($categories_slug);
+        // dd($categories_slug);
         $CategoryBlogs = CategoryBlog::all();
         $CategoryBlogs->load('blogs');
         $blogs = Blogs::filter(array_merge(request(['search']), ['categories_slug' => $categories_slug]))->orderBy('id', 'DESC')->Paginate(15);
         $blogs->load('CategoryBlog'); // gọi blogs bên modelBlogSeed
         $blogs->load('User');
 
-        return view('client.pages.blogs', compact('blogs','CategoryBlogs','categories_slug'));
+        return view('client.pages.blogs', compact('blogs', 'CategoryBlogs', 'categories_slug'));
     }
-    public function blog(Request $request,$slug)
+    public function blog(Request $request, $slug)
     {
         $categories_slug = '';
         $Blog = Blogs::where('slug_blog', $slug)->where('status', 1)->first();
@@ -89,38 +93,97 @@ class ClientController extends Controller
         $CategoryBlogs->load('blogs');
 
         $RelatedCategorys = Blogs::where('slug_blog', '!=', $slug)
-        ->where('status', 1)
-        ->where('cate_blog_id', $Blog->CategoryBlog->id)
-        ->orderBy('id', 'DESC')
-        ->get();
+            ->where('status', 1)
+            ->where('cate_blog_id', $Blog->CategoryBlog->id)
+            ->orderBy('id', 'DESC')
+            ->get();
         $Blog->load('CategoryBlog'); // gọi blogs bên modelBlogSeed
         $Blog->load('User');
- //dd($Blog);
-        return view('client.pages.blog', compact('Blog','CategoryBlogs','categories_slug','RelatedCategorys'));
+        //dd($Blog);
+        return view('client.pages.blog', compact('Blog', 'CategoryBlogs', 'categories_slug', 'RelatedCategorys'));
     }
-    public function addCart(Request $request ,$product_id)
+    public function addCart(Request $request, $product_id)
     {
         $Product = Product::where('id', $product_id)->where('status', 1)->first();
+        $quantity = request(['quantity']) ? (int)request()->quantity : 1;
         if (!$Product) { // kiểm tra xem sản phẩm có tồn tại 
             return response()->json([
                 'message' => "Không tìm thấy sản phẩm",
                 'status' => "error"
             ], $status = 401);
         }
-      //  dd($Product->quantity , request()->quantity);
         if ($Product->quantity < (int)request()->quantity) { // kiểm tra xem sản phẩm còn đủ số lượng hàng để mua 
             return response()->json([
                 'message' => "Sản phẩm hiện tại không còn đủ so với số lượng mua yêu cầu",
                 'status' => "error"
             ], $status = 401);
         }
-        $data= array_merge(request(['quantity']), ['customer_id' => auth()->user()->id],['product_id' => $product_id]);
-        $cart=Cart::create($data);
         $Cart = Cart::where('product_id', $product_id)->where('customer_id', auth()->user()->id)->first();
+        if ($Cart) { // kiểm tra xem sản phẩm đã có trong giỏ hàng chưa nếu có r thì update thêm sl sản phẩm
+            $quantitys = (int)$Cart->quantity + $quantity;
+            $Cart->update(['quantity' => $quantitys]);
+        } else {
+            $data = array_merge(['customer_id' => auth()->user()->id, 'product_id' => $product_id, 'quantity' => $quantity]);
+            Cart::create($data);
+        }
         return response()->json([
             'message' => "Mua hàng thành công",
-            'data'=> $data,
             'status' => "success"
         ]);
+    }
+
+    public function carts()
+    {
+        $carts = Cart::where('customer_id', auth()->user()->id)->orderBy('id', 'DESC')->get();
+        $carts->load('user')->load('products');
+
+
+        $totalMoney = 0;
+        foreach ($carts as $cart) {
+            $totalMoney += ceil($cart->products->price - (($cart->products->price * $cart->products->discounts) / 100));
+        }
+        return view('client.pages.carts', compact('carts', 'totalMoney'));
+    }
+    public function updateCarts(Request $request)
+    {
+
+        for ($i = 0; $i < count($request->id); $i++) {
+            $carts = Cart::where('customer_id', auth()->user()->id)->where('id', $request->id[$i])->first();
+            if ($carts) {
+                $quantity = (int)$request->quantity[$i] == 0 ? 1 : (int)$request->quantity[$i];
+                $carts->update(['quantity' => $quantity]);
+            }
+        }
+        return redirect()->back();
+    }
+
+    public function checkout(checkoutRequest $request)
+    {
+
+        $order = Order::create(array_merge(request()->all(),['users_id'=>auth()->user()->id]));
+        $carts = Cart::where('customer_id', auth()->user()->id)->orderBy('id', 'DESC')->get();
+        $carts->load('user')->load('products');
+        foreach ($carts as $cart) {
+            $data['name'] = $cart->products->namePro;
+            $data['slug'] = $cart->products->slug;
+            $data['price'] = ceil($cart->products->price - (($cart->products->price * $cart->products->discounts) / 100));
+            $data['quantity'] = $cart->quantity;
+            $data['order_id'] = $order->id;
+            OrderDetail::create($data);
+            $cart->delete();
+        }
+
+        return redirect()->back()->with('message', 'Đơn hàng mua thành công');
+    }
+    public function order()
+    {
+        $Order = Order::where('users_id', auth()->user()->id)->orderBy('id', 'DESC')->get();
+        $Order->load('order_detail');
+      //  dd($Order);
+        // $totalMoney = 0;
+        // foreach ($carts as $cart) {
+        //     $totalMoney += ceil($cart->products->price - (($cart->products->price * $cart->products->discounts) / 100));
+        // }
+        return view('client.pages.order');
     }
 }

@@ -45,15 +45,17 @@
             </div>
         </div>
         <div class="row featured__filter">
-            @for( $i=0 ; $i < 5 ; $i++) @if($category[$i]->products->count()>3)
+            @for( $i=0 ; $i < 5 ; $i++)
+             @if($category[$i]->products->count()>3)
                 @for( $y= $category[$i]->products->count() - 2 ; $y > $category[$i]->products->count()-6 ; $y--)
+              @if($category[$i]->products[$y]->status != 0)
                 <div class="col-lg-3 col-md-4 col-sm-6 mix {{$category[$i]->slug}} fresh-meat">
                     <div class="featured__item">
                         <div class="featured__item__pic set-bg" data-setbg="{{asset('storage/' .$category[$i]->products[$y]->image)}}">
                             <ul class="featured__item__pic__hover">
                                 <li><a href="#"><i class="fa fa-heart"></i></a></li>
                                 <li><a href="#"><i class="fa fa-retweet"></i></a></li>
-                                <li><a href="#"><i class="fa fa-shopping-cart"></i></a></li>
+                                <li onclick="addCart({{$category[$i]->products[$y]->id}})"><a ><i class="fa fa-shopping-cart"></i></a></li>
                             </ul>
                         </div>
                         <div class="featured__item__text">
@@ -62,6 +64,7 @@
                         </div>
                     </div>
                 </div>
+                @endif
                 @endfor
                 @endif
                 @endfor

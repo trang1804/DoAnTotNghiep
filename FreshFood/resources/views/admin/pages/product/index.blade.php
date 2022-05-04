@@ -118,7 +118,7 @@
 @endif
 @if(session('error'))
 <script>
-    swal("Hành động", " {!! session('message') !!}", "error", {
+    swal("Hành động", " {!! session('error') !!}", "error", {
         button: "OK",
     })
 </script>

@@ -15,11 +15,13 @@ return new class extends Migration
     {
         Schema::create('orders', function (Blueprint $table) {
             $table->id();
-            $table->string('status');
-            $table->double('discounts')->default(0);
+            $table->string('status')->default(0);
+            $table->string('address', 200)->nullable();
+            $table->string('phone')->nullable();
+            $table->string('fullname')->nullable();
+            $table->text('note')->nullable();
+            $table->foreignId('users_id')->constrained('users')->onUpdate('cascade')->onDelete('cascade');
             $table->timestamps();
-            $table->foreignId('customer_id')->constrained('users')->onUpdate('cascade')->onDelete('cascade');
-            $table->foreignId('product_id')->constrained('products')->onUpdate('cascade')->onDelete('cascade');
         });
     }
 

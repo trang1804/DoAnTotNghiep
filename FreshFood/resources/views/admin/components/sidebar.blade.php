@@ -13,9 +13,9 @@
 
 <!-- Nav Item - Dashboard -->
 <li class="nav-item active">
-    <a class="nav-link" href="index.html">
+    <a class="nav-link" href="{{route('cp-admin.dashboad')}}">
         <i class="fas fa-fw fa-tachometer-alt"></i>
-        <span>Dashboard</span></a>
+        <span>Điều khiển</span></a>
 </li>
 
 <!-- Divider -->
@@ -56,7 +56,7 @@
     <div id="collapsePages5" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
         <div class="bg-white py-2 collapse-inner rounded">
             <h6 class="collapse-header"> Đơn hàng :</h6>
-            <a class="collapse-item" href="{{route('cp-admin.supplier.index')}}">Danh sách đơn hàng</a>
+            <a class="collapse-item" href="{{route('cp-admin.orders.index')}}">Danh sách đơn hàng</a>
         </div>
     </div>
 </li>
@@ -73,6 +73,19 @@
             <a class="collapse-item" href="{{route('cp-admin.cate_blog.index')}}">Danh sách loại bài viết</a>
             <h6 class="collapse-header"> Bài viết :</h6>
             <a class="collapse-item" href="{{route('cp-admin.blogs.index')}}">Danh sách bài viết</a>
+        </div>
+    </div>
+</li>
+<li class="nav-item">
+    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePages41"
+        aria-expanded="true" aria-controls="collapsePages">
+        <i class="fas fa-fw fa-list"></i>
+        <span>Liên hệ</span>
+    </a>
+    <div id="collapsePages41" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
+        <div class="bg-white py-2 collapse-inner rounded">
+            <h6 class="collapse-header"> Liên hệ :</h6>
+            <a class="collapse-item" href="{{route('cp-admin.contact.index')}}">Danh sách liên hệ</a>
         </div>
     </div>
 </li>

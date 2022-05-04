@@ -19,8 +19,8 @@
             <ul>
                 <li class="active"><a href="{{route('home')}}">Trang chủ</a></li>
                 <li><a href="{{ route('blogs') }}">Bài viết</a></li>
-                            <li><a href="{{ route('login') }}">Liên hệ</a></li>
-                            <li><a href="{{ route('login') }}">Đơn hàng</a></li>
+                            <li><a href="{{ route('contact') }}">Liên hệ</a></li>
+                            <li><a href="{{ route('order') }}">Đơn hàng</a></li>
                 <!-- <li><a href="./shop-grid.html">Shop</a></li>
                 <li><a href="#">Pages</a>
                     <ul class="header__menu__dropdown">
@@ -96,8 +96,8 @@
                         <ul>
                             <li class="active"><a href="{{route('home')}}">Trang chủ</a></li>
                             <li><a href="{{ route('blogs') }}">Bài viết</a></li>
-                            <li><a href="{{ route('blogs') }}">Liên hệ</a></li>
-                            <li><a href="{{ route('blogs') }}">Đơn hàng</a></li>
+                            <li><a href="{{ route('contact') }}">Liên hệ</a></li>
+                            <li><a href="{{ route('order') }}">Đơn hàng</a></li>
                             <!-- <li><a href="#">Pages</a>
                                 <ul class="header__menu__dropdown">
                                     <li><a href="./shop-details.html">Shop Details</a></li>

@@ -5,30 +5,23 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Order extends Model
+class contact extends Model
 {
     use HasFactory;
-    protected $table = 'orders';
+    protected $table = 'contacts';
     protected $fillable = [
+        'name',
+        'email',
         'status',
-        'address',
-        'phone',
-        'fullname',
-        'note',
-        'users_id',
+        'description'
     ];
-
-    public function order_detail()
-    {
-        return $this->hasMany(OrderDetail::class);
-    }
     public function scopeFilter($query, array $filters)
     { 
         $query->when($filters['search'] ?? false, function ($query, $search) {
            $query->Where('name', 'LIKE', '%' . $search . '%');
         });
-        $query->when($filters['status'] ?? false, function ($query, $status) {
-            $query->where('status', $status);
+        $query->when($filters['email'] ?? false, function ($query, $email) {
+            $query->where('email', $email);
         });
     }
 }

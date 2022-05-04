@@ -48,4 +48,9 @@ class Constants{
         self::Delivery_failed =>'Giao thất bại',
         self::Cancel_order =>'Hủy đơn hàng'
     ];
+    const STATUS_CONTATCT = [
+        self::WAIT_FOR_CONFIRMATION =>'Chờ xác nhận',
+        self::CONFIRMED =>'Đã xác nhận',
+        self::PACKING  =>'Đã hủy',
+    ];
 }

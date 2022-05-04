@@ -47,6 +47,9 @@ class SessionController extends Controller
 
             return redirect()->back()->with('error', "Tài khoản của bạn tạm thời dừng hoạt động do đăng nhập sai quá nhiều | Vui lòng viên hệ với quản trị viên để được hỗ trợ !");
         }
+        if (auth()->user()) {
+            auth()->logout();
+        }
         // sử dụng auth để đăng nhập . nếu đăng nhập sai thì chạy vào if . còn nếu đúng bỏ qua if
         if (!auth()->attempt(request(['email', 'password']), $remember)) {
 

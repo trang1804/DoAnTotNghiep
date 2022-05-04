@@ -11,34 +11,31 @@
                         <table>
                             <thead>
                                 <tr>
-                                    <th class="shoping__product">Đơn hàng</th>
-                                    <th>Ngày</th>
+                                    <th class="">Đơn hàng</th>
                                     <th>Tình trạng</th>
+                                    <th>Ngày</th>
                                     <th>Hành động</th>
                                 </tr>
                             </thead>
                             <tbody>
+                                @foreach($Orders as $Order )
                                 <tr>
-                                    <td class="shoping__cart__price">
-                                        
-                                        <h5>Vegetable’s Package</h5>
+                                    <td class="shoping__cart__item__close ">
+                                        <span>{{$Order->id}}</span>
                                     </td>
-                                    <td class="shoping__cart__price">
-                                        $55.00
+                                    <td class="shoping__cart__item__close ">
+                                   <span> {{ App\Common\Constants::STATUS_ORDER[$Order->status] }}</span>
                                     </td>
-                                    <td class="shoping__cart__quantity">
-                                        <div class="quantity">
-                                            <div class="pro-qty">
-                                                <input type="text" value="1">
-                                            </div>
-                                        </div>
+                                    <td class="shoping__cart__item__close ">
+                                   <span> {{$Order->created_at}}</span>
                                     </td>
                               
-                                    <td class="shoping__cart__item__close">
-                                        <span class="icon_close"></span>
+                                    <td class="shoping__cart__item__close d-flex justify-content-center">
+                                       
+                                        <a type="button"class="btn btn-primary" href="{{route('order_detail',['id'=>$Order->id])}}">Xem</a>
                                     </td>
                                 </tr>
-                           
+                                @endforeach
                             </tbody>
                         </table>
                     </div>

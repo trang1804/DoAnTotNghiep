@@ -10,7 +10,9 @@ use App\Models\Blogs;
 use App\Models\Order;
 use App\Models\OrderDetail;
 use App\Models\Cart;
+use App\Models\contact;
 use App\Models\CategoryBlog;
+use App\Models\order_detail;
 use Illuminate\Support\Facades\View;
 use App\Http\Requests\checkoutRequest;
 use App\Common\Constants;
@@ -177,13 +179,46 @@ class ClientController extends Controller
     }
     public function order()
     {
-        $Order = Order::where('users_id', auth()->user()->id)->orderBy('id', 'DESC')->get();
-        $Order->load('order_detail');
-      //  dd($Order);
-        // $totalMoney = 0;
-        // foreach ($carts as $cart) {
-        //     $totalMoney += ceil($cart->products->price - (($cart->products->price * $cart->products->discounts) / 100));
-        // }
-        return view('client.pages.order');
+        $Orders = Order::where('users_id', auth()->user()->id)->orderBy('id', 'DESC')->get();
+        $Orders->load('order_detail');
+        return view('client.pages.order',compact('Orders'));
+    }
+    public function order_detail(Request $request,$id)
+    {
+        $Orders = Order::where('users_id', auth()->user()->id)->where('id', $id)->first();
+        $Orders->load('order_detail');
+        if($Orders){
+        //  dd($Orders);
+          $totalMoney = 0;
+          foreach ($Orders->order_detail as $order) {
+              $totalMoney += $order->price * $order->quantity;
+          }
+        
+            return view('client.pages.order_detail',compact('Orders','totalMoney'));
+        }
+        return redirect()->back()->with('error', 'Không tìm thấy sản phẩn của đơn hàng');
+    }
+    public function contact()
+    {
+        return view('client.pages.contact');
+    }
+    public function sentContact(Request $request)
+    {
+        $this->validate(
+            request(),
+            [
+                'name' => 'required|min:3|max:100',
+                'email' => 'required|email|unique:users,email',
+            ],
+            [
+                'name.required' => 'Bạn chưa nhập họ và tên',
+                'name.min' => 'Họ và tên phải có độ dài từ 3 đến 100 ký tự',
+                'name.max' => 'Họ và tên phải có độ dài từ 3 đến 100 ký tự',
+                'email.required' => 'Bạn chưa nhập email',
+                'email.email' => 'Email không đúng định dạng',
+            ]
+        );
+        contact::create(request()->all());
+        return redirect()->back()->with('message', ' Giửi liên hệ thành công');
     }
 }

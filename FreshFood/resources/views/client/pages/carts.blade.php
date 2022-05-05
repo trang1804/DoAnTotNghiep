@@ -25,7 +25,7 @@
                                 @foreach($carts as $cart)
 
                                 <input type="hidden" name="id[]" value="{{$cart->id}}">
-                                <tr>
+                                <tr id="pro{{$cart->product_id }}">
                                     <td class="shoping__cart__item">
                                         <img style="width: 20%;" src="{{asset('storage/' .$cart->products->image)}}" alt="">
                                         <h5>{{$cart->products->namePro}}</h5>
@@ -45,7 +45,7 @@
                                     $110.00 * (int)$cart->quantity
                                 </td> -->
                                     <td class="shoping__cart__item__close">
-                                        <span class="icon_close"></span>
+                                        <span class="icon_close" onclick="removeCart({{$cart->product_id }})"></span>
                                     </td>
                                 </tr>
                                 @endforeach
@@ -114,7 +114,7 @@
                         <li>Tạm tính <span>{{number_format(ceil($totalMoney), 0, ',', '.') . " VNĐ"}}</span></li>
                         <li>Tổng tiền <span>{{number_format(ceil($totalMoney), 0, ',', '.') . " VNĐ"}}</span></li>
                     </ul>
-                    <a id="checkout" class="primary-btn">Mua hàng</a>
+                    <a id=" {{ $carts->count() <=0 ? '' : 'checkout' }}" class="primary-btn">Mua hàng</a>
                 </div>
             </div>
         </div>

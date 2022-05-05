@@ -12,12 +12,13 @@ use App\Models\OrderDetail;
 use App\Models\Cart;
 use App\Models\contact;
 use App\Models\CategoryBlog;
-use App\Models\order_detail;
+use App\Models\PasswordReset;
 use App\Models\User;
 use Illuminate\Support\Facades\View;
 use App\Http\Requests\checkoutRequest;
 use App\Common\Constants;
-use App\Http\Controllers\Admin\SessionController;
+use App\Mail\ForgetPassMail;
+use Illuminate\Support\Facades\Mail;
 
 class ClientController extends Controller
 {
@@ -134,6 +135,21 @@ class ClientController extends Controller
             'status' => "success"
         ]);
     }
+    public function removeCart(Request $request, $product_id)
+    {
+        $Cart = Cart::where('product_id', $product_id)->where('customer_id', auth()->user()->id)->first();
+        if ($Cart) { // kiểm tra xem sản phẩm đã có trong giỏ hàng chưa nếu có r thì xóa sản phẩm
+            $Cart->delete();
+            return response()->json([
+                'message' => "Xóa sản phẩm thành công",
+                'status' => "success"
+            ]);
+        }
+        return response()->json([
+            'message' => "Xóa sản phẩm thất bại",
+            'status' => "error"
+        ]);
+    }
     public function carts()
     {
         $carts = Cart::where('customer_id', auth()->user()->id)->orderBy('id', 'DESC')->get();
@@ -164,6 +180,10 @@ class ClientController extends Controller
         $order = Order::create(array_merge(request()->all(), ['users_id' => auth()->user()->id]));
         $carts = Cart::where('customer_id', auth()->user()->id)->orderBy('id', 'DESC')->get();
         $carts->load('user')->load('products');
+        // dd($carts->count());
+        if ($carts->count() <= 0) {
+            return redirect()->back()->with('error', 'Không có sản phẩm nào trong giỏ hàng');
+        }
         foreach ($carts as $cart) {
             $data['name'] = $cart->products->namePro;
             $data['slug'] = $cart->products->slug;
@@ -231,22 +251,103 @@ class ClientController extends Controller
             'password.required' => "Vui lòng nhập mật khẩu .",
             'email.email' => 'Email không hợp lệ, Xin vui lòng thử lại!!',
             'password.min' => "Mật khẩu phải có ít nhất 6 ký tự.",
+            'password.confirmed' => "Mật khẩu xác nhận không đúng.",
 
         ]);
         $data =  [
-            'password' => bcrypt(request('email')),
+            'password' => bcrypt(request('password')),
             'email' => request('email'),
-            'status'=> true,
-            'is_admin' => false,
+            'status' => true,
             'fullname' => "new customer",
             'role_id' => 1,
+            'avatar' => '0',
+            'is_admin' => 0,
+            'group_user' => 1
         ];
 
-       $createUser = User::create($data);
-       if($createUser){
-        SessionController::store();
-       }
-       
-       return redirect()->back()->with('error', ' Tạo tài khoản thất bại');
+        $createUser = User::create($data);
+        if ($createUser) {
+            auth()->attempt(request(['email', 'password']));
+            return redirect()->route('home')->with('message', ' Tạo tài khoản thành công');
+        }
+
+        return redirect()->back()->with('error', ' Tạo tài khoản thất bại');
     }
+    public function register()
+    {
+        return view('admin.pages.auth.register');
+    }
+    public function logout()
+    {
+        // kiểm tra xem đã đăng nhập chưa . nếu đăng r thì logout . còn chưa thì về quay về trang login
+        if (auth()->user()) {
+            auth()->logout();
+        }
+        return redirect()->route('home')->with('message', ' Thoát tài khoản thành công');
+    }
+    public function forgetPassword()
+    {
+        return view('admin.pages.auth.ForgetPassword');
+    }
+    public function SentPassword()
+    {
+        request()->validate([
+            'email' => 'email|required|exists:users,email',
+        ], [
+            'email.required' => 'Vui lòng nhập địa chỉ e-mail !!',
+            'email.email' => 'Email không hợp lệ, Xin vui lòng thử lại!!',
+            'email.exists' => 'Email chưa được đăng ký!!'
+        ]);
+        $PasswordReset = User::where('email', request('email'))->first();
+        $data['token'] = bcrypt(request('email'));
+        $data['email'] = request('email');
+        $data['user'] = $PasswordReset;
+        if ($Password = PasswordReset::where('email', request('email'))->first()) {
+            $Password->update($data);
+        } else {
+            $PasswordReset = PasswordReset::create($data);
+        }
+
+        Mail::to(request('email'))->send(new ForgetPassMail($data));
+        return view('admin.pages.auth.ForgetPassword')->with('message', ' Yêu cầu đã được giửi đi vui lòng kiêm tra email');
+    }
+    public function ChangePassword()
+    {
+        return view('admin.pages.auth.ChangePass');
+    }
+
+    public function SentChangePassword($token)
+    {
+        request()->validate([
+            'email' => 'email|required|exists:users,email',
+            'password' => 'confirmed|min:6|required',
+        ], [
+            'email.required' => 'Vui lòng nhập địa chỉ e-mail !!',
+            'email.exists' => 'Email chưa được đăng ký!!',
+            'password.required' => "Vui lòng nhập mật khẩu .",
+            'email.email' => 'Email không hợp lệ, Xin vui lòng thử lại!!',
+            'password.min' => "Mật khẩu phải có ít nhất 6 ký tự.",
+            'password.confirmed' => "Mật khẩu xác nhận không đúng.",
+
+        ]);
+        $PasswordReset = PasswordReset::where('email', request('email'))->where('token', $token)->first();
+        // dd( $PasswordReset,$token);
+        if ($PasswordReset) {
+            $customer = User::where('email', request('email'))->first();
+            $customer->update([
+                'password' => bcrypt(request('password')),
+                'status' => 1
+            ]);
+            auth()->attempt(request(['email', 'password']));
+            $PasswordReset->delete();
+            return redirect()->route('home')->with('message', ' Đổi mật khẩu  thành công');
+        }
+        return redirect()->back()->with('error', 'Thông tin đổi mật khẩu không đúng');
+    }
+
+    public function profile(Request $request)
+    {
+        return view('client.pages.profile');
+    }
+
 }

@@ -59,3 +59,34 @@ function addCart(id) { // thêm sản phẩm măc định sô lượng là 1
 
 
 }
+
+function removeCart(id) { // xóa sản phẩm theo id trong giỏ hàng
+
+    let url = "/api/remove-cart/" + id;
+    $.ajax({
+        type: "get",
+        url: url,
+        success: function (res) {
+            console.log('res',res)
+            swal(res.message, {
+                icon: res.status,
+                timer: 2000
+            }).then(function() {
+                $("#pro" + id).remove();
+            });     
+        },
+        error: function (response) {
+            console.log('response', response.responseJSON)
+            if(response.responseJSON.message){
+                swal(response.responseJSON.message, {
+                    icon: response.responseJSON.status,
+                });
+            }
+           else swal(response.message, {
+                icon: response.status,
+            });
+        },
+    });
+
+
+}

@@ -13,9 +13,11 @@ use App\Models\Cart;
 use App\Models\contact;
 use App\Models\CategoryBlog;
 use App\Models\order_detail;
+use App\Models\User;
 use Illuminate\Support\Facades\View;
 use App\Http\Requests\checkoutRequest;
 use App\Common\Constants;
+use App\Http\Controllers\Admin\SessionController;
 
 class ClientController extends Controller
 {
@@ -50,7 +52,6 @@ class ClientController extends Controller
         $category = $this->categories->load('products');
         return view('client.pages.products', compact('category', 'products', 'categories_slug'));
     }
-
     public function productDetail(Request $request, $slug)
     {
         $categories_slug = '';
@@ -133,7 +134,6 @@ class ClientController extends Controller
             'status' => "success"
         ]);
     }
-
     public function carts()
     {
         $carts = Cart::where('customer_id', auth()->user()->id)->orderBy('id', 'DESC')->get();
@@ -158,11 +158,10 @@ class ClientController extends Controller
         }
         return redirect()->back();
     }
-
     public function checkout(checkoutRequest $request)
     {
 
-        $order = Order::create(array_merge(request()->all(),['users_id'=>auth()->user()->id]));
+        $order = Order::create(array_merge(request()->all(), ['users_id' => auth()->user()->id]));
         $carts = Cart::where('customer_id', auth()->user()->id)->orderBy('id', 'DESC')->get();
         $carts->load('user')->load('products');
         foreach ($carts as $cart) {
@@ -181,20 +180,20 @@ class ClientController extends Controller
     {
         $Orders = Order::where('users_id', auth()->user()->id)->orderBy('id', 'DESC')->get();
         $Orders->load('order_detail');
-        return view('client.pages.order',compact('Orders'));
+        return view('client.pages.order', compact('Orders'));
     }
-    public function order_detail(Request $request,$id)
+    public function order_detail(Request $request, $id)
     {
         $Orders = Order::where('users_id', auth()->user()->id)->where('id', $id)->first();
         $Orders->load('order_detail');
-        if($Orders){
-        //  dd($Orders);
-          $totalMoney = 0;
-          foreach ($Orders->order_detail as $order) {
-              $totalMoney += $order->price * $order->quantity;
-          }
-        
-            return view('client.pages.order_detail',compact('Orders','totalMoney'));
+        if ($Orders) {
+            //  dd($Orders);
+            $totalMoney = 0;
+            foreach ($Orders->order_detail as $order) {
+                $totalMoney += $order->price * $order->quantity;
+            }
+
+            return view('client.pages.order_detail', compact('Orders', 'totalMoney'));
         }
         return redirect()->back()->with('error', 'Không tìm thấy sản phẩn của đơn hàng');
     }
@@ -220,5 +219,34 @@ class ClientController extends Controller
         );
         contact::create(request()->all());
         return redirect()->back()->with('message', ' Giửi liên hệ thành công');
+    }
+    public function registerCreate(Request $request)
+    {
+        request()->validate([
+            'email' => 'email|required|unique:users,email',
+            'password' => 'confirmed|min:6|required',
+        ], [
+            'email.required' => 'Vui lòng nhập địa chỉ e-mail !!',
+            'email.unique' => 'Email đã tồn tại trong hệ thống!! Nếu bạn đã có tài khoản, Xin vui lòng đăng nhập',
+            'password.required' => "Vui lòng nhập mật khẩu .",
+            'email.email' => 'Email không hợp lệ, Xin vui lòng thử lại!!',
+            'password.min' => "Mật khẩu phải có ít nhất 6 ký tự.",
+
+        ]);
+        $data =  [
+            'password' => bcrypt(request('email')),
+            'email' => request('email'),
+            'status'=> true,
+            'is_admin' => false,
+            'fullname' => "new customer",
+            'role_id' => 1,
+        ];
+
+       $createUser = User::create($data);
+       if($createUser){
+        SessionController::store();
+       }
+       
+       return redirect()->back()->with('error', ' Tạo tài khoản thất bại');
     }
 }

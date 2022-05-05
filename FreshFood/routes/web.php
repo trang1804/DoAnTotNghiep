@@ -7,11 +7,13 @@ use App\Http\Controllers\Admin\PostController;
 use App\Http\Controllers\Admin\RoleController;
 use App\Http\Controllers\Admin\SupplierController;
 use App\Http\Controllers\Admin\ProductController;
-use App\Http\Controllers\Admin\SaleController;
+use App\Http\Controllers\Admin\DashboadContrller;
 use App\Http\Controllers\Admin\GroupUserController;
 use App\Http\Controllers\Admin\CustomerController;
 use App\Http\Controllers\Admin\ConfigController;
 use App\Http\Controllers\Admin\CategoriBlogController;
+use App\Http\Controllers\Admin\ContactContrller;
+use App\Http\Controllers\Admin\OrderContrller;
 use App\Http\Controllers\Admin\BlogsController;
 use App\Http\Controllers\Admin\SessionController as AdminSessionController;
 
@@ -27,10 +29,12 @@ use App\Http\Controllers\Client\ClientController;
 |
 */
 
+Route::get('cp-login', [AdminSessionController::class, 'create'])->name('login');
+Route::post('cp-login', [AdminSessionController::class, 'store'])->name('submitLogin');
 
 
-Route::name('cp-admin.')->prefix('cp-admin/')->group(function () {
-
+Route::name('cp-admin.')->middleware('AdminLogin')->prefix('cp-admin/')->group(function () {
+    Route::get('/}', [DashboadContrller::class, 'index'])->name('dashboad');
     // category    
     Route::middleware('AdminLogin')->group(function () {
         Route::get('logout', [AdminSessionController::class, 'logout'])->name('logout');
@@ -121,17 +125,40 @@ Route::name('cp-admin.')->prefix('cp-admin/')->group(function () {
         Route::post('update/{id}', [BlogsController::class, 'update'])->name('update');
         Route::get('delete/{id}', [BlogsController::class, 'delete'])->name('delete'); // todo xóa khi ko có hóa đơn
     });
+    Route::name('contact.')->prefix('contact/')->group(function () {
+        Route::get('', [ContactContrller::class, 'index'])->name('index');
+        Route::get('edit/{id}', [ContactContrller::class, 'edit'])->name('edit');
+        Route::post('update/{id}', [ContactContrller::class, 'update'])->name('update');
+    });
+    Route::name('orders.')->prefix('orders/')->group(function () {
+        Route::get('', [OrderContrller::class, 'index'])->name('index');
+        Route::get('edit/{id}', [OrderContrller::class, 'edit'])->name('edit');
+        Route::post('update/{id}', [OrderContrller::class, 'update'])->name('update');
+        // Route::get('delete/{id}', [BlogsController::class, 'delete'])->name('delete'); // todo xóa khi ko có hóa đơn
+    });
 });
 
-Route::get('/', [ClientController::class, 'index'])->name('home');
-Route::get('products', [ClientController::class, 'products'])->name('products');
-Route::get('product/{slug}', [ClientController::class, 'productDetail'])->name('product');
-Route::get('blogs', [ClientController::class, 'blogs'])->name('blogs');
-Route::get('blog/{slug}', [ClientController::class, 'blog'])->name('blog');
-Route::get('cp-login', [AdminSessionController::class, 'create'])->name('login');
-Route::post('cp-login', [AdminSessionController::class, 'store'])->name('submitLogin');
+    Route::get('/', [ClientController::class, 'index'])->name('home');
+    Route::get('products', [ClientController::class, 'products'])->name('products');
+    Route::get('product/{slug}', [ClientController::class, 'productDetail'])->name('product');
+    Route::get('blogs', [ClientController::class, 'blogs'])->name('blogs');
+    Route::get('lien-he', [ClientController::class, 'contact'])->name('contact');
+    Route::post('lien-he', [ClientController::class, 'sentContact'])->name('sentContact');
+    Route::get('blog/{slug}', [ClientController::class, 'blog'])->name('blog');
+
+    // check login
+    Route::get('carts', [ClientController::class, 'carts'])->middleware('clientLogin')->name('carts');
+    Route::get('order', [ClientController::class, 'order'])->middleware('clientLogin')->name('order');
+    Route::get('order/{id}', [ClientController::class, 'order_detail'])->middleware('clientLogin')->name('order_detail');
+    Route::post('update-carts', [ClientController::class, 'updateCarts'])->middleware('clientLogin')->name('updateCarts');
+    Route::post('checkout', [ClientController::class, 'checkout'])->middleware('clientLogin')->name('checkout');
+
+
 
 // nhớ check user quyền đăng nhập người dùng
-Route::name('api.')->prefix('api/')->group(function () {
-    Route::post('add-to-cart/{product_id}', [ClientController::class, 'addCart'])->name('addCart');// id sản phẩm
+Route::name('api.')->middleware('clientLogin')->prefix('api/')->group(function () {
+    // id sản phẩm|| có sô lượng sp
+    Route::post('add-to-cart/{product_id}', [ClientController::class, 'addCart'])->name('addCart');
+    // id sản phẩm|| sl sản phẩm mặc định là 1
+    Route::get('add-cart/{product_id}', [ClientController::class, 'addCart'])->name('addCart');
 });

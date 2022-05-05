@@ -44,6 +44,20 @@
     <script src="{{asset('client/js/main.js')}}"></script>
     <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
     <script src="{{asset('client/js/function.js')}}"></script>
+    @if(session('message'))
+    <script>
+        swal("Hành động", " {!! session('message') !!}", "success", {
+            button: "OK",
+        })
+    </script>
+    @endif
+    @if(session('error'))
+    <script>
+        swal("Hành động", " {!! session('error') !!}", "error", {
+            button: "OK",
+        })
+    </script>
+    @endif
     @yield('javascript')
 </body>
 

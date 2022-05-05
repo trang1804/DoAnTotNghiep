@@ -31,7 +31,8 @@ use App\Http\Controllers\Client\ClientController;
 
 Route::get('cp-login', [AdminSessionController::class, 'create'])->name('login');
 Route::post('cp-login', [AdminSessionController::class, 'store'])->name('submitLogin');
-
+Route::get('cp-register', [ClientController::class, 'register'])->name('register');
+Route::post('cp-register', [ClientController::class, 'registerCreate'])->name('registerCreate');
 
 Route::name('cp-admin.')->middleware('AdminLogin')->prefix('cp-admin/')->group(function () {
     Route::get('/}', [DashboadContrller::class, 'index'])->name('dashboad');
@@ -138,27 +139,27 @@ Route::name('cp-admin.')->middleware('AdminLogin')->prefix('cp-admin/')->group(f
     });
 });
 
-    Route::get('/', [ClientController::class, 'index'])->name('home');
-    Route::get('products', [ClientController::class, 'products'])->name('products');
-    Route::get('product/{slug}', [ClientController::class, 'productDetail'])->name('product');
-    Route::get('blogs', [ClientController::class, 'blogs'])->name('blogs');
-    Route::get('lien-he', [ClientController::class, 'contact'])->name('contact');
-    Route::post('lien-he', [ClientController::class, 'sentContact'])->name('sentContact');
-    Route::get('blog/{slug}', [ClientController::class, 'blog'])->name('blog');
+Route::get('/', [ClientController::class, 'index'])->name('home');
+Route::get('products', [ClientController::class, 'products'])->name('products');
+Route::get('product/{slug}', [ClientController::class, 'productDetail'])->name('product');
+Route::get('blogs', [ClientController::class, 'blogs'])->name('blogs');
+Route::get('lien-he', [ClientController::class, 'contact'])->name('contact');
+Route::post('lien-he', [ClientController::class, 'sentContact'])->name('sentContact');
+Route::get('blog/{slug}', [ClientController::class, 'blog'])->name('blog');
 
-    // check login
-    Route::get('carts', [ClientController::class, 'carts'])->middleware('clientLogin')->name('carts');
-    Route::get('order', [ClientController::class, 'order'])->middleware('clientLogin')->name('order');
-    Route::get('order/{id}', [ClientController::class, 'order_detail'])->middleware('clientLogin')->name('order_detail');
-    Route::post('update-carts', [ClientController::class, 'updateCarts'])->middleware('clientLogin')->name('updateCarts');
-    Route::post('checkout', [ClientController::class, 'checkout'])->middleware('clientLogin')->name('checkout');
+// check login
+Route::get('carts', [ClientController::class, 'carts'])->middleware('clientLogin')->name('carts');
+Route::get('order', [ClientController::class, 'order'])->middleware('clientLogin')->name('order');
+Route::get('order/{id}', [ClientController::class, 'order_detail'])->middleware('clientLogin')->name('order_detail');
+Route::post('update-carts', [ClientController::class, 'updateCarts'])->middleware('clientLogin')->name('updateCarts');
+Route::post('checkout', [ClientController::class, 'checkout'])->middleware('clientLogin')->name('checkout');
 
 
 
 // nhớ check user quyền đăng nhập người dùng
-Route::name('api.')->middleware('clientLogin')->prefix('api/')->group(function () {
+Route::name('api.')->middleware('ApiclientLogin')->prefix('api/')->group(function () {
     // id sản phẩm|| có sô lượng sp
     Route::post('add-to-cart/{product_id}', [ClientController::class, 'addCart'])->name('addCart');
-    // id sản phẩm|| sl sản phẩm mặc định là 1
+    // id sản phẩm|| sl sản phẩm mặc định là 1 
     Route::get('add-cart/{product_id}', [ClientController::class, 'addCart'])->name('addCart');
 });

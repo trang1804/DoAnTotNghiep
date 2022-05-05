@@ -16,8 +16,13 @@ function addToCart(id) { // thêm sản phẩm có sô lượng
             });     
         },
         error: function (response) {
-            console.log('response', response)
-            swal(response.message, {
+            console.log('response', response.responseJSON)
+            if(response.responseJSON.message){
+                swal(response.responseJSON.message, {
+                    icon: response.responseJSON.status,
+                });
+            }
+           else swal(response.message, {
                 icon: response.status,
             });
         },
@@ -33,14 +38,20 @@ function addCart(id) { // thêm sản phẩm măc định sô lượng là 1
         type: "get",
         url: url,
         success: function (res) {
+            console.log('res',res)
             swal(res.message, {
                 icon: res.status,
                 timer: 2000
             });     
         },
         error: function (response) {
-            console.log('response', response)
-            swal(response.message, {
+            console.log('response', response.responseJSON)
+            if(response.responseJSON.message){
+                swal(response.responseJSON.message, {
+                    icon: response.responseJSON.status,
+                });
+            }
+           else swal(response.message, {
                 icon: response.status,
             });
         },

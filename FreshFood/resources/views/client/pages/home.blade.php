@@ -11,7 +11,7 @@
                 @foreach($category as $cate)
                 <div class="col-lg-3">
                     <div class="categories__item set-bg" data-setbg="{{asset('storage/' .$cate->products->last()->image)}}">
-                        <h5><a href="#">{{$cate->nameCate}}</a></h5>
+                        <h5><a href="{{route('products').'?slug_cate='. $cate->slug}}">{{$cate->nameCate}}</a></h5>
                     </div>
                 </div>
                 @endforeach
@@ -59,7 +59,7 @@
                             </ul>
                         </div>
                         <div class="featured__item__text">
-                            <h6><a href="{{$category[$i]->products[$y]->slug}}">{{$category[$i]->products[$y]->namePro}}</a></h6>
+                            <h6><a href="{{ route('product',['slug'=>$category[$i]->products[$y]->slug]) }}">{{$category[$i]->products[$y]->namePro}}</a></h6>
                             <h5>{{ number_format($category[$i]->products[$y]->price, 0, ',', '.') . " VNĐ" }}</h5>
                         </div>
                     </div>

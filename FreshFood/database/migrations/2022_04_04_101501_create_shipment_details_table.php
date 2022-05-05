@@ -17,10 +17,10 @@ return new class extends Migration
             $table->id();
             $table->foreignId('user_id')->constrained('users')->onUpdate('cascade')->onDelete('cascade');
             $table->foreignId('order_id')->constrained('orders')->onUpdate('cascade')->onDelete('cascade');
-            $table->string('name');
-            $table->string('phone');
-            $table->string('address');
-            $table->string('status');
+            // $table->string('name');
+            // $table->string('phone');
+            // $table->string('address');
+            // $table->string('status');
             $table->timestamps();
         });
     }

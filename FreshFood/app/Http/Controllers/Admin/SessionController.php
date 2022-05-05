@@ -20,17 +20,16 @@ class SessionController extends Controller
     {
         return view('admin.pages.auth.login');
     }
-    public function store()
+    public  function store()
     {
-        $message = [
-            'email.required' => 'Mời nhập e-mail !',
-            'password.required' => 'Mời nhập Mật khẩu !',
-        ];
-        $this->validate(request(), [
+        request()->validate([
             'email'    => 'required|email',
             'password' => 'required',
-        ], $message);
+        ], [
+            'email.required' => 'Mời nhập e-mail !',
+            'password.required' => 'Mời nhập Mật khẩu !',
 
+        ]);
         // tạo key để nhớ lần đăng nhập sai của tài khoản : key ==> login|admin@gmail,com|http://127.0.0.1:8000
         $key = "login|" . request('email') . '|' . request()->ip();
         
@@ -66,7 +65,7 @@ class SessionController extends Controller
         // kiểm tra xem tài khoản ta vừa đăng nhập trên có phải của nhân viênhay khách hàng. nếu quá is_admin = 0 thì chuyển về trang khách hàng , nếu is_admin = 1 mặc định về trang admin
         if (auth()->user()->is_admin == Constants::DISABLE_ACCOUNT) {
             // logout tk vừa đăng nhập ra
-            return redirect()->route('home')->with('error', "Tài khoản của bạn đăng nhập thành công !");
+            return redirect()->route('home')->with('message', "Tài khoản của bạn đăng nhập thành công !");
         }
         RateLimiter::clear($key);
         return redirect()->route('cp-admin.category.index');

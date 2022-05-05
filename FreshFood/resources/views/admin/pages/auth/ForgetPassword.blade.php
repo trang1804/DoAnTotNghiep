@@ -9,7 +9,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Đăng nhập</title>
+    <title>Quên mật khẩu</title>
 
     <!-- Custom fonts for this template-->
     <link rel="stylesheet" type="text/css" href="{{asset('admin/vendor/fontawesome-free/css/all.min.css')}}">
@@ -39,12 +39,9 @@
                                 <img src="{{ asset('storage/' . $config->logo) }}" style=" height: 100%; " alt="{{$config->fullname}}">
                                 </div>
                                     <div class="text-center">
-                                        <h1 class="h4 text-gray-900 mb-4">Điền thông tin đăng nhập !</h1>
+                                        <h1 class="h4 text-gray-900 mb-4">Điền thông tin tài khoản!</h1>
                                     </div>
-                                    @if(session('retriesLeft')&& (int)session('retriesLeft') > 0)
-                                    <span class="text-danger">Bạn còn {!! session('retriesLeft') !!} lượt đăng nhập tài khoản (*)</span>
-                                    @endif
-                                    <form class="user" action="{{ route('submitLogin') }}" method="POST">
+                                    <form class="user" action="{{ route('SentPassword') }}" method="POST">
                                         @csrf
                                         <div class="form-group">
                                             <input type="email" name="email" value="{{old('email')}}" class="form-control form-control-user" id="exampleInputEmail" aria-describedby="emailHelp" placeholder="Enter Email Address...">
@@ -54,35 +51,12 @@
                                             </span>
                                             @enderror
                                         </div>
-                                        <div class="form-group">
-                                            <input type="password" name="password" class="form-control form-control-user" id="exampleInputPassword" placeholder="Password">
-                                            @error('password')
-                                            <span class="text-danger">
-                                                {{$message}}
-                                            </span>
-                                            @enderror
-                                        </div>
-                                        <div class="form-group">
-                                            <div class="custom-control custom-checkbox small">
-                                                <input type="checkbox" class="custom-control-input" name="remember" value="1" id="customCheck">
-                                                <label class="custom-control-label" for="customCheck">Luôn đăng nhập</label>
-                                            </div>
-                                        </div>
-                                        <button type="submit" class="btn btn-primary btn-user btn-block">Đăng nhập</button>
-                                        <!-- <hr>
-                                        <a href="index.html" class="btn btn-google btn-user btn-block">
-                                            <i class="fab fa-google fa-fw"></i> Login with Google
-                                        </a>
-                                        <a href="index.html" class="btn btn-facebook btn-user btn-block">
-                                            <i class="fab fa-facebook-f fa-fw"></i> Login with Facebook
-                                        </a> -->
+                                        <button type="submit" class="btn btn-primary btn-user btn-block">Đăng Ký</button>
+
                                     </form>
                                     <hr>
                                     <div class="text-center">
-                                        <a class="small" href="{{route('forgetPassword')}}">Quên mật khẩu?</a>
-                                    </div>
-                                    <div class="text-center">
-                                        <a class="small" href="{{route('register')}}">Đăng ký tài khoản!</a>
+                                        <a class="small" href="{{route('login')}}">Đăng nhập!</a>
                                     </div>
                                 </div>
                             </div>
@@ -113,7 +87,13 @@
         })
     </script>
     @endif
-
+    @if(session('message'))
+    <script>
+        swal("Hành động", " {!! session('message') !!}", "error", {
+            button: "OK",
+        })
+    </script>
+    @endif
 </body>
 
 </html>

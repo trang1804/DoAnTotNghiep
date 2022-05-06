@@ -19,6 +19,7 @@ class LoginMiddleware
     {
 
         if(auth()->user()){
+          //  dd(auth()->user());
             if(User::where('is_admin',false)->where('status',1)->where('id',auth()->user()->id)->first()){
                return $next($request);  
             }

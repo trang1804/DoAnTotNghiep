@@ -155,7 +155,7 @@ Route::get('blog/{slug}', [ClientController::class, 'blog'])->name('blog');
 // check login
 Route::get('carts', [ClientController::class, 'carts'])->middleware('clientLogin')->name('carts');
 Route::get('profile', [ClientController::class, 'profile'])->middleware('clientLogin')->name('profile');
-Route::post('profile', [ClientController::class, 'UpdateProfile'])->middleware('clientLogin')->name('profile');
+Route::post('profile', [ClientController::class, 'UpdateProfile'])->middleware('clientLogin')->name('UpdateProfile');
 Route::get('order', [ClientController::class, 'order'])->middleware('clientLogin')->name('order');
 Route::get('order/{id}', [ClientController::class, 'order_detail'])->middleware('clientLogin')->name('order_detail');
 Route::post('update-carts', [ClientController::class, 'updateCarts'])->middleware('clientLogin')->name('updateCarts');

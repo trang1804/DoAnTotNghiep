@@ -6,6 +6,7 @@ use Closure;
 use Illuminate\Http\Request;
 use App\Common\Constants;
 use App\Models\User;
+
 class ApiLoginMiddleware
 {
     /**
@@ -18,12 +19,18 @@ class ApiLoginMiddleware
     public function handle(Request $request, Closure $next)
     {
 
-        if(auth()->user()){
-            if(User::where('is_admin',false)->where('status',1)->where('id',auth()->user()->id)->first()){
-               return $next($request);  
+        if (auth()->user()) {
+            $user = User::where('is_admin', false)->where('status', 1)->where('id', auth()->user()->id)->first();
+            if ($user) {
+                return $next($request);
+            } else {
+                return response()->json([
+                    'message' => "Thông tin tài khoản đăng nhập không chính xác",
+                    'status' => "error"
+                ], $status = 402);
             }
         }
-         return response()->json([
+        return response()->json([
             'message' => "Vui lòng đăng nhập trước khi thao tác",
             'status' => "error"
         ], $status = 402);

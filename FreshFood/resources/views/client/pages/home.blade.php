@@ -49,21 +49,33 @@
              @if($category[$i]->products->count()>3)
                 @for( $y= $category[$i]->products->count() - 2 ; $y > $category[$i]->products->count()-6 ; $y--)
               @if($category[$i]->products[$y]->status != 0)
+
+
                 <div class="col-lg-3 col-md-4 col-sm-6 mix {{$category[$i]->slug}} fresh-meat">
-                    <div class="featured__item">
-                        <div class="featured__item__pic set-bg" data-setbg="{{asset('storage/' .$category[$i]->products[$y]->image)}}">
-                            <ul class="featured__item__pic__hover">
-                                <li><a href="#"><i class="fa fa-heart"></i></a></li>
-                                <li><a href="#"><i class="fa fa-retweet"></i></a></li>
-                                <li onclick="addCart({{$category[$i]->products[$y]->id}})"><a ><i class="fa fa-shopping-cart"></i></a></li>
-                            </ul>
+                            <div class="product__discount__item featured__item">
+                                <div class="product__discount__item__pic set-bg" data-setbg="{{asset('storage/' .$category[$i]->products[$y]->image)}}">
+                                    @if($category[$i]->products[$y]->discounts > 0)
+                                    <div class="product__discount__percent">-{{ $category[$i]->products[$y]->discounts  }}%</div>
+                                    @endif
+                                    <ul class="product__item__pic__hover">
+                                        <li><a href="#"><i class="fa fa-heart"></i></a></li>
+                                        <li><a href="#"><i class="fa fa-retweet"></i></a></li>
+                                        <li onclick="addCart({{$category[$i]->products[$y]->id}})"><a ><i class="fa fa-shopping-cart"></i></a></li>
+                                    </ul>
+                                </div>
+                                <div class="product__discount__item__text">
+                                    <h5><a href="{{ route('product',['slug'=>$category[$i]->products[$y]->slug]) }}">{{$category[$i]->products[$y]->namePro}}</a></h5>
+                                    <div class="product__item__price">
+                                        @if($category[$i]->products[$y]->discounts > 0)
+                                        {{ number_format(($category[$i]->products[$y]->price-(($category[$i]->products[$y]->price * $category[$i]->products[$y]->discounts )/100)), 0, ',', '.') . " VNĐ"   }}
+                                        <span>{{ number_format($category[$i]->products[$y]->price, 0, ',', '.') . " VNĐ" }} a</span>
+                                        @else
+                                        <span>{{ number_format($category[$i]->products[$y]->price, 0, ',', '.') . " VNĐ" }} b</span>
+                                        @endif
+                                    </div>
+                                </div>
+                            </div>
                         </div>
-                        <div class="featured__item__text">
-                            <h6><a href="{{ route('product',['slug'=>$category[$i]->products[$y]->slug]) }}">{{$category[$i]->products[$y]->namePro}}</a></h6>
-                            <h5>{{ number_format($category[$i]->products[$y]->price, 0, ',', '.') . " VNĐ" }}</h5>
-                        </div>
-                    </div>
-                </div>
                 @endif
                 @endfor
                 @endif
@@ -116,7 +128,7 @@
                             <li><i class="fa fa-calendar-o"></i> {{ date_format($blog->updated_at,"Y/m/d") }}</li>
                             <li><i class="fa fa-comment-o"></i> </li>
                         </ul>
-                        <h5><a href="{{ $blog->slug_blog  }}">{{ $blog->name_blog }}</a></h5>
+                        <h5><a href="{{ route('blog',['slug' => $blog->slug_blog ]) }}">{{ $blog->name_blog }}</a></h5>
                         <p>{{ $blog->short_description }} </p>
                     </div>
                 </div>

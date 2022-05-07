@@ -17,10 +17,10 @@
         </div>
         <nav class="humberger__menu__nav mobile-menu">
             <ul>
-                <li class="active"><a href="{{route('home')}}">Trang chủ</a></li>
-                <li><a href="{{ route('blogs') }}">Bài viết</a></li>
-                <li><a href="{{ route('contact') }}">Liên hệ</a></li>
-                <li><a href="{{ route('order') }}">Đơn hàng</a></li>
+                <li class="{{ request()->route()->getName() == "home" ? "active" : "" }}"><a href="{{route('home')}}">Trang chủ</a></li>
+                <li class="{{ request()->route()->getName() == "blogs" ? "active" : "" }}"><a href="{{ route('blogs') }}">Bài viết</a></li>
+                <li class="{{ request()->route()->getName() == "contact" ? "active" : "" }}"><a href="{{ route('contact') }}">Liên hệ</a></li>
+                <li class="{{ request()->route()->getName() == "order" ? "active" : "" }}"><a href="{{ route('order') }}">Đơn hàng</a></li>
                 <!-- <li><a href="./shop-grid.html">Shop</a></li>
                 <li><a href="#">Pages</a>
                     <ul class="header__menu__dropdown">
@@ -103,10 +103,11 @@
                 <div class="col-lg-6">
                     <nav class="header__menu">
                         <ul>
-                            <li class="active"><a href="{{route('home')}}">Trang chủ</a></li>
-                            <li><a href="{{ route('blogs') }}">Bài viết</a></li>
-                            <li><a href="{{ route('contact') }}">Liên hệ</a></li>
-                            <li><a href="{{ route('order') }}">Đơn hàng</a></li>
+
+                            <li class="{{ request()->route()->getName() == "home" ? "active" : "" }}"><a href="{{route('home')}}">Trang chủ</a></li>
+                            <li class="{{ request()->route()->getName() == "blogs" ? "active" : "" }}"><a href="{{ route('blogs') }}">Bài viết</a></li>
+                            <li class="{{ request()->route()->getName() == "contact" ? "active" : "" }}"><a href="{{ route('contact') }}">Liên hệ</a></li>
+                            <li class="{{ request()->route()->getName() == "order" ? "active" : "" }}"><a href="{{ route('order') }}">Đơn hàng</a></li>
                             <!-- <li><a href="#">Pages</a>
                                 <ul class="header__menu__dropdown">
                                     <li><a href="./shop-details.html">Shop Details</a></li>

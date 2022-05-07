@@ -148,7 +148,7 @@ class ClientController extends Controller
         return response()->json([
             'message' => "Xóa sản phẩm thất bại",
             'status' => "error"
-        ]);
+        ], $status = 401);
     }
     public function carts()
     {
@@ -158,8 +158,9 @@ class ClientController extends Controller
 
         $totalMoney = 0;
         foreach ($carts as $cart) {
-            $totalMoney += ceil($cart->products->price - (($cart->products->price * $cart->products->discounts) / 100));
+            $totalMoney += ceil(($cart->products->price - ($cart->products->price * $cart->products->discounts) / 100) * $cart->quantity);
         }
+
         return view('client.pages.carts', compact('carts', 'totalMoney'));
     }
     public function updateCarts(Request $request)
@@ -349,5 +350,46 @@ class ClientController extends Controller
     {
         return view('client.pages.profile');
     }
+    public function UpdateProfile(Request $request)
+    {
+        request()->validate([
+            'email' => 'email|required|unique:users,email,' . auth()->user()->id,
+            'fullname' => 'required|min:3|max:100',
+            'avatar' => 'nullable|image|mimes:jpeg,png,jpg,svg|max:2048',
+            'phone' => 'required|numeric|digits_between:10,12|unique:users,phone,' . auth()->user()->id,
+            'address' => 'required|min:3|max:200',
+        ], [
+            'email.required' => 'Vui lòng nhập địa chỉ e-mail !!',
+            'email.unique' => 'Email đã tồn tại trong hệ thống!!',
+            'email.email' => 'Email không hợp lệ, Xin vui lòng thử lại!!',
+            'fullname.required' => 'Bạn chưa nhập họ và tên',
+            'phone.unique' => 'Số điện thoại đã được sử dụng',
+            'fullname.min' => 'Họ và tên phải có độ dài từ 3 đến 100 ký tự',
+            'fullname.max' => 'Họ và tên phải có độ dài từ 3 đến 100 ký tự',
+            'avatar.mimes' => 'Hình đại diện phải là tệp thuộc loại: image / jpeg, image / png.',
+            'avatar.image' => 'Hình đại diện phải là tệp thuộc loại: image / jpeg, image / png.',
+            'avatar.max' => 'avatar dụng lượng tối đa 2048mb',
+            'phone.required' => 'Bạn chưa nhập số điện thoại',
+            'phone.digits_between' => 'Độ dại số điện thoại không hợp lệ',
+            'phone.numeric' => 'Số điện thoại không hợp lệ',
+            'address.required' => 'Bạn chưa nhập địa chỉ',
+            'address.unique' => 'Địa chỉ không được trùng',
+            'address.min' => 'Địa chỉ phải có độ dài từ 3 đến 200 ký tự',
+            'address.max' => 'Địa chỉ phải có độ dài từ 3 đến 200 ký tự',
 
+        ]);
+        if ($request->file('avatar') != null) {
+            if (file_exists('storage/' . auth()->user()->avatar)) {
+                unlink('storage/' . auth()->user()->avatar);
+            }
+            $pathAvatar = $request->file('avatar')->store('public/users/avatar');
+            $pathAvatar = str_replace("public/", "", $pathAvatar);
+        } else {
+            $pathAvatar = auth()->user()->avatar;
+        }
+        $data = request(['fullname', 'phone', 'address']);
+        $data['avatar'] = $pathAvatar;
+        $user = User::find(auth()->user()->id)->update($data);
+        return redirect()->back()->with('message', 'Cập nhật thông tin thành công');
+    }
 }

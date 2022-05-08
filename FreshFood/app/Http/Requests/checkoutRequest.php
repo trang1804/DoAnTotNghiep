@@ -33,15 +33,15 @@ class checkoutRequest extends FormRequest
     {
         return [
             'fullname.required' => 'Bạn chưa nhập họ và tên',
-            'fullname.min' => 'Họ và tên phải có độ dài từ 3 đến 100 ký tự',
-            'fullname.max' => 'Họ và tên phải có độ dài từ 3 đến 100 ký tự',
+            'fullname.min' => 'Họ và tên phải có Độ dài  từ 3 đến 100 ký tự',
+            'fullname.max' => 'Họ và tên phải có Độ dài  từ 3 đến 100 ký tự',
             'phone.unique' => 'Số điện thoại đã được sử dụng',
             'phone.required' => 'Bạn chưa nhập số điện thoại',
-            'phone.digits_between' => 'Độ dại số điện thoại không hợp lệ',
+            'phone.digits_between' => 'Độ dài số điện thoại không hợp lệ',
             'phone.numeric' => 'Số điện thoại không hợp lệ',
             'address.required' => 'Bạn chưa nhập địa chỉ',
-            'address.min' => 'Địa chỉ phải có độ dài từ 3 đến 200 ký tự',
-            'address.max' => 'Địa chỉ phải có độ dài từ 3 đến 200 ký tự',
+            'address.min' => 'Địa chỉ phải có Độ dài  từ 3 đến 200 ký tự',
+            'address.max' => 'Địa chỉ phải có Độ dài  từ 3 đến 200 ký tự',
         ];
     }
 }

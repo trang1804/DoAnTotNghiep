@@ -11,6 +11,7 @@ class CategoryController extends Controller
     {
         $categories = Category::filter(request(['search']))->orderBy('id','DESC')->paginate(15);
         $categories->load('products'); // gọi products bên model
+        
         return view('admin.pages.categories.index',compact('categories'));
     }
 
@@ -28,12 +29,12 @@ class CategoryController extends Controller
         [
             'nameCate.required'=>'Bạn chưa nhập tên danh mục',
             'nameCate.unique' => 'Tên danh mục không được trùng',
-            'nameCate.min'=>'Tên danh mục phải có độ dài từ 3 đến 100 ký tự',
-            'nameCate.max'=>'Tên danh mục phải có độ dài từ 3 đến 100 ký tự',
+            'nameCate.min'=>'Tên danh mục phải có Độ dài  từ 3 đến 100 ký tự',
+            'nameCate.max'=>'Tên danh mục phải có Độ dài  từ 3 đến 100 ký tự',
             'slug.required'=>'Bạn chưa nhập slug',
             'slug.unique' => 'Slug không được trùng',
-            'slug.min'=>'Slug phải có độ dài từ 3 đến 100 ký tự',
-            'slug.max'=>'Slug phải có độ dài từ 3 đến 100 ký tự',
+            'slug.min'=>'Slug phải có Độ dài  từ 3 đến 100 ký tự',
+            'slug.max'=>'Slug phải có Độ dài  từ 3 đến 100 ký tự',
             'banner.required' => 'Banner không được trống',
             'banner.mimes'=>'Banner Không đúng định dạng quy định (jpg,bmp,png)',
             'banner.max'=>'Banner dụng lượng tối đa 2048mb',
@@ -62,12 +63,12 @@ class CategoryController extends Controller
         [
             'nameCate.required'=>'Bạn chưa nhập tên danh mục',
             'nameCate.unique' => 'Tên danh mục không được trùng',
-            'nameCate.min'=>'Tên danh mục phải có độ dài từ 3 đến 100 ký tự',
-            'nameCate.max'=>'Tên danh mục phải có độ dài từ 3 đến 100 ký tự',
+            'nameCate.min'=>'Tên danh mục phải có Độ dài  từ 3 đến 100 ký tự',
+            'nameCate.max'=>'Tên danh mục phải có Độ dài  từ 3 đến 100 ký tự',
             'slug.required'=>'Bạn chưa nhập slug',
             'slug.unique' => 'Slug không được trùng',
-            'slug.min'=>'Slug phải có độ dài từ 3 đến 100 ký tự',
-            'slug.max'=>'Slug phải có độ dài từ 3 đến 100 ký tự',
+            'slug.min'=>'Slug phải có Độ dài  từ 3 đến 100 ký tự',
+            'slug.max'=>'Slug phải có Độ dài  từ 3 đến 100 ký tự',
             'banner.mimes'=>'Banner Không đúng định dạng quy định (jpg,bmp,png)',
             'banner.max'=>'Banner dụng lượng tối đa 2048mb',
         ]);

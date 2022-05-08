@@ -62,7 +62,7 @@
                             @enderror
                         </div>
                         <div class="col-lg-12 text-center">
-                            <button type="submit" class="site-btn">Giửi</button>
+                            <button type="submit" class="site-btn">Gửi</button>
                         </div>
                     </div>
                 </form>

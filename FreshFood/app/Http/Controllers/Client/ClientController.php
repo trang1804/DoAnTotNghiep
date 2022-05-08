@@ -232,8 +232,8 @@ class ClientController extends Controller
             ],
             [
                 'name.required' => 'Bạn chưa nhập họ và tên',
-                'name.min' => 'Họ và tên phải có độ dài từ 3 đến 100 ký tự',
-                'name.max' => 'Họ và tên phải có độ dài từ 3 đến 100 ký tự',
+                'name.min' => 'Họ và tên phải có Độ dài  từ 3 đến 100 ký tự',
+                'name.max' => 'Họ và tên phải có Độ dài  từ 3 đến 100 ký tự',
                 'email.required' => 'Bạn chưa nhập email',
                 'email.email' => 'Email không đúng định dạng',
             ]
@@ -364,18 +364,18 @@ class ClientController extends Controller
             'email.email' => 'Email không hợp lệ, Xin vui lòng thử lại!!',
             'fullname.required' => 'Bạn chưa nhập họ và tên',
             'phone.unique' => 'Số điện thoại đã được sử dụng',
-            'fullname.min' => 'Họ và tên phải có độ dài từ 3 đến 100 ký tự',
-            'fullname.max' => 'Họ và tên phải có độ dài từ 3 đến 100 ký tự',
+            'fullname.min' => 'Họ và tên phải có Độ dài  từ 3 đến 100 ký tự',
+            'fullname.max' => 'Họ và tên phải có Độ dài  từ 3 đến 100 ký tự',
             'avatar.mimes' => 'Hình đại diện phải là tệp thuộc loại: image / jpeg, image / png.',
             'avatar.image' => 'Hình đại diện phải là tệp thuộc loại: image / jpeg, image / png.',
             'avatar.max' => 'avatar dụng lượng tối đa 2048mb',
             'phone.required' => 'Bạn chưa nhập số điện thoại',
-            'phone.digits_between' => 'Độ dại số điện thoại không hợp lệ',
+            'phone.digits_between' => 'Độ dài số điện thoại không hợp lệ',
             'phone.numeric' => 'Số điện thoại không hợp lệ',
             'address.required' => 'Bạn chưa nhập địa chỉ',
             'address.unique' => 'Địa chỉ không được trùng',
-            'address.min' => 'Địa chỉ phải có độ dài từ 3 đến 200 ký tự',
-            'address.max' => 'Địa chỉ phải có độ dài từ 3 đến 200 ký tự',
+            'address.min' => 'Địa chỉ phải có Độ dài  từ 3 đến 200 ký tự',
+            'address.max' => 'Địa chỉ phải có Độ dài  từ 3 đến 200 ký tự',
 
         ]);
         if ($request->file('avatar') != null) {

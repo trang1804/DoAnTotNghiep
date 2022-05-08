@@ -40,8 +40,8 @@ Route::get('doi-mat-khau/{token}', [ClientController::class, 'ChangePassword'])-
 Route::post('doi-mat-khau/{token}', [ClientController::class, 'SentChangePassword'])->name('SentChangePassword');
 
 Route::name('cp-admin.')->middleware('AdminLogin')->prefix('cp-admin/')->group(function () {
-    Route::get('/}', [DashboadContrller::class, 'index'])->name('dashboad');
-    // category    
+    Route::get('/', [DashboadContrller::class, 'index'])->name('dashboad');
+    //    
     Route::middleware('AdminLogin')->group(function () {
         Route::get('logout', [AdminSessionController::class, 'logout'])->name('logout');
         Route::get('profile', [UserController::class, 'proFile'])->name('profile');
@@ -52,94 +52,93 @@ Route::name('cp-admin.')->middleware('AdminLogin')->prefix('cp-admin/')->group(f
     });
     // category    
     Route::name('category.')->middleware('AdminLogin')->prefix('category/')->group(function () {
-        Route::get('/', [CategoryController::class, 'index'])->name('index');
-        Route::get('create', [CategoryController::class, 'create'])->name('create');
-        Route::post('store', [CategoryController::class, 'store'])->name('store');
-        Route::get('edit/{id}', [CategoryController::class, 'edit'])->name('edit');
-        Route::post('update/{id}', [CategoryController::class, 'update'])->name('update');
-        Route::get('delete/{id}', [CategoryController::class, 'delete'])->name('delete');
+        Route::get('/', [CategoryController::class, 'index'])->name('index')->middleware('can:XEM-LOAI-SAN-PHAM');
+        Route::get('create', [CategoryController::class, 'create'])->name('create')->middleware('can:THEM-LOAI-SAN-PHAM');
+        Route::post('store', [CategoryController::class, 'store'])->name('store')->middleware('can:them-LOAI-SAN-PHAM');
+        Route::get('edit/{id}', [CategoryController::class, 'edit'])->name('edit')->middleware('can:SUA-LOAI-SAN-PHAM');
+        Route::post('update/{id}', [CategoryController::class, 'update'])->name('update')->middleware('can:SUA-LOAI-SAN-PHAM');
+        Route::get('delete/{id}', [CategoryController::class, 'delete'])->name('delete')->middleware('can:XOA-LOAI-SAN-PHAM');
     });
     // Sản phẩm
     Route::name('products.')->middleware('AdminLogin')->prefix('products/')->group(function () {
-        Route::get('/', [ProductController::class, 'index'])->name('index');
-        Route::get('create', [ProductController::class, 'create'])->name('create');
-        Route::post('store', [ProductController::class, 'store'])->name('store');
-        Route::get('edit/{id}', [ProductController::class, 'edit'])->name('edit');
-        Route::post('update/{id}', [ProductController::class, 'update'])->name('update');
-        Route::get('delete/{id}', [ProductController::class, 'delete'])->name('delete');
+        Route::get('/', [ProductController::class, 'index'])->name('index')->middleware('can:XEM-SAN-PHAM');
+        Route::get('create', [ProductController::class, 'create'])->name('create')->middleware('can:THEM-SAN-PHAM');
+        Route::post('store', [ProductController::class, 'store'])->name('store')->middleware('can:THEM-SAN-PHAM');
+        Route::get('edit/{id}', [ProductController::class, 'edit'])->name('edit')->middleware('can:SUA-SAN-PHAM');
+        Route::post('update/{id}', [ProductController::class, 'update'])->name('update')->middleware('can:SUA-SAN-PHAM');
+        Route::get('delete/{id}', [ProductController::class, 'delete'])->name('delete')->middleware('can:XOA-SAN-PHAM');
     });
     // Nhà cung câp
     Route::name('supplier.')->middleware('AdminLogin')->prefix('supplier/')->group(function () {
-        Route::get('/', [SupplierController::class, 'index'])->name('index');
-        Route::get('create', [SupplierController::class, 'create'])->name('create');
-        Route::post('store', [SupplierController::class, 'store'])->name('store');
-        Route::get('edit/{id}', [SupplierController::class, 'edit'])->name('edit');
-        Route::post('update/{id}', [SupplierController::class, 'update'])->name('update');
-        Route::get('delete/{id}', [SupplierController::class, 'delete'])->name('delete');
+        Route::get('/', [SupplierController::class, 'index'])->name('index')->middleware('can:XEM-NHA-PHAN-PHOI');
+        Route::get('create', [SupplierController::class, 'create'])->name('create')->middleware('can:XEM-NHA-PHAN-PHOI');
+        Route::post('store', [SupplierController::class, 'store'])->name('store')->middleware('can:XEM-NHA-PHAN-PHOI');
+        Route::get('edit/{id}', [SupplierController::class, 'edit'])->name('edit')->middleware('can:XEM-NHA-PHAN-PHOI');
+        Route::post('update/{id}', [SupplierController::class, 'update'])->name('update')->middleware('can:XEM-NHA-PHAN-PHOI');
+        Route::get('delete/{id}', [SupplierController::class, 'delete'])->name('delete')->middleware('can:XEM-NHA-PHAN-PHOI');
     });
-
     // nhom khách hàng
     Route::name('groups.')->middleware('AdminLogin')->prefix('groups/')->group(function () {
-        Route::get('', [GroupUserController::class, 'index'])->name('index');
-        Route::get('create', [GroupUserController::class, 'create'])->name('create');
-        Route::post('store', [GroupUserController::class, 'store'])->name('store');
-        Route::get('edit/{id}', [GroupUserController::class, 'edit'])->name('edit');
-        Route::post('update/{id}', [GroupUserController::class, 'update'])->name('update');
-        Route::get('delete/{id}', [GroupUserController::class, 'delete'])->name('delete'); // todo xóa khi ko có hóa đơn
+        Route::get('', [GroupUserController::class, 'index'])->name('index')->middleware('can:XEM-NHOM-KHACH-HANG');
+        Route::get('create', [GroupUserController::class, 'create'])->name('create')->middleware('can:THEM-NHOM-KHACH-HANG');
+        Route::post('store', [GroupUserController::class, 'store'])->name('store')->middleware('can:THEM-NHOM-KHACH-HANG');
+        Route::get('edit/{id}', [GroupUserController::class, 'edit'])->name('edit')->middleware('can:SUA-NHOM-KHACH-HANG');
+        Route::post('update/{id}', [GroupUserController::class, 'update'])->name('update')->middleware('can:SUA-NHOM-KHACH-HANG');
+        Route::get('delete/{id}', [GroupUserController::class, 'delete'])->name('delete')->middleware('can:XOA-NHOM-KHACH-HANG'); // todo xóa khi ko có hóa đơn
     });
-
     // khách hàng
     Route::name('customers.')->middleware('AdminLogin')->prefix('customers/')->group(function () {
-        Route::get('', [CustomerController::class, 'index'])->name('index');
-        Route::get('create', [CustomerController::class, 'create'])->name('create');
-        Route::post('store', [CustomerController::class, 'store'])->name('store');
-        Route::get('edit/{id}', [CustomerController::class, 'edit'])->name('edit');
-        Route::post('update/{id}', [CustomerController::class, 'update'])->name('update');
-        Route::get('delete/{id}', [CustomerController::class, 'delete'])->name('delete'); // todo xóa khi ko có hóa đơn
+        Route::get('', [CustomerController::class, 'index'])->name('index')->middleware('can:XEM-KHACH-HANG');
+        Route::get('create', [CustomerController::class, 'create'])->name('create')->middleware('can:THEM-KHACH-HANG');
+        Route::post('store', [CustomerController::class, 'store'])->name('store')->middleware('can:THEM-KHACH-HANG');
+        Route::get('edit/{id}', [CustomerController::class, 'edit'])->name('edit')->middleware('can:SUA-KHACH-HANG');
+        Route::post('update/{id}', [CustomerController::class, 'update'])->name('update')->middleware('can:SUA-KHACH-HANG');
+        Route::get('delete/{id}', [CustomerController::class, 'delete'])->name('delete')->middleware('can:XOA-KHACH-HANG'); // todo xóa khi ko có hóa đơn
     });
     //Nhân viên
     Route::name('user.')->middleware('AdminLogin')->prefix('user/')->group(function () {
-        Route::get('', [UserController::class, 'index'])->name('index');
-        Route::get('create', [UserController::class, 'create'])->name('create');
-        Route::post('store', [UserController::class, 'store'])->name('store');
-        Route::get('edit/{id}', [UserController::class, 'edit'])->name('edit');
-        Route::post('update/{id}', [UserController::class, 'update'])->name('update');
-        Route::get('delete/{id}', [UserController::class, 'delete'])->name('delete'); // todo xóa khi ko có hóa đơn
+        Route::get('', [UserController::class, 'index'])->name('index')->middleware('can:XEM-NHAN-VIEN');
+        Route::get('create', [UserController::class, 'create'])->name('create')->middleware('can:THEM-NHAN-VIEN');
+        Route::post('store', [UserController::class, 'store'])->name('store')->middleware('can:THEM-NHAN-VIEN');
+        Route::get('edit/{id}', [UserController::class, 'edit'])->name('edit')->middleware('can:SUA-NHAN-VIEN');
+        Route::post('update/{id}', [UserController::class, 'update'])->name('update')->middleware('can:SUA-NHAN-VIEN');
+        Route::get('delete/{id}', [UserController::class, 'delete'])->name('delete')->middleware('can:XOA-NHAN-VIEN'); // todo xóa khi ko có hóa đơn
         Route::name('role.')->prefix('role/')->group(function () {
-            Route::get('', [RoleController::class, 'index'])->name('index');
-            Route::get('create', [RoleController::class, 'create'])->name('create');
-            Route::post('store', [RoleController::class, 'store'])->name('store');
-            Route::get('edit/{id}', [RoleController::class, 'edit'])->name('edit');
-            Route::post('update/{id}', [RoleController::class, 'update'])->name('update');
-            Route::get('delete/{id}', [RoleController::class, 'delete'])->name('delete');
+            Route::get('', [RoleController::class, 'index'])->name('index')->middleware('can:XEM-CHUC-VU');
+            Route::get('create', [RoleController::class, 'create'])->name('create')->middleware('can:THEM-CHUC-VU');
+            Route::post('store', [RoleController::class, 'store'])->name('store')->middleware('can:THEM-CHUC-VU');
+            Route::get('edit/{id}', [RoleController::class, 'edit'])->name('edit')->middleware('can:SUA-CHUC-VU');
+            Route::post('update/{id}', [RoleController::class, 'update'])->name('update')->middleware('can:SUA-CHUC-VU');
+            Route::get('delete/{id}', [RoleController::class, 'delete'])->name('delete')->middleware('can:XOA-CHUC-VU');
         });
     });
-    // bài viết
+   
     Route::name('cate_blog.')->prefix('cate_blog/')->group(function () {
-        Route::get('', [CategoriBlogController::class, 'index'])->name('index');
-        Route::get('create', [CategoriBlogController::class, 'create'])->name('create');
-        Route::post('store', [CategoriBlogController::class, 'store'])->name('store');
-        Route::get('edit/{id}', [CategoriBlogController::class, 'edit'])->name('edit');
-        Route::post('update/{id}', [CategoriBlogController::class, 'update'])->name('update');
-        Route::get('delete/{id}', [CategoriBlogController::class, 'delete'])->name('delete'); // todo xóa khi ko có hóa đơn
+        Route::get('', [CategoriBlogController::class, 'index'])->name('index')->middleware('can:XEM-LOAI-BAI-VIET');
+        Route::get('create', [CategoriBlogController::class, 'create'])->name('create')->middleware('can:THEM-LOAI-BAI-VIET');
+        Route::post('store', [CategoriBlogController::class, 'store'])->name('store')->middleware('can:THEM-LOAI-BAI-VIET');
+        Route::get('edit/{id}', [CategoriBlogController::class, 'edit'])->name('edit')->middleware('can:SUA-LOAI-BAI-VIET');
+        Route::post('update/{id}', [CategoriBlogController::class, 'update'])->name('update')->middleware('can:SUA-LOAI-BAI-VIET');
+        Route::get('delete/{id}', [CategoriBlogController::class, 'delete'])->name('delete')->middleware('can:XOA-LOAI-BAI-VIET'); // todo xóa khi ko có hóa đơn
     });
+     // bài viết
     Route::name('blogs.')->prefix('blogs/')->group(function () {
-        Route::get('', [BlogsController::class, 'index'])->name('index');
-        Route::get('create', [BlogsController::class, 'create'])->name('create');
-        Route::post('store', [BlogsController::class, 'store'])->name('store');
-        Route::get('edit/{id}', [BlogsController::class, 'edit'])->name('edit');
-        Route::post('update/{id}', [BlogsController::class, 'update'])->name('update');
-        Route::get('delete/{id}', [BlogsController::class, 'delete'])->name('delete'); // todo xóa khi ko có hóa đơn
+        Route::get('', [BlogsController::class, 'index'])->name('index')->middleware('can:XEM-BAI-VIET');
+        Route::get('create', [BlogsController::class, 'create'])->name('create')->middleware('can:THEM-BAI-VIET');
+        Route::post('store', [BlogsController::class, 'store'])->name('store')->middleware('can:THEM-BAI-VIET');
+        Route::get('edit/{id}', [BlogsController::class, 'edit'])->name('edit')->middleware('can:SUA-BAI-VIET');
+        Route::post('update/{id}', [BlogsController::class, 'update'])->name('update')->middleware('can:SUA-BAI-VIET');
+        Route::get('delete/{id}', [BlogsController::class, 'delete'])->name('delete')->middleware('can:XOA-BAI-VIET'); // todo xóa khi ko có hóa đơn
     });
     Route::name('contact.')->prefix('contact/')->group(function () {
-        Route::get('', [ContactContrller::class, 'index'])->name('index');
-        Route::get('edit/{id}', [ContactContrller::class, 'edit'])->name('edit');
-        Route::post('update/{id}', [ContactContrller::class, 'update'])->name('update');
+        Route::get('', [ContactContrller::class, 'index'])->name('index')->middleware('can:XEM-LIEN-HE');
+        Route::get('edit/{id}', [ContactContrller::class, 'edit'])->name('edit')->middleware('can:SUA-LIEN-HE');
+        Route::post('update/{id}', [ContactContrller::class, 'update'])->name('update')->middleware('can:SUA-LIEN-HE');
     });
     Route::name('orders.')->prefix('orders/')->group(function () {
-        Route::get('', [OrderContrller::class, 'index'])->name('index');
-        Route::get('edit/{id}', [OrderContrller::class, 'edit'])->name('edit');
-        Route::post('update/{id}', [OrderContrller::class, 'update'])->name('update');
+        Route::get('', [OrderContrller::class, 'index'])->name('index')->middleware('can:XEM-DON-HANG');
+        Route::get('edit/{id}', [OrderContrller::class, 'edit'])->name('edit')->middleware('can:SUA-DON-HANG');
+        Route::post('update/{id}', [OrderContrller::class, 'update'])->name('update')->middleware('can:SUA-DON-HANG');
         // Route::get('delete/{id}', [BlogsController::class, 'delete'])->name('delete'); // todo xóa khi ko có hóa đơn
     });
 });

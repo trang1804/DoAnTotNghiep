@@ -27,8 +27,8 @@ class GroupUserController extends Controller
         [
             'name.required'=>'Bạn chưa nhập tên danh mục',
             'name.unique' => 'Tên danh mục không được trùng',
-            'name.min'=>'Tên danh mục phải có độ dài từ 3 đến 100 ký tự',
-            'name.max'=>'Tên danh mục phải có độ dài từ 3 đến 100 ký tự',
+            'name.min'=>'Tên danh mục phải có Độ dài  từ 3 đến 100 ký tự',
+            'name.max'=>'Tên danh mục phải có Độ dài  từ 3 đến 100 ký tự',
 
         ]);
 
@@ -49,8 +49,8 @@ class GroupUserController extends Controller
         [
             'name.required'=>'Bạn chưa nhập tên danh mục',
             'name.unique' => 'Tên danh mục không được trùng',
-            'name.min'=>'Tên danh mục phải có độ dài từ 3 đến 100 ký tự',
-            'name.max'=>'Tên danh mục phải có độ dài từ 3 đến 100 ký tự',
+            'name.min'=>'Tên danh mục phải có Độ dài  từ 3 đến 100 ký tự',
+            'name.max'=>'Tên danh mục phải có Độ dài  từ 3 đến 100 ký tự',
         ]);
         $GroupUser->update($request->all());
         return redirect()->route('cp-admin.groups.index')->with('message', 'Cập nhật nhóm khách hàng thành công !');

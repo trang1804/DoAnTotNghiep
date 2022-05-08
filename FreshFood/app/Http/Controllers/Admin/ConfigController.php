@@ -28,12 +28,12 @@ class ConfigController extends Controller
            'logo.image'=>'Hình đại diện phải là tệp thuộc loại: image / png ',
             'logo.max'=>'logo dụng lượng tối đa 2048mb',
             'phone.required'=>'Bạn chưa nhập số điện thoại',
-            'phone.digits_between'=>'Độ dại số điện thoại không hợp lệ',
+            'phone.digits_between'=>'Độ dài số điện thoại không hợp lệ',
             'phone.numeric'=>'Số điện thoại không hợp lệ',
             'address.required'=>'Bạn chưa nhập địa chỉ',
             'address.unique' => 'Địa chỉ không được trùng',
-            'address.min'=>'Địa chỉ phải có độ dài từ 3 đến 200 ký tự',
-            'address.max'=>'Địa chỉ phải có độ dài từ 3 đến 200 ký tự',
+            'address.min'=>'Địa chỉ phải có Độ dài  từ 3 đến 200 ký tự',
+            'address.max'=>'Địa chỉ phải có Độ dài  từ 3 đến 200 ký tự',
         ]);
         if ($request->file('logo') != null) {
             if (file_exists('storage/' . $config->logo)) {

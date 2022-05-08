@@ -28,12 +28,12 @@ class CategoriBlogController extends Controller
         [
             'name.required'=>'Bạn chưa nhập tên danh mục',
             'name.unique' => 'Tên danh mục không được trùng',
-            'name.min'=>'Tên danh mục phải có độ dài từ 3 đến 100 ký tự',
-            'name.max'=>'Tên danh mục phải có độ dài từ 3 đến 100 ký tự',
+            'name.min'=>'Tên danh mục phải có Độ dài  từ 3 đến 100 ký tự',
+            'name.max'=>'Tên danh mục phải có Độ dài  từ 3 đến 100 ký tự',
             'slug.required'=>'Bạn chưa nhập slug',
             'slug.unique' => 'Slug không được trùng',
-            'slug.min'=>'Slug phải có độ dài từ 3 đến 100 ký tự',
-            'slug.max'=>'Slug phải có độ dài từ 3 đến 100 ký tự',
+            'slug.min'=>'Slug phải có Độ dài  từ 3 đến 100 ký tự',
+            'slug.max'=>'Slug phải có Độ dài  từ 3 đến 100 ký tự',
         ]);
         $data = request(['name','slug']);
         $data['users_id'] = auth()->user()->id;
@@ -62,12 +62,12 @@ class CategoriBlogController extends Controller
         [
             'name.required'=>'Bạn chưa nhập tên danh mục',
             'name.unique' => 'Tên danh mục không được trùng',
-            'name.min'=>'Tên danh mục phải có độ dài từ 3 đến 100 ký tự',
-            'name.max'=>'Tên danh mục phải có độ dài từ 3 đến 100 ký tự',
+            'name.min'=>'Tên danh mục phải có Độ dài  từ 3 đến 100 ký tự',
+            'name.max'=>'Tên danh mục phải có Độ dài  từ 3 đến 100 ký tự',
             'slug.required'=>'Bạn chưa nhập slug',
             'slug.unique' => 'Slug không được trùng',
-            'slug.min'=>'Slug phải có độ dài từ 3 đến 100 ký tự',
-            'slug.max'=>'Slug phải có độ dài từ 3 đến 100 ký tự',
+            'slug.min'=>'Slug phải có Độ dài  từ 3 đến 100 ký tự',
+            'slug.max'=>'Slug phải có Độ dài  từ 3 đến 100 ký tự',
         ]);
         $data = request(['name','slug']);
         $data['users_id'] = auth()->user()->id;

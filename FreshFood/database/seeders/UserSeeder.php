@@ -20,22 +20,22 @@ class UserSeeder extends Seeder
     {
         $faker = Faker::create();
         // admin 
-        foreach(range(1, 100) as $index){
+        foreach(range(1, 1) as $index){
             $name = $faker->name();
             User::create([
                 'avatar'=>"https://webmaudep.com/demo/thucpham/tp01/images/product-5.jpg",
                 'fullname'=>$name,
                 'address'=> $faker->address(),
                 'phone' => $faker->phoneNumber(),
-                'email'=>$faker->email(),
+                'email'=>"admin@gmail.com",
                 'password'=>'$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', // password,
-                'status' => rand(0, 1),
+                'status' => 1,
                 'is_admin'=> 1,
                 'role_id'=>2
             ]);
         }
         // khách hàng
-        foreach(range(1, 100) as $index){
+        foreach(range(1, 1) as $index){
             $name = $faker->name();
             User::create([
                 'avatar'=>"https://webmaudep.com/demo/thucpham/tp01/images/product-5.jpg",
@@ -43,9 +43,9 @@ class UserSeeder extends Seeder
                 'address'=> $faker->address(),
                 'address_detail'=> $faker->address(),
                 'phone' => $faker->phoneNumber(),
-                'email'=>$faker->email(),
+                'email'=>'user@gmail.com',
                 'password'=>'$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', // password,
-                'status' => rand(0, 1),
+                'status' => 1,
                 'is_admin'=> 0,
                 'role_id'=>1,
                 'group_user'=>GroupUser::all()->random()->id

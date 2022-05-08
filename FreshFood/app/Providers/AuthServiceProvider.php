@@ -26,17 +26,16 @@ class AuthServiceProvider extends ServiceProvider
     {
         $this->registerPolicies();
 
-
+        $this->registerPolicies();
         Permissions::where('parent_id', '>', '0')->get()->map(function ($permission) {
-            dump($permission->id);
-            // Gate::define($permission->key_code, function (User $user) use ($permission) {
+            Gate::define($permission->key_code, function (User $user) use ($permission) {
            
-            //     $role = $user->roles;
-            //     $permissions = $role->permissions;
-            //     if ($permissions->contains('key_code', $permission->key_code)) {
-            //      //  return true;
-            //     }
-            // });
+                $role = $user->roles;
+                $permissions = $role->permissions;
+                if ($permissions->contains('key_code', $permission->key_code)) {
+                 //  return true;
+                }
+            });
         });
     }
 }

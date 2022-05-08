@@ -97,7 +97,7 @@
             <div class="row">
                 <div class="col-lg-3">
                     <div class="header__logo">
-                        <a href="./index.html"><img src="{{ asset('storage/' . $config->logo) }}" alt=""></a>
+                        <a href="{{route('home')}}"><img src="{{ asset('storage/' . $config->logo) }}" alt="" style="width:40px;height:40px; border-radius:50%; margin-left:15px; border:1px solid rgb(192, 76, 76);"></a>
                     </div>
                 </div>
                 <div class="col-lg-6">

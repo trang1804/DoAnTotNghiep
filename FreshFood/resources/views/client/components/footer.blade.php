@@ -5,7 +5,7 @@
                 <div class="col-lg-3 col-md-6 col-sm-6">
                     <div class="footer__about">
                         <div class="footer__about__logo">
-                            <a href="./index.html"><img src="{{ asset('storage/' . $config->logo) }}" alt=""></a>
+                            <a href="{{route("home")}}}" style="margin-left: 50px;"><img src="{{ asset('storage/' . $config->logo) }}" style="width:40px;height:40px; border-radius:50%; margin-left:15px; border:1px solid rgb(192, 76, 76);" alt=""></a>
                         </div>
                         <ul>
                             <li>Địa chỉ: {{$config->address}}</li>

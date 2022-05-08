@@ -32,15 +32,9 @@ class AuthServiceProvider extends ServiceProvider
            
                 $role = $user->roles;
                 $permissions = $role->permissions;
-               // dump($permissions);
                 if ($permissions->contains('key_code', $permission->key_code)) {
-                   return true;
+                 //  return true;
                 }
-                //return Response::deny('Bạn không có quyền truy cập !');
-                // return response()->json([
-                //     'message' => "Bạn không có quyền truy cập !",
-                //     'status' => "error"
-                // ], $status = 403);
             });
         });
     }

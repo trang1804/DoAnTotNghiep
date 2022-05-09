@@ -8,12 +8,14 @@
     <div class="container">
         <div class="row">
             <div class="categories__slider owl-carousel">
-                @foreach($category as $cate)
+                @foreach($category as $cate) 
+                @if(isset($cate->products->last()->image) && !empty($cate->products->last()->image))
                 <div class="col-lg-3">
                     <div class="categories__item set-bg" data-setbg="{{asset('storage/' .$cate->products->last()->image)}}">
                         <h5><a href="{{route('products').'?slug_cate='. $cate->slug}}">{{$cate->nameCate}}</a></h5>
                     </div>
                 </div>
+                @endif
                 @endforeach
 
             </div>

@@ -17,13 +17,12 @@ class ConfigController extends Controller
         $this->validate(request(),[
             'logo' => 'nullable|image|mimes:jpeg,png|max:2048',
             'email'    => 'required|email',
-            'phone' => 'required|numeric|digits_between:10,12|unique:users,phone,'.auth()->user()->id,
+            'phone' => 'required|numeric|digits_between:10,12',
             'address'=>'required|min:3|max:200',
         ],
         [
             'email.required' => 'Mời nhập e-mail !',
             'email.email' => 'e-mail không đúng định dạng !',
-            'phone.unique' => 'Số điện thoại đã được sử dụng',
            'logo.mimes'=>'Hình đại diện phải là tệp thuộc loại: image / png ',
            'logo.image'=>'Hình đại diện phải là tệp thuộc loại: image / png ',
             'logo.max'=>'logo dụng lượng tối đa 2048mb',

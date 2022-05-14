@@ -33,7 +33,7 @@ class AuthServiceProvider extends ServiceProvider
                 $role = $user->roles;
                 $permissions = $role->permissions;
                 if ($permissions->contains('key_code', $permission->key_code)) {
-                 //  return true;
+                  return true;
                 }
             });
         });

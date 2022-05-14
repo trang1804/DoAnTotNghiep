@@ -48,7 +48,7 @@ class ClientController extends Controller
         $products = Product::filter(array_merge(request(['search', 'min', 'max', 'sort']), ['categories_slug' => $categories_slug]))
             ->where('status', 1)
             // ->orderBy('id', 'DESC')
-            ->Paginate(15);
+            ->Paginate(9);
 
         $category = $this->categories->load('products');
         return view('client.pages.products', compact('category', 'products', 'categories_slug'));
@@ -246,6 +246,7 @@ class ClientController extends Controller
         request()->validate([
             'email' => 'email|required|unique:users,email',
             'password' => 'confirmed|min:6|required',
+            // 'password_confirmation' => 'confirmed'
         ], [
             'email.required' => 'Vui lòng nhập địa chỉ e-mail !!',
             'email.unique' => 'Email đã tồn tại trong hệ thống!! Nếu bạn đã có tài khoản, Xin vui lòng đăng nhập',
@@ -253,7 +254,7 @@ class ClientController extends Controller
             'email.email' => 'Email không hợp lệ, Xin vui lòng thử lại!!',
             'password.min' => "Mật khẩu phải có ít nhất 6 ký tự.",
             'password.confirmed' => "Mật khẩu xác nhận không đúng.",
-
+            // 'password_confirmation.confirmed' => 'Mật khẩu xác nhận không đúng'
         ]);
         $data =  [
             'password' => bcrypt(request('password')),

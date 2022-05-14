@@ -23,7 +23,7 @@ class ProductController extends Controller
         $supplier = Supplier::all();
         $categoryAll = Category::all();
         $origin = Origin::all();
-        $products = Product::filter(request(['search','category_id','supplier_id','origin_id','status']))->orderBy('id', 'DESC')->Paginate(30);
+        $products = Product::filter(request(['search','category_id','supplier_id','origin_id','status']))->orderBy('id', 'DESC')->Paginate(7);
         $products->load('category'); // gọi products bên model
         $products->load('supplier');
         $products->load('origin');

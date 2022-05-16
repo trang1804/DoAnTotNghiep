@@ -96,8 +96,8 @@
         <div class="container">
             <div class="row">
                 <div class="col-lg-3">
-                    <div class="header__logo">
-                        <a href="./index.html"><img src="{{ asset('storage/' . $config->logo) }}" alt=""></a>
+                    <div class="header__logo_1">
+                        <a href="{{route('home')}}"><img src="{{ asset('storage/' . $config->logo) }}" style="margin-left: 83px;width:100px;" alt=""></a>
                     </div>
                 </div>
                 <div class="col-lg-6">
@@ -175,7 +175,7 @@
                         </div>
                     </div>
                     <div style='display: {{ request()->route()->getName() != "home" ? "none" : "block" }} ' class="hero__item set-bg" data-setbg="{{asset('client/img/hero/banner.jpg')}}">
-                        <div class="hero__text">
+                        <div class="hero__text" style="padding-top: 95px;">
                             <span>FRUIT FRESH</span>
                             <h2>Vegetable <br />100% Organic</h2>
                             <p>Free Pickup and Delivery Available</p>

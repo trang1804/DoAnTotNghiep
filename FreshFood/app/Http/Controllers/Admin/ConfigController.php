@@ -35,7 +35,8 @@ class ConfigController extends Controller
             'address.max'=>'Địa chỉ phải có Độ dài  từ 3 đến 200 ký tự',
         ]);
         if ($request->file('logo') != null) {
-            if (file_exists('storage/' . $config->logo)) {
+          
+            if (!empty($config->logo) && file_exists('storage/' . $config->logo)) {
                 unlink('storage/' . $config->logo);
             }
             $pathAvatar = $request->file('logo')->store('public/images/logo');

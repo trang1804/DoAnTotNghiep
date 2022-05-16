@@ -1,11 +1,11 @@
     <!-- Footer Section Begin -->
-    <footer class="footer spad">
+    <footer class="footer spad" style="height:350px;">
         <div class="container">
             <div class="row">
                 <div class="col-lg-3 col-md-6 col-sm-6">
                     <div class="footer__about">
                         <div class="footer__about__logo">
-                            <a href="./index.html"><img src="{{ asset('storage/' . $config->logo) }}" alt=""></a>
+                            <a href="{{route("home")}}}" style="width:153px; height:100px;margin-left:10px;"><img src="{{ asset('storage/' . $config->logo) }}" alt=""></a>
                         </div>
                         <ul>
                             <li>Địa chỉ: {{$config->address}}</li>

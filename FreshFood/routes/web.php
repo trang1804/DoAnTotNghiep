@@ -54,7 +54,7 @@ Route::name('cp-admin.')->middleware('AdminLogin')->prefix('cp-admin/')->group(f
     Route::name('category.')->middleware('AdminLogin')->prefix('category/')->group(function () {
         Route::get('/', [CategoryController::class, 'index'])->name('index')->middleware('can:XEM-LOAI-SAN-PHAM');
         Route::get('create', [CategoryController::class, 'create'])->name('create')->middleware('can:THEM-LOAI-SAN-PHAM');
-        Route::post('store', [CategoryController::class, 'store'])->name('store')->middleware('can:them-LOAI-SAN-PHAM');
+        Route::post('store', [CategoryController::class, 'store'])->name('store')->middleware('can:THEM-LOAI-SAN-PHAM');
         Route::get('edit/{id}', [CategoryController::class, 'edit'])->name('edit')->middleware('can:SUA-LOAI-SAN-PHAM');
         Route::post('update/{id}', [CategoryController::class, 'update'])->name('update')->middleware('can:SUA-LOAI-SAN-PHAM');
         Route::get('delete/{id}', [CategoryController::class, 'delete'])->name('delete')->middleware('can:XOA-LOAI-SAN-PHAM');

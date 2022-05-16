@@ -23,22 +23,23 @@ class BlogSeeder extends Seeder
     } 
     public function run()
     {
-        $faker = Faker::create();
-        foreach(range(1,300) as $index){
-            $name = $faker->name();
-            $slug =  $this->createSlug($name);
-            DB::table('blogs')->insert([
-                'name_blog' => $name,
-                'slug_blog' => $slug,
-                'image' => 'images/products/product-'.rand(1,12).'.jpg',
-                'short_description' => $faker->text(300),
-                'users_id'=>User::all()->random()->id,
-                'cate_blog_id' => CategoryBlog::all()->random()->id,
-                'status' => 1,
-                'description' => $faker->text(600),
-                'created_at' => date("Y-m-d h:i:s"),
-                'updated_at' => date("Y-m-d h:i:s"),
-            ]);
-        }
-}
+        // $faker = Faker::create();
+        // foreach(range(1,300) as $index){
+        //     $name = $faker->name();
+        //     $slug =  $this->createSlug($name);
+        //     DB::table('blogs')->insert([
+        //         'name_blog' => $name,
+        //         'slug_blog' => $slug,
+        //         'image' => 'images/products/product-'.rand(1,12).'.jpg',
+        //         'short_description' => $faker->text(300),
+        //         'users_id'=>User::all()->random()->id,
+        //         'cate_blog_id' => CategoryBlog::all()->random()->id,
+        //         'status' => 1,
+        //         'description' => $faker->text(600),
+        //         'created_at' => date("Y-m-d h:i:s"),
+        //         'updated_at' => date("Y-m-d h:i:s"),
+        //     ]);
+        // }
+        
+    }
 }

@@ -9,11 +9,13 @@
         <div class="row">
             <div class="categories__slider owl-carousel">
                 @foreach($category as $cate)
+                @if(isset($cate->products->last()->image) && !empty($cate->products->last()->image))
                 <div class="col-lg-3">
                     <div class="categories__item set-bg" data-setbg="{{asset('storage/' .$cate->products->last()->image)}}">
                         <h5><a href="{{route('products').'?slug_cate='. $cate->slug}}">{{$cate->nameCate}}</a></h5>
                     </div>
                 </div>
+                @endif
                 @endforeach
 
             </div>
@@ -33,10 +35,13 @@
                 <div class="featured__controls">
                     <ul>
                         <li class="active" data-filter="*">Tất cả</li>
-                        @for( $i=0 ; $i < $category->count() ; $i++) @if($category[$i]->products->count()>3)
+                        @if( isset($category) && $category->count()>0)
+                        @for( $i=0 ; $i < $category->count() ; $i++)
+                            @if($category[$i]->products->count()>4)
                             <li data-filter=".{{$category[$i]->slug}}">{{$category[$i]->nameCate}}</li>
                             @endif
                             @endfor
+                            @endif
                             <!-- <li data-filter=".fresh-meat">Fresh Meat</li>
                         <li data-filter=".vegetables">Vegetables</li>
                         <li data-filter=".fastfood">Fastfood</li> -->
@@ -46,7 +51,7 @@
         </div>
         <div class="row featured__filter">
             @for( $i=0 ; $i < $category->count() ; $i++) 
-             @if($category[$i]->products->count()>3)
+             @if($category[$i]->products->count()>4)
                     
                 @for( $y= 0 ; $y < 3 ; $y++) 
                 @if($category[$i]->products[$y]->status != 0)

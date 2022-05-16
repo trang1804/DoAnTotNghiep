@@ -19,9 +19,9 @@
                         <h6>Các liên kết</h6>
                         <ul>
                             <li class="active"><a href="{{route('home')}}">Trang chủ</a></li>
-                            <li><a href="#">Bài viết</a></li>
-                            <li><a href="#">Liên hệ</a></li>
-                            <li><a href="#">Đơn hàng</a></li>
+                            <li><a href="{{ route('blogs') }}">Bài viết</a></li>
+                            <li><a href="{{ route('contact') }}">Liên hệ</a></li>
+                            <li><a href="{{ route('order') }}">Đơn hàng</a></li>
                         </ul>
                         <!-- <ul>
                             <li><a href="#">Who We Are</a></li>

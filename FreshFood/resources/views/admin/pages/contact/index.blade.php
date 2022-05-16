@@ -58,8 +58,10 @@
                         <td><span style="" class="btn {{$contact->status != 2?'btn-primary':'btn-danger'}} w-100">{{ App\Common\Constants::STATUS_CONTATCT[$contact->status] }}</span></td>
                         <td>{{ $contact->description }}</td>
                         <td>
+                        @can('SUA-LIEN-HE')
                             <a href="{{route('cp-admin.contact.edit',[ 'id' => $contact->id ])}}" class="btn-lg"><i class="fas fa-pencil-alt"></i></a>
-                          {{-- <a class="btn-lg" onclick="deleteCate({{ $contact->id}})"><i class="fas fa-trash"></i></a> --}} 
+                            @endcan
+                            {{-- <a class="btn-lg" onclick="deleteCate({{ $contact->id}})"><i class="fas fa-trash"></i></a> --}} 
                         </td>
                     </tr>
                     @endforeach

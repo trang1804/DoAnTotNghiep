@@ -10,7 +10,9 @@
 @section('content')
 <div class="d-sm-flex align-items-center justify-content-between mb-4">
     <h1 class="h3 mb-0 text-gray-800">Danh sách nhân viên</h1>
+    @can('THEM-NHAN-VIEN')
     <a href="{{route('cp-admin.user.create')}}" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"> Thêm nhân viên </a>
+    @endcan
 </div>
 
 <div class="card shadow mb-4 ">
@@ -73,8 +75,12 @@
                         <td>{{ $user->phone }}</td>
                         <td><span style="" class="btn {{$user->status==1?'btn-primary':'btn-danger'}} w-100">{{ App\Common\Constants::STATUS_PRODUCTS[$user->status] }}</span></td>
                         <td>
+                            @can('SUA-NHAN-VIEN')
                             <a href="{{route('cp-admin.user.edit',[ 'id' => $user->id ])}}" class="btn-lg"><i class="fas fa-pencil-alt"></i></a>
+                            @endcan
+                            @can('XOA-NHAN-VIEN')
                             <a class="btn-lg" onclick="deleteCate({{ $user->id}})"><i class="fas fa-trash"></i></a>
+                            @endcan
                         </td>
                     </tr>
                     @endforeach

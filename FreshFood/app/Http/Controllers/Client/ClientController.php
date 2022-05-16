@@ -323,7 +323,7 @@ class ClientController extends Controller
         return view('admin.pages.auth.ChangePass');
     }
 
-    public function SentChangePassword($token)
+    public function SentChangePassword()
     {
         request()->validate([
             'email' => 'email|required|exists:users,email',
@@ -337,7 +337,7 @@ class ClientController extends Controller
             'password.confirmed' => "Mật khẩu xác nhận không đúng.",
 
         ]);
-        $PasswordReset = PasswordReset::where('email', request('email'))->where('token', $token)->first();
+        $PasswordReset = PasswordReset::where('email', request('email'))->where('token', request('token'))->first();
         // dd( $PasswordReset,$token);
         if ($PasswordReset) {
             $customer = User::where('email', request('email'))->first();

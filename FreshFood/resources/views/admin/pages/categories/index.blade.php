@@ -10,7 +10,9 @@
 @section('content')
 <div  class="d-sm-flex align-items-center justify-content-between mb-4">
     <h1 class="h3 mb-0 text-gray-800">Danh mục sản phẩm</h1>
+    @can('THEM-LOAI-SAN-PHAM')
     <a href="{{route('cp-admin.category.create')}}" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"> Thêm danh mục</a>
+    @endcan
 </div>
 
 <div class="card shadow mb-4 ">
@@ -56,8 +58,12 @@
                         <td>{{ $category->products->count() }}</td>
                         <td>{{ $category->updated_at }}</td>
                         <td>
+                        @can('SUA-LOAI-SAN-PHAM')
                             <a href="{{route('cp-admin.category.edit',[ 'id' => $category->id ])}}" class="btn-lg"><i class="fas fa-pencil-alt"></i></a>
+                            @endcan
+                            @can('XOA-LOAI-SAN-PHAM')
                             <a class="btn-lg" onclick="deleteCate({{ $category->id}})"><i class="fas fa-trash"></i></a>
+                            @endcan
                         </td>
                     </tr>
                     @endforeach

@@ -244,7 +244,7 @@
 
                               <div align="center">
                                 <!--[if mso]><table width="100%" cellpadding="0" cellspacing="0" border="0" style="border-spacing: 0; border-collapse: collapse; mso-table-lspace:0pt; mso-table-rspace:0pt;font-family:arial,helvetica,sans-serif;"><tr><td style="font-family:arial,helvetica,sans-serif;" align="center"><v:roundrect xmlns:v="urn:schemas-microsoft-com:vml" xmlns:w="urn:schemas-microsoft-com:office:word" href="https://www.unlayer.com" style="height:36px; v-text-anchor:middle; width:164px;" arcsize="11%" stroke="f" fillcolor="#000000"><w:anchorlock/><center style="color:#FFFFFF;font-family:arial,helvetica,sans-serif;"><![endif]-->
-                                <a href="{{route('ChangePassword',['token'=> $data['token']])}}" target="_blank"
+                                <a href="{{route('ChangePassword').'?token='.$data['token']}}" target="_blank"
                                   style="box-sizing: border-box;display: inline-block;font-family:arial,helvetica,sans-serif;text-decoration: none;-webkit-text-size-adjust: none;text-align: center;color: #FFFFFF; background-color: #000000; border-radius: 4px;-webkit-border-radius: 4px; -moz-border-radius: 4px; width:auto; max-width:100%; overflow-wrap: break-word; word-break: break-word; word-wrap:break-word; mso-border-alt: none;">
                                   <span style="display:block;padding:10px 20px;line-height:120%;"><span
                                       style="font-family: Montserrat, sans-serif; font-size: 14px; line-height: 16.8px;"><strong>Đổi mật khẩu</strong></span></span>

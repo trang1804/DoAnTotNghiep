@@ -10,7 +10,9 @@
 @section('content')
 <div class="d-sm-flex align-items-center justify-content-between mb-4">
     <h1 class="h3 mb-0 text-gray-800">Danh sách nhóm khách hàng</h1>
+    @can('THEM-NHOM-KHACH-HANG')
     <a href="{{route('cp-admin.groups.create')}}" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"> Thêm nhóm khách hàng</a>
+    @endcan
 </div>
 
 <div class="card shadow mb-4 ">
@@ -53,8 +55,12 @@
                         <td>{{ $group->name }}</td>
                         <td>{{ $group->user->count() }}</td>
                         <td>
+                        @can('SUA-NHOM-KHACH-HANG')
                             <a href="{{route('cp-admin.groups.edit',[ 'id' => $group->id ])}}" class="btn-lg"><i class="fas fa-pencil-alt"></i></a>
+                            @endcan
+                            @can('XOA-NHOM-KHACH-HANG')
                             <a class="btn-lg" onclick="deleteCate({{ $group->id}})"><i class="fas fa-trash"></i></a>
+                            @endcan
                         </td>
                     </tr>
                     @endforeach

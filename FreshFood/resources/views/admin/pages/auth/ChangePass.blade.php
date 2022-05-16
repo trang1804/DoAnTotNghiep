@@ -39,9 +39,9 @@
                                 <img src="{{ asset('storage/' . $config->logo) }}" style=" height: 100%; " alt="{{$config->fullname}}">
                                 </div>
                                     <div class="text-center">
-                                        <h1 class="h4 text-gray-900 mb-4">Điền thông tin đăng ký tài khoản!</h1>
+                                        <h1 class="h4 text-gray-900 mb-4">Điền thông tin đặt lại tài khoản!</h1>
                                     </div>
-                                    <form class="user" action="{{ route('SentChangePassword',['token'=> request('token')]) }}" method="POST">
+                                    <form class="user" action="{{ route('SentChangePassword').'?token='.request('token') }}" method="POST">
                                         @csrf
                                         <div class="form-group">
                                             <input type="email" name="email" value="{{old('email')}}" class="form-control form-control-user" id="exampleInputEmail" aria-describedby="emailHelp" placeholder="Enter Email Address...">

@@ -9,7 +9,9 @@
 @endsection
 @section('content')
 <div class="d-sm-flex align-items-center justify-content-between mb-4">
+@can('THEM-KHACH-HANG')
     <h1 class="h3 mb-0 text-gray-800">Danh sách  khách hàng</h1>
+    @endcan
     <!-- <a href="{{route('cp-admin.customers.create')}}" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"> Thêm nhóm khách hàng </a> -->
 </div>
 
@@ -73,8 +75,12 @@
                         <td>{{ $user->phone }}</td>
                         <td><span style="" class="btn {{$user->status==1?'btn-primary':'btn-danger'}} w-100">{{ App\Common\Constants::STATUS_PRODUCTS[$user->status] }}</span></td>
                         <td>
+                        @can('SUA-KHACH-HANG')
                             <a href="{{route('cp-admin.customers.edit',[ 'id' => $user->id ])}}" class="btn-lg"><i class="fas fa-pencil-alt"></i></a>
+                            @endcan
+                            @can('XOA-KHACH-HANG')
                             <a class="btn-lg" onclick="deleteCate({{ $user->id}})"><i class="fas fa-trash"></i></a>
+                            @endcan
                         </td>
                     </tr>
                     @endforeach

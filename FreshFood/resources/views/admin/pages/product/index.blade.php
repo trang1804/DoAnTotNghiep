@@ -10,7 +10,9 @@
 @section('content')
 <div class="d-sm-flex align-items-center justify-content-between mb-4">
     <h1 class="h3 mb-0 text-gray-800">Danh sách sản phẩm</h1>
+    @can('THEM-SAN-PHAM')
     <a href="{{route('cp-admin.products.create')}}" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"> Thêm sản phẩm</a>
+    @endcan
 </div>
 
 <div class="card shadow mb-4 ">
@@ -92,8 +94,12 @@
                         <td>{{ $product->origin->name }}</td>
                         <td>{{ $product->quantity }}</td>
                         <td>
+                        @can('SUA-SAN-PHAM')
                             <a href="{{route('cp-admin.products.edit',[ 'id' => $product->id ])}}" class="btn-lg"><i class="fas fa-pencil-alt"></i></a>
+                            @endcan
+                            @can('XOA-SAN-PHAM')
                             <a class="btn-lg" onclick="deleteCate({{ $product->id}})"><i class="fas fa-trash"></i></a>
+                            @endcan
                         </td>
                     </tr>
                     @endforeach

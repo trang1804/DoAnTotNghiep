@@ -1,5 +1,5 @@
 @extends('admin.master')
-@section('title', "Danh mục liên hệ")
+@section('title', "Đơn hàng")
 @section('style')
 <style>
     .sreach {
@@ -9,7 +9,7 @@
 @endsection
 @section('content')
 <div  class="d-sm-flex align-items-center justify-content-between mb-4">
-    <h1 class="h3 mb-0 text-gray-800">Danh mục liên hệ</h1>
+    <h1 class="h3 mb-0 text-gray-800">Đơn hàng</h1>
 </div>
 
 <div class="card shadow mb-4 ">
@@ -52,8 +52,10 @@
                         <td>{{ App\Common\Constants::STATUS_ORDER[$Order->status] }}</td>
                         <td>{{ $Order->created_at }}</td>
                         <td>
+                        @can('SUA-DON-HANG')
                             <a href="{{route('cp-admin.orders.edit',[ 'id' => $Order->id ])}}" class="btn-lg"><i class="fas fa-pencil-alt"></i></a>
-                          {{-- <a class="btn-lg" onclick="deleteCate({{ $contact->id}})"><i class="fas fa-trash"></i></a> --}} 
+                            @endcan
+                            {{-- <a class="btn-lg" onclick="deleteCate({{ $contact->id}})"><i class="fas fa-trash"></i></a> --}} 
                         </td>
                     </tr>
                     @endforeach

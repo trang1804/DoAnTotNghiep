@@ -36,8 +36,8 @@ Route::get('cp-register', [ClientController::class, 'register'])->name('register
 Route::post('cp-register', [ClientController::class, 'registerCreate'])->name('registerCreate');
 Route::get('quen-mat-khau', [ClientController::class, 'forgetPassword'])->name('forgetPassword');
 Route::post('quen-mat-khau', [ClientController::class, 'SentPassword'])->name('SentPassword');
-Route::get('doi-mat-khau/{token}', [ClientController::class, 'ChangePassword'])->name('ChangePassword');
-Route::post('doi-mat-khau/{token}', [ClientController::class, 'SentChangePassword'])->name('SentChangePassword');
+Route::get('doi-mat-khau', [ClientController::class, 'ChangePassword'])->name('ChangePassword');
+Route::post('doi-mat-khau', [ClientController::class, 'SentChangePassword'])->name('SentChangePassword');
 
 Route::name('cp-admin.')->middleware('AdminLogin')->prefix('cp-admin/')->group(function () {
     Route::get('/', [DashboadContrller::class, 'index'])->name('dashboad');
@@ -169,4 +169,8 @@ Route::name('api.')->middleware('ApiclientLogin')->prefix('api/')->group(functio
     // id sản phẩm|| sl sản phẩm mặc định là 1 
     Route::get('add-cart/{product_id}', [ClientController::class, 'addCart'])->name('addCart');
     Route::get('remove-cart/{product_id}', [ClientController::class, 'removeCart'])->name('removeCart');
+});
+
+Route::fallback(function () {
+    return view("errors.404");
 });

@@ -10,7 +10,9 @@
 @section('content')
 <div  class="d-sm-flex align-items-center justify-content-between mb-4">
     <h1 class="h3 mb-0 text-gray-800">Vai trò</h1>
+    @can('THEM-CHUC-VU')
     <a href="{{route('cp-admin.user.role.create')}}" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"> Thêm vai trò</a>
+    @endcan
 </div>
 
 <div class="card shadow mb-4 ">
@@ -56,8 +58,12 @@
                         <td>{{ $role->desc }}</td>
                         <td>{{ $role->users->count() }}</td>
                         <td>
+                        @can('SUA-CHUC-VU')
                             <a href="{{route('cp-admin.user.role.edit',[ 'id' => $role->id ])}}" class="btn-lg"><i class="fas fa-pencil-alt"></i></a>
+                            @endcan
+                            @can('XOA-CHUC-VU')
                             <a class="btn-lg" onclick="deleteCate({{ $role->id}})"><i class="fas fa-trash"></i></a>
+                            @endcan
                         </td>
                     </tr>
                     @endforeach

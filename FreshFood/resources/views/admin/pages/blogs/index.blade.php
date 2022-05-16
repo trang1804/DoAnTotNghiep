@@ -10,7 +10,9 @@
 @section('content')
 <div class="d-sm-flex align-items-center justify-content-between mb-4">
     <h1 class="h3 mb-0 text-gray-800">Danh sách bài viết</h1>
+    @can('THEM-BAI-VIET')
     <a href="{{route('cp-admin.blogs.create')}}" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"> Thêm bài viết</a>
+    @endcan
 </div>
 
 <div class="card shadow mb-4 ">
@@ -70,8 +72,12 @@
                         <td>{{ $blog->User->fullname }}</td>
                         <td><span  class="btn {{$blog->status==1?'btn-primary':'btn-danger'}} w-100">{{ App\Common\Constants::STATUS_BLOGS[$blog->status] }}</span></td>
                         <td>
+                        @can('SUA-BAI-VIET')
                             <a href="{{route('cp-admin.blogs.edit',[ 'id' => $blog->id ])}}" class="btn-lg"><i class="fas fa-pencil-alt"></i></a>
+                            @endcan
+                            @can('XOA-BAI-VIET')
                             <a class="btn-lg" onclick="deleteCate({{ $blog->id}})"><i class="fas fa-trash"></i></a>
+                            @endcan
                         </td>
                     </tr>
                     @endforeach

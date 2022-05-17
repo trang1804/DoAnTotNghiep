@@ -225,14 +225,21 @@
                                     @if($product->discounts > 0)
                                     <div class="product__discount__percent">-{{ $product->discounts  }}%</div>
                                     @endif
+                                    @if($product->quantity <= 0)
+                                    <ul class="">
+                                        <li class="btn btn-warning w-100">Hết hàng</li>
+                                    </ul>
+                                    @else
                                     <ul class="product__item__pic__hover">
                                         <li><a href="#"><i class="fa fa-heart"></i></a></li>
                                         <li><a href="#"><i class="fa fa-retweet"></i></a></li>
                                         <li onclick="addCart({{$product->id}})"><a ><i class="fa fa-shopping-cart"></i></a></li>
                                     </ul>
+                                    @endif
                                 </div>
                                 <div class="product__discount__item__text">
                                     <h5><a href="{{ route('product',['slug'=>$product->slug])  }}">{{ $product->namePro  }}</a></h5>
+
                                     <div class="product__item__price">
                                         {{ number_format(($product->price-(($product->price * $product->discounts )/100)), 0, ',', '.') . " VNĐ"   }}
                                         @if($product->discounts > 0)

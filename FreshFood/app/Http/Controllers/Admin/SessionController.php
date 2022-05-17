@@ -39,7 +39,7 @@ class SessionController extends Controller
         // kiểm tra xem tài khoản đã quá số lần đăng nhập chưa . nếu quá 3 lần thì khóa tài khoản , nếu chưa quá 3 lần thì bỏ qua if
         if (RateLimiter::tooManyAttempts($key, $this->maxAttempts)) {
             // Xử lý khóa tài khoản 
-            $user = User::where('email', request('email'))->first();
+            $user = User::where('email', request('email'))->where('is_admin', 1)->first();
             if ($user) {
                 $user->update(['status' => Constants::DISABLE_ACCOUNT]); // cho trạng thái tài khoản bằng 0 tương đương với khóa tài khoản
             }
@@ -70,6 +70,9 @@ class SessionController extends Controller
         RateLimiter::clear($key);
         return redirect()->route('cp-admin.dashboad');
     }
+
+
+    
     public function logout()
     {
         // kiểm tra xem đã đăng nhập chưa . nếu đăng r thì logout . còn chưa thì về quay về trang login

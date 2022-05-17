@@ -82,7 +82,7 @@ class ProductController extends Controller
                 'namePro' => 'required|min:3|max:100|unique:products,namePro,' . $Product->id,
                 'slug' => 'required|min:3|max:100|unique:products,slug,' . $Product->id,
                 'image' => 'mimes:jpg,bmp,png|max:2048',
-                'quantity' => 'required|numeric|min:1',
+                'quantity' => 'required|numeric|min:0',
                 'price' => 'required|numeric|min:1',
                 'discounts' => 'required|numeric|min:0|max:100',
                 'status' => 'required|numeric|min:0|max:1',

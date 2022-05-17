@@ -109,6 +109,12 @@ class ClientController extends Controller
     public function addCart(Request $request, $product_id)
     {
         $Product = Product::where('id', $product_id)->where('status', 1)->first();
+        if($Product->quantity <= 0){
+            return response()->json([
+                'message' => "Sản phẩm hiện đã hết hàng",
+                'status' => "error"
+            ]);
+        }
         $quantity = request(['quantity']) ? (int)request()->quantity : 1;
         if (!$Product) { // kiểm tra xem sản phẩm có tồn tại 
             return response()->json([
